@@ -36,7 +36,8 @@
     /**
      *  Layout
      */
-    css_node_t *_cssNode;
+//    css_node_t *_cssNode;
+    YGNodeRef _cssNode;
     BOOL _isLayoutDirty;
     CGRect _calculatedFrame;
     CGPoint _absolutePosition;

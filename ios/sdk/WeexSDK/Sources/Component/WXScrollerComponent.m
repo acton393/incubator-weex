@@ -642,7 +642,7 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
         
         if (_scrollDirection == WXScrollDirectionVertical) {
             _scrollerCSSNode->style.flex_direction = CSS_FLEX_DIRECTION_COLUMN;
-            _scrollerCSSNode->style.dimensions[CSS_WIDTH] = _cssNode->layout.dimensions[CSS_WIDTH];
+            _scrollerCSSNode->style.dimensions[CSS_WIDTH] = _cssNode
             _scrollerCSSNode->style.dimensions[CSS_HEIGHT] = CSS_UNDEFINED;
         } else {
             _scrollerCSSNode->style.flex_direction = CSS_FLEX_DIRECTION_ROW;
