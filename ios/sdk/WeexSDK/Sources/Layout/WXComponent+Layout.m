@@ -24,6 +24,7 @@
 #import "WXComponent_internal.h"
 #import "WXSDKInstance_private.h"
 #import "WXComponent+BoxShadow.h"
+#import "Yoga.h"
 
 @implementation WXComponent (Layout)
 
@@ -59,17 +60,20 @@
 
 - (void)_initCSSNodeWithStyles:(NSDictionary *)styles
 {
-    _cssNode = new_css_node();
+    _cssNode = YGNodeNew();
+    YGNodeSetPrintFunc(_cssNode, cssNodePrint);
+//    _cssNode->print = cssNodePrint; // 参数类型不一致，传入更多信息
     
-    _cssNode->print = cssNodePrint;
-    _cssNode->get_child = cssNodeGetChild;
-    _cssNode->is_dirty = cssNodeIsDirty;
+//    _cssNode->get_child = cssNodeGetChild;// 不再需要
+//    _cssNode->is_dirty = cssNodeIsDirty;// 待定
     if ([self measureBlock]) {
-        _cssNode->measure = cssNodeMeasure;
+        YGNodeSetMeasureFunc(_cssNode, cssNodeMeasure);
+//        _cssNode->measure = cssNodeMeasure;
     }
-    _cssNode->context = (__bridge void *)self;
     
-    [self _recomputeCSSNodeChildren];
+    YGNodeSetContext(_cssNode, (__bridge void *)self);
+    
+//    [self _recomputeCSSNodeChildren]; // no use
     [self _fillCSSNode:styles];
     
     // To be in conformity with Android/Web, hopefully remove this in the future.
@@ -94,10 +98,10 @@
     [self _resetCSSNode:styles];
 }
 
-- (void)_recomputeCSSNodeChildren
-{
-    _cssNode->children_count = (int)[self _childrenCountForLayout];
-}
+//- (void)_recomputeCSSNodeChildren
+//{
+////    _cssNode->children_count = (int)[self _childrenCountForLayout];
+//}
 
 - (NSUInteger)_childrenCountForLayout
 {
@@ -210,7 +214,7 @@
 do {\
     id value = styles[@#key];\
     if (value) {\
-        typeof(_cssNode->style.cssProp) convertedValue = (typeof(_cssNode->style.cssProp))[WXConvert type:value];\
+        typeof(_cssNode) convertedValue = (typeof(_cssNode->style.cssProp))[WXConvert type:value];\
         _cssNode->style.cssProp = convertedValue;\
         [self setNeedsLayout];\
     }\
@@ -356,9 +360,9 @@ do {\
 
 #pragma mark CSS Node Override
 
-static void cssNodePrint(void *context)
+static void cssNodePrint(YGNodeRef node)
 {
-    WXComponent *component = (__bridge WXComponent *)context;
+    WXComponent *component = (__bridge WXComponent *)YGNodeGetContext(node);
     // TODO:
     printf("%s:%s ", component.ref.UTF8String, component->_type.UTF8String);
 }
@@ -394,7 +398,7 @@ static bool cssNodeIsDirty(void *context)
     return needsLayout;
 }
 
-static css_dim_t cssNodeMeasure(void *context, float width, css_measure_mode_t widthMode, float height, css_measure_mode_t heightMode)
+static YGSize cssNodeMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode)
 {
     WXComponent *component = (__bridge WXComponent *)context;
     CGSize (^measureBlock)(CGSize) = [component measureBlock];

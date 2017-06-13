@@ -116,8 +116,8 @@
 
 - (void)dealloc
 {
-    free_css_node(_cssNode);
-
+    YGNodeFreeRecursive(_cssNode);
+    
     [self _removeAllEvents];
     if (_positionType == WXPositionTypeFixed) {
         [self.weexInstance.componentManager removeFixedComponent:self];
@@ -312,7 +312,7 @@
     return _absolutePosition;
 }
 
-- (css_node_t *)cssNode
+- (YGNodeRef)cssNode
 {
     return _cssNode;
 }

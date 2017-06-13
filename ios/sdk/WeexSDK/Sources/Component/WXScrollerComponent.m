@@ -116,13 +116,13 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
         _scrollerCSSNode = new_css_node();
         
         // let scroller fill the rest space if it is a child component and has no fixed height & width
-        if (((_scrollDirection == WXScrollDirectionVertical &&
-            isUndefined(self.cssNode->style.dimensions[CSS_HEIGHT])) ||
-            (_scrollDirection == WXScrollDirectionHorizontal &&
-              isUndefined(self.cssNode->style.dimensions[CSS_WIDTH]))) &&
-             self.cssNode->style.flex <= 0.0) {
-            self.cssNode->style.flex = 1.0;
-        }
+//        if (((_scrollDirection == WXScrollDirectionVertical &&
+//            isUndefined(self.cssNode->style.dimensions[CSS_HEIGHT])) ||
+//            (_scrollDirection == WXScrollDirectionHorizontal &&
+//              isUndefined(self.cssNode->style.dimensions[CSS_WIDTH]))) &&
+//             self.cssNode->style.flex <= 0.0) {
+//            self.cssNode->style.flex = 1.0;
+//        }
     }
     
     return self;
@@ -615,10 +615,10 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
 
 #pragma mark Layout
 
-- (NSUInteger)_childrenCountForLayout;
-{
-    return 0;
-}
+//- (NSUInteger)_childrenCountForLayout;
+//{
+//    return 0;
+//}
 
 - (NSUInteger)childrenCountForScrollerLayout
 {
@@ -642,11 +642,9 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
         
         if (_scrollDirection == WXScrollDirectionVertical) {
             _scrollerCSSNode->style.flex_direction = CSS_FLEX_DIRECTION_COLUMN;
-            _scrollerCSSNode->style.dimensions[CSS_WIDTH] = _cssNode
             _scrollerCSSNode->style.dimensions[CSS_HEIGHT] = CSS_UNDEFINED;
         } else {
             _scrollerCSSNode->style.flex_direction = CSS_FLEX_DIRECTION_ROW;
-            _scrollerCSSNode->style.dimensions[CSS_HEIGHT] = _cssNode->layout.dimensions[CSS_HEIGHT];
             _scrollerCSSNode->style.dimensions[CSS_WIDTH] = CSS_UNDEFINED;
         }
         

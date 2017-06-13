@@ -51,7 +51,7 @@
                 WXLogError(@"");
             }
         }
-        self.cssNode->style.position_type = CSS_POSITION_ABSOLUTE;
+//        self.cssNode->style.position_type = CSS_POSITION_ABSOLUTE;
     }
     return self;
 }

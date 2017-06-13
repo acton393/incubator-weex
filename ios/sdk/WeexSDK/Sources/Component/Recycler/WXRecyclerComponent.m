@@ -335,7 +335,7 @@ typedef enum : NSUInteger {
 {
     NSInteger numberOfItems = [self.dataController numberOfItemsInSection:section];
     
-    WXLogDebug(@"Number of items is %ld in section:%ld", numberOfItems, section);
+    WXLogDebug(@"Number of items is %ld in section:%ld", (long)numberOfItems, section);
     
     return numberOfItems;
 }
@@ -574,10 +574,10 @@ typedef enum : NSUInteger {
 - (void)_fillPadding
 {
     UIEdgeInsets padding = {
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_TOP] + self.cssNode->style.border[CSS_TOP]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_LEFT] + self.cssNode->style.border[CSS_LEFT]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_BOTTOM] + self.cssNode->style.border[CSS_BOTTOM]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_RIGHT] + self.cssNode->style.border[CSS_RIGHT])
+//        WXFloorPixelValue(self.cssNode->style.padding[CSS_TOP] + self.cssNode->style.border[CSS_TOP]),
+//        WXFloorPixelValue(self.cssNode->style.padding[CSS_LEFT] + self.cssNode->style.border[CSS_LEFT]),
+//        WXFloorPixelValue(self.cssNode->style.padding[CSS_BOTTOM] + self.cssNode->style.border[CSS_BOTTOM]),
+//        WXFloorPixelValue(self.cssNode->style.padding[CSS_RIGHT] + self.cssNode->style.border[CSS_RIGHT])
     };
     
     if (!UIEdgeInsetsEqualToEdgeInsets(padding, _padding)) {
