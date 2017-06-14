@@ -3245,7 +3245,7 @@ void YGSetExperimentalFeatureEnabled(YGExperimentalFeature feature, bool enabled
   experimentalFeatures[feature] = enabled;
 }
 
-inline bool YGIsExperimentalFeatureEnabled(YGExperimentalFeature feature) {
+bool YGIsExperimentalFeatureEnabled(YGExperimentalFeature feature) {
   return experimentalFeatures[feature];
 }
 

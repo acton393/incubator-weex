@@ -171,38 +171,37 @@
     
     WXComponent *component = [[WXComponent alloc] initWithRef:@"1" type:@"div" styles:testStyles attributes:nil events:nil weexInstance:[[WXSDKInstance alloc] init]];
     
-    css_node_t *cssNode = component.cssNode;
+    YGNodeRef cssNode = component.cssNode;
     CGFloat scale = [WXUtility defaultPixelScaleFactor];
-    
     XCTAssertEqual(cssNode->style.flex, 2.0);
-    XCTAssertEqual(cssNode->style.flex_direction, CSS_FLEX_DIRECTION_ROW);
-    XCTAssertEqual(cssNode->style.align_items, CSS_ALIGN_FLEX_START);
-    XCTAssertEqual(cssNode->style.align_self, CSS_ALIGN_FLEX_END);
-    XCTAssertEqual(cssNode->style.flex_wrap, CSS_WRAP);
-    XCTAssertEqual(cssNode->style.justify_content, CSS_JUSTIFY_SPACE_BETWEEN);
-    XCTAssertEqual(cssNode->style.position_type, CSS_POSITION_ABSOLUTE);
-    XCTAssertEqualCGFloat(cssNode->style.position[CSS_LEFT], 1.2 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.position[CSS_TOP], 2.3 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.position[CSS_RIGHT], 3.4 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.position[CSS_BOTTOM], 4.5 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.dimensions[CSS_WIDTH], 100.1 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.dimensions[CSS_HEIGHT], 199.9 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.minDimensions[CSS_WIDTH], 88.8 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.minDimensions[CSS_HEIGHT], 188.8 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.maxDimensions[CSS_WIDTH], 188.8 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.maxDimensions[CSS_HEIGHT], 200.1 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.margin[CSS_TOP], 5.4 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.margin[CSS_LEFT], 4.3 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.margin[CSS_RIGHT], 3.2 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.margin[CSS_BOTTOM], 2.1 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.border[CSS_LEFT], 2.3 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.border[CSS_TOP], 3.4 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.border[CSS_RIGHT], 2.3 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.border[CSS_BOTTOM], 3.4 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.padding[CSS_TOP], 1.2 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.padding[CSS_LEFT], 2.3 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.padding[CSS_RIGHT], 3.4 * scale);
-    XCTAssertEqualCGFloat(cssNode->style.padding[CSS_BOTTOM], 4.5 * scale);
+    XCTAssertEqual(cssNode->style.flexDirection, YGFlexDirectionRow);
+    XCTAssertEqual(cssNode->style.alignItems, YGAlignFlexStart);
+    XCTAssertEqual(cssNode->style.alignSelf, YGAlignFlexEnd);
+    XCTAssertEqual(cssNode->style.flexWrap, YGWrapWrap);
+    XCTAssertEqual(cssNode->style.justifyContent, YGJustifySpaceBetween);
+    XCTAssertEqual(cssNode->style.positionType, YGPositionTypeAbsolute);
+    XCTAssertEqualCGFloat(cssNode->style.position[YGEdgeLeft].value, 1.2 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.position[YGEdgeTop].value, 2.3 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.position[YGEdgeRight].value, 3.4 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.position[YGEdgeBottom].value, 4.5 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.dimensions[YGDimensionWidth].value, 100.1 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.dimensions[YGDimensionHeight].value, 199.9 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.minDimensions[YGDimensionWidth].value, 88.8 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.minDimensions[YGDimensionHeight].value, 188.8 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.maxDimensions[YGDimensionWidth].value, 188.8 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.maxDimensions[YGDimensionHeight].value, 200.1 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.margin[YGEdgeTop].value, 5.4 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.margin[YGEdgeLeft].value, 4.3 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.margin[YGEdgeRight].value, 3.2 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.margin[YGEdgeBottom].value, 2.1 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.border[YGEdgeLeft].value, 2.3 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.border[YGEdgeTop].value, 3.4 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.border[YGEdgeRight].value, 2.3 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.border[YGEdgeBottom].value, 3.4 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.padding[YGEdgeTop].value, 1.2 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.padding[YGEdgeLeft].value, 2.3 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.padding[YGEdgeRight].value, 3.4 * scale);
+    XCTAssertEqualCGFloat(cssNode->style.padding[YGEdgeBottom].value, 4.5 * scale);
 }
 
 

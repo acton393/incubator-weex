@@ -335,7 +335,7 @@ typedef enum : NSUInteger {
 {
     NSInteger numberOfItems = [self.dataController numberOfItemsInSection:section];
     
-    WXLogDebug(@"Number of items is %ld in section:%ld", (long)numberOfItems, section);
+    WXLogDebug(@"Number of items is %ld in section:%ld", (long)numberOfItems, (long)section);
     
     return numberOfItems;
 }
@@ -403,7 +403,7 @@ typedef enum : NSUInteger {
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView contentWidthForLayout:(UICollectionViewLayout *)collectionViewLayout
 {
-    return self.scrollerCSSNode->style.dimensions[CSS_WIDTH];
+    return self.cssNode->style.dimensions[YGDimensionWidth].value;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout heightForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -574,10 +574,10 @@ typedef enum : NSUInteger {
 - (void)_fillPadding
 {
     UIEdgeInsets padding = {
-//        WXFloorPixelValue(self.cssNode->style.padding[CSS_TOP] + self.cssNode->style.border[CSS_TOP]),
-//        WXFloorPixelValue(self.cssNode->style.padding[CSS_LEFT] + self.cssNode->style.border[CSS_LEFT]),
-//        WXFloorPixelValue(self.cssNode->style.padding[CSS_BOTTOM] + self.cssNode->style.border[CSS_BOTTOM]),
-//        WXFloorPixelValue(self.cssNode->style.padding[CSS_RIGHT] + self.cssNode->style.border[CSS_RIGHT])
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeTop).value +  YGNodeStyleGetBorder(self.cssNode, YGEdgeTop)),
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeLeft).value + YGNodeStyleGetBorder(self.cssNode, YGEdgeLeft)),
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeBottom).value + YGNodeStyleGetBorder(self.cssNode, YGEdgeBottom)),
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeRight).value + YGNodeStyleGetBorder(self.cssNode, YGEdgeRight))
     };
     
     if (!UIEdgeInsetsEqualToEdgeInsets(padding, _padding)) {

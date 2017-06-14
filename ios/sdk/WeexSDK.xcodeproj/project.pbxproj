@@ -271,8 +271,6 @@
 		D3FC0DF81C508B2A002B9E31 /* WXTimerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FC0DF61C508B2A002B9E31 /* WXTimerModule.m */; };
 		DC03ADB91D508719003F76E7 /* WXTextAreaComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = DC03ADB71D508719003F76E7 /* WXTextAreaComponent.m */; };
 		DC03ADBA1D508719003F76E7 /* WXTextAreaComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DC03ADB81D508719003F76E7 /* WXTextAreaComponent.h */; };
-		DC05B20C1EEAA9BA00853865 /* Layout.c in Sources */ = {isa = PBXBuildFile; fileRef = DC05B20A1EEAA9BA00853865 /* Layout.c */; };
-		DC05B20D1EEAA9BA00853865 /* Layout.h in Headers */ = {isa = PBXBuildFile; fileRef = DC05B20B1EEAA9BA00853865 /* Layout.h */; };
 		DC0F99311D48E5320087C6AF /* WeexSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = DC0F99301D48E5320087C6AF /* WeexSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DC6836E61EBB12B200AD2D84 /* WXConfigCenterProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DC6836E51EBB12B200AD2D84 /* WXConfigCenterProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DC6B280D1EEF90C3006CD05B /* YGNodeList.c in Sources */ = {isa = PBXBuildFile; fileRef = DCEB35731EEAA056002DD491 /* YGNodeList.c */; };
@@ -287,6 +285,7 @@
 		DCC77C131D770AE300CE7288 /* WXSliderNeighborComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC77C111D770AE300CE7288 /* WXSliderNeighborComponent.m */; };
 		DCC77C141D770AE300CE7288 /* WXSliderNeighborComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC77C121D770AE300CE7288 /* WXSliderNeighborComponent.h */; };
 		DCDFED011E68238F00C228D7 /* WXJSExceptionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCDFED001E68238F00C228D7 /* WXJSExceptionProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DCE5371D1EF158890067EB6A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCE5371C1EF1587D0067EB6A /* CoreGraphics.framework */; };
 		DCF087611DCAE161005CD6EB /* WXInvocationConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = DCF0875F1DCAE161005CD6EB /* WXInvocationConfig.h */; };
 		DCF087621DCAE161005CD6EB /* WXInvocationConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF087601DCAE161005CD6EB /* WXInvocationConfig.m */; };
 		DCF0CD9E1EAF3A6B0062CA8F /* native-bundle-main.js in Resources */ = {isa = PBXBuildFile; fileRef = DCF0CD9D1EAF3A6B0062CA8F /* native-bundle-main.js */; };
@@ -591,8 +590,6 @@
 		DAB176F008F516E4F9391C61 /* libPods-WeexSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WeexSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC03ADB71D508719003F76E7 /* WXTextAreaComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXTextAreaComponent.m; sourceTree = "<group>"; };
 		DC03ADB81D508719003F76E7 /* WXTextAreaComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXTextAreaComponent.h; sourceTree = "<group>"; };
-		DC05B20A1EEAA9BA00853865 /* Layout.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Layout.c; path = Layout/Layout.c; sourceTree = "<group>"; };
-		DC05B20B1EEAA9BA00853865 /* Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Layout.h; path = Layout/Layout.h; sourceTree = "<group>"; };
 		DC0F99301D48E5320087C6AF /* WeexSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeexSDK.h; sourceTree = "<group>"; };
 		DC6836E51EBB12B200AD2D84 /* WXConfigCenterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXConfigCenterProtocol.h; sourceTree = "<group>"; };
 		DC9867431D826D1E000AF388 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -604,6 +601,7 @@
 		DCC77C111D770AE300CE7288 /* WXSliderNeighborComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXSliderNeighborComponent.m; sourceTree = "<group>"; };
 		DCC77C121D770AE300CE7288 /* WXSliderNeighborComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXSliderNeighborComponent.h; sourceTree = "<group>"; };
 		DCDFED001E68238F00C228D7 /* WXJSExceptionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXJSExceptionProtocol.h; sourceTree = "<group>"; };
+		DCE5371C1EF1587D0067EB6A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DCEB356E1EEAA056002DD491 /* YGNodeList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = YGNodeList.h; path = Layout/YGNodeList.h; sourceTree = "<group>"; };
 		DCEB356F1EEAA056002DD491 /* Yoga.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Yoga.h; path = Layout/Yoga.h; sourceTree = "<group>"; };
 		DCEB35701EEAA056002DD491 /* YGEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = YGEnums.h; path = Layout/YGEnums.h; sourceTree = "<group>"; };
@@ -629,6 +627,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCE5371D1EF158890067EB6A /* CoreGraphics.framework in Frameworks */,
 				74EF31C01DE5ED6F00667A07 /* libstdc++.tbd in Frameworks */,
 				DC9867441D826D1E000AF388 /* GLKit.framework in Frameworks */,
 				740938FB1D3D0E1700DBB801 /* AVKit.framework in Frameworks */,
@@ -672,8 +671,6 @@
 		2AF626C61C191E2200E71A38 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				DC05B20A1EEAA9BA00853865 /* Layout.c */,
-				DC05B20B1EEAA9BA00853865 /* Layout.h */,
 				DCEB35701EEAA056002DD491 /* YGEnums.h */,
 				DCEB35721EEAA056002DD491 /* YGMacros.h */,
 				DCEB35731EEAA056002DD491 /* YGNodeList.c */,
@@ -1175,6 +1172,7 @@
 		A5818E244F9E235722E3B938 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DCE5371C1EF1587D0067EB6A /* CoreGraphics.framework */,
 				74EF31BE1DE5ED5900667A07 /* libstdc++.tbd */,
 				DC9867431D826D1E000AF388 /* GLKit.framework */,
 				740938FA1D3D0E1700DBB801 /* AVKit.framework */,
@@ -1276,7 +1274,6 @@
 				744D61101E49979000B624B3 /* WXFooterComponent.h in Headers */,
 				744D61141E4AF23E00B624B3 /* WXDiffUtil.h in Headers */,
 				74862F791E02B88D00B7A041 /* JSValue+Weex.h in Headers */,
-				DC05B20D1EEAA9BA00853865 /* Layout.h in Headers */,
 				2A1F57B71C75C6A600B58017 /* WXTextInputComponent.h in Headers */,
 				C4F012791E1502A6003378D0 /* SRWebSocket+Weex.h in Headers */,
 				74A4BA9A1CB3BAA100195969 /* WXThreadSafeMutableDictionary.h in Headers */,
@@ -1638,7 +1635,6 @@
 				7408C48F1CFB345D000BCCD0 /* WXComponent+Events.m in Sources */,
 				C4F012871E150307003378D0 /* WXWebSocketLoader.m in Sources */,
 				C4D872211E5DDEDA00E39BC1 /* WXInnerLayer.m in Sources */,
-				DC05B20C1EEAA9BA00853865 /* Layout.c in Sources */,
 				745ED2DB1C5F2C7E002DB5A8 /* WXView.m in Sources */,
 				DC03ADB91D508719003F76E7 /* WXTextAreaComponent.m in Sources */,
 				59A596231CB6311F0012CD52 /* WXNavigatorModule.m in Sources */,
@@ -1706,6 +1702,7 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
@@ -1731,6 +1728,7 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (

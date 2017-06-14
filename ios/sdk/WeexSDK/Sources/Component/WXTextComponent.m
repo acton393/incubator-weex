@@ -216,10 +216,11 @@ do {\
     WX_STYLE_FILL_TEXT_PIXEL(letterSpacing, letterSpacing, YES)
     
     UIEdgeInsets padding = {
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_TOP] + self.cssNode->style.border[CSS_TOP]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_LEFT] + self.cssNode->style.border[CSS_LEFT]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_BOTTOM] + self.cssNode->style.border[CSS_BOTTOM]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_RIGHT] + self.cssNode->style.border[CSS_RIGHT])
+        
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeTop).value + YGNodeStyleGetBorder(self.cssNode, YGEdgeTop)),
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeLeft).value + YGNodeStyleGetBorder(self.cssNode, YGEdgeLeft)),
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeBottom).value + YGNodeStyleGetBorder(self.cssNode, YGEdgeBottom)),
+        WXFloorPixelValue(YGNodeStyleGetPadding(self.cssNode, YGEdgeRight).value+ YGNodeStyleGetBorder(self.cssNode, YGEdgeRight))
     };
     
     if (!UIEdgeInsetsEqualToEdgeInsets(padding, _padding)) {
@@ -301,20 +302,20 @@ do {\
         }
     
         //TODO:more elegant way to use max and min constrained size
-        if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_WIDTH])) {
-            computedSize.width = MAX(computedSize.width, weakSelf.cssNode->style.minDimensions[CSS_WIDTH]);
+        if (!isnan(weakSelf.cssNode->style.minDimensions[YGDimensionWidth].value)) {
+            computedSize.width = MAX(computedSize.width, weakSelf.cssNode->style.minDimensions[YGDimensionWidth].value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_WIDTH])) {
-            computedSize.width = MIN(computedSize.width, weakSelf.cssNode->style.maxDimensions[CSS_WIDTH]);
+        if (!isnan(weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value)) {
+            computedSize.width = MIN(computedSize.width, weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_HEIGHT])) {
-            computedSize.height = MAX(computedSize.height, weakSelf.cssNode->style.minDimensions[CSS_HEIGHT]);
+        if (!isnan(weakSelf.cssNode->style.minDimensions[YGDimensionHeight].value)) {
+            computedSize.height = MAX(computedSize.height, weakSelf.cssNode->style.minDimensions[YGDimensionHeight].value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT])) {
-            computedSize.height = MIN(computedSize.height, weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT]);
+        if (!isnan(weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value)) {
+            computedSize.height = MIN(computedSize.height, weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value);
         }
         if (textStorage && [WXUtility isBlankString:textStorage.string]) {
             //  if the text value is empty or nil, then set the height is 0.

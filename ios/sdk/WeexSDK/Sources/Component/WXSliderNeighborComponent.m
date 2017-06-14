@@ -1437,7 +1437,7 @@ NSComparisonResult sliderNeighorCompareViewDepth(UIView *view1, UIView *view2, W
     
         _scrollable = attributes[@"scrollable"] ? [WXConvert BOOL:attributes[@"scrollable"]] : YES;
     }
-    self.cssNode->style.flex_direction = CSS_FLEX_DIRECTION_ROW;
+    self.cssNode->style.flexDirection = YGFlexDirectionRow;
     
     return self;
 }

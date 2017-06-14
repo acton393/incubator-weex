@@ -324,7 +324,7 @@
 
 - (float)headerWidthForLayout:(WXHeaderComponent *)cell
 {
-    return self.scrollerCSSNode->style.dimensions[CSS_WIDTH];
+    return self.scrollerCSSNode->style.dimensions[YGDimensionWidth].value;
 }
 
 - (void)headerDidLayout:(WXHeaderComponent *)header
@@ -387,7 +387,7 @@
 
 - (float)containerWidthForLayout:(WXCellComponent *)cell
 {
-    return self.scrollerCSSNode->style.dimensions[CSS_WIDTH];
+    return self.scrollerCSSNode->style.dimensions[YGDimensionWidth].value;
 }
 
 - (void)cellDidRemove:(WXCellComponent *)cell

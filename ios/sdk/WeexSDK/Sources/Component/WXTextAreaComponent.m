@@ -71,20 +71,20 @@ typedef UITextView WXTextAreaView;
         
         CGSize computedSize = [[[NSString alloc] init]sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:weakSelf.textView.font.pointSize]}];
         computedSize.height = _rows? computedSize.height *weakSelf.rows + (CorrectY + CorrectY/2):0;
-        if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_WIDTH])) {
-            computedSize.width = MAX(computedSize.width, weakSelf.cssNode->style.minDimensions[CSS_WIDTH]);
+        if (!isnan(weakSelf.cssNode->style.minDimensions[YGDimensionWidth].value)) {
+            computedSize.width = MAX(computedSize.width, weakSelf.cssNode->style.minDimensions[YGDimensionWidth].value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_WIDTH])) {
-            computedSize.width = MIN(computedSize.width, weakSelf.cssNode->style.maxDimensions[CSS_WIDTH]);
+        if (!isnan(weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value)) {
+            computedSize.width = MIN(computedSize.width, weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_HEIGHT])) {
-            computedSize.height = MAX(computedSize.height, weakSelf.cssNode->style.minDimensions[CSS_HEIGHT]);
+        if (!isnan(weakSelf.cssNode->style.minDimensions[YGDimensionHeight].value)) {
+            computedSize.height = MAX(computedSize.height, weakSelf.cssNode->style.minDimensions[YGDimensionHeight].value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT])) {
-            computedSize.height = MIN(computedSize.height, weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT]);
+        if (!isnan(weakSelf.cssNode->style.maxDimensions[YGDimensionHeight].value)) {
+            computedSize.height = MIN(computedSize.height, weakSelf.cssNode->style.maxDimensions[YGDimensionHeight].value);
         }
         
         return (CGSize) {

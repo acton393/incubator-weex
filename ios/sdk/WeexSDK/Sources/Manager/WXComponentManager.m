@@ -55,7 +55,7 @@ static NSThread *WXComponentThread;
     WXComponent *_rootComponent;
     NSMutableArray *_fixedComponents;
     
-    css_node_t *_rootCSSNode;
+    YGNodeRef _rootCSSNode;
     CADisplayLink *_displayLink;
 }
 
@@ -86,7 +86,7 @@ static NSThread *WXComponentThread;
 
 - (void)dealloc
 {
-    free_css_node(_rootCSSNode);
+    YGNodeFree(_rootCSSNode);
     [NSMutableArray wx_releaseArray:_fixedComponents];
 }
 
@@ -145,24 +145,24 @@ static NSThread *WXComponentThread;
     if (_rootCSSNode) {
         [self _applyRootFrame:frame toRootCSSNode:_rootCSSNode];
         if (!_rootComponent.styles[@"width"]) {
-            _rootComponent.cssNode->style.dimensions[CSS_WIDTH] = frame.size.width ?: CSS_UNDEFINED;
+            _rootComponent.cssNode->style.dimensions[YGDimensionWidth].value = frame.size.width ?: YGUndefined;
         }
         if (!_rootComponent.styles[@"height"]) {
-            _rootComponent.cssNode->style.dimensions[CSS_HEIGHT] = frame.size.height ?: CSS_UNDEFINED;
+            _rootComponent.cssNode->style.dimensions[YGDimensionHeight].value = frame.size.height ?: YGUndefined;
         }
         [_rootComponent setNeedsLayout];
         [self startComponentTasks];
     }
 }
 
-- (void)_applyRootFrame:(CGRect)rootFrame toRootCSSNode:(css_node_t *)rootCSSNode
+- (void)_applyRootFrame:(CGRect)rootFrame toRootCSSNode:(YGNodeRef)rootCSSNode
 {
-    _rootCSSNode->style.position[CSS_LEFT] = self.weexInstance.frame.origin.x;
-    _rootCSSNode->style.position[CSS_TOP] = self.weexInstance.frame.origin.y;
+    YGNodeStyleSetPosition(_rootCSSNode, YGEdgeLeft, self.weexInstance.frame.origin.x);
+    YGNodeStyleSetPosition(_rootCSSNode, YGEdgeTop, self.weexInstance.frame.origin.y);
     
     // if no instance width/height, use layout width/height, as Android's wrap_content
-    _rootCSSNode->style.dimensions[CSS_WIDTH] = self.weexInstance.frame.size.width ?: CSS_UNDEFINED;
-    _rootCSSNode->style.dimensions[CSS_HEIGHT] =  self.weexInstance.frame.size.height ?: CSS_UNDEFINED;
+    _rootCSSNode->style.dimensions[YGDimensionWidth].value = self.weexInstance.frame.size.width ?: YGUndefined;
+    _rootCSSNode->style.dimensions[YGDimensionHeight].value =  self.weexInstance.frame.size.height ?: YGUndefined;
 }
 
 - (void)_addUITask:(void (^)())block
@@ -210,23 +210,23 @@ static NSThread *WXComponentThread;
     }];
 }
 
-static bool rootNodeIsDirty(void *context)
-{
-    WXComponentManager *manager = (__bridge WXComponentManager *)(context);
-    return [manager->_rootComponent needsLayout];
-}
+//static bool rootNodeIsDirty(void *context)
+//{
+//    WXComponentManager *manager = (__bridge WXComponentManager *)(context);
+//    return [manager->_rootComponent needsLayout];
+//}
 
-static css_node_t * rootNodeGetChild(void *context, int i)
-{
-    WXComponentManager *manager = (__bridge WXComponentManager *)(context);
-    if (i == 0) {
-        return manager->_rootComponent.cssNode;
-    } else if(manager->_fixedComponents.count >= i) {
-        return ((WXComponent *)((manager->_fixedComponents)[i-1])).cssNode;
-    }
-    
-    return NULL;
-}
+//static YGNodeRef rootNodeGetChild(void *context, int i)
+//{
+//    WXComponentManager *manager = (__bridge WXComponentManager *)(context);
+//    if (i == 0) {
+//        return manager->_rootComponent.cssNode;
+//    } else if(manager->_fixedComponents.count >= i) {
+//        return ((WXComponent *)((manager->_fixedComponents)[i-1])).cssNode;
+//    }
+//    
+//    return NULL;
+//}
 
 - (void)addComponent:(NSDictionary *)componentData toSupercomponent:(NSString *)superRef atIndex:(NSInteger)index appendingInTree:(BOOL)appendingInTree
 {
@@ -661,12 +661,10 @@ static css_node_t * rootNodeGetChild(void *context, int i)
     if (!needsLayout) {
         return;
     }
-    
-    layoutNode(_rootCSSNode, _rootCSSNode->style.dimensions[CSS_WIDTH], _rootCSSNode->style.dimensions[CSS_HEIGHT], CSS_DIRECTION_INHERIT);
-    
+    YGNodeCalculateLayout(_rootCSSNode, YGUndefined, YGUndefined, YGDirectionInherit);
     if ([_rootComponent needsLayout]) {
         if ([WXLog logLevel] >= WXLogLevelDebug) {
-            print_css_node(_rootCSSNode, CSS_PRINT_LAYOUT | CSS_PRINT_STYLE | CSS_PRINT_CHILDREN);
+            YGNodePrint(_rootCSSNode, YGPrintOptionsLayout| YGPrintOptionsStyle |YGPrintOptionsChildren);
         }
     }
     
@@ -694,35 +692,33 @@ static css_node_t * rootNodeGetChild(void *context, int i)
 
 - (void)_initRootCSSNode
 {
-    _rootCSSNode = new_css_node();
+    _rootCSSNode = YGNodeNew();
     
     [self _applyRootFrame:self.weexInstance.frame toRootCSSNode:_rootCSSNode];
-    
-    _rootCSSNode->style.flex_wrap = CSS_NOWRAP;
-    _rootCSSNode->is_dirty = rootNodeIsDirty;
-    _rootCSSNode->get_child = rootNodeGetChild;
+    YGNodeStyleSetFlexWrap(_rootCSSNode, YGWrapNoWrap);
+//    _rootCSSNode->is_dirty = rootNodeIsDirty;
+//    _rootCSSNode->get_child = rootNodeGetChild;
     _rootCSSNode->context = (__bridge void *)(self);
-    _rootCSSNode->children_count = 1;
+//    _rootCSSNode->children_count = 1;
 }
 
 - (void)_calculateRootFrame
 {
-    if (!_rootCSSNode->layout.should_update) {
-        return;
-    }
-    _rootCSSNode->layout.should_update = false;
+//    if (!_rootCSSNode->layout.should_update) {
+//        return;
+//    }
+//    _rootCSSNode->layout.should_update = false;
     
-    CGRect frame = CGRectMake(WXRoundPixelValue(_rootCSSNode->layout.position[CSS_LEFT]),
-                              WXRoundPixelValue(_rootCSSNode->layout.position[CSS_TOP]),
-                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[CSS_WIDTH]),
-                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[CSS_HEIGHT]));
+    CGRect frame = CGRectMake(WXRoundPixelValue(_rootCSSNode->layout.position[YGEdgeLeft]),
+                              WXRoundPixelValue(_rootCSSNode->layout.position[YGEdgeTop]),
+                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[YGDimensionWidth]),
+                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[YGDimensionHeight]));
     WXPerformBlockOnMainThread(^{
         if(!self.weexInstance.isRootViewFrozen) {
             self.weexInstance.rootView.frame = frame;
         }
     });
-    
-    resetNodeLayout(_rootCSSNode);
+    YGNodeReset(_rootCSSNode);
 }
 
 
@@ -731,13 +727,13 @@ static css_node_t * rootNodeGetChild(void *context, int i)
 - (void)addFixedComponent:(WXComponent *)fixComponent
 {
     [_fixedComponents addObject:fixComponent];
-    _rootCSSNode->children_count = (int)[_fixedComponents count] + 1;
+//    _rootCSSNode->children_count = (int)[_fixedComponents count] + 1;
 }
 
 - (void)removeFixedComponent:(WXComponent *)fixComponent
 {
     [_fixedComponents removeObject:fixComponent];
-    _rootCSSNode->children_count = (int)[_fixedComponents count] + 1;
+//    _rootCSSNode->children_count = (int)[_fixedComponents count] + 1;
 }
 
 @end
