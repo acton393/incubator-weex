@@ -19,7 +19,6 @@
 
 #import "WXScrollerProtocol.h"
 #import "WXComponent.h"
-#include "Yoga.h"
 
 @interface WXScrollerComponent : WXComponent <WXScrollerProtocol, UIScrollViewDelegate>
 

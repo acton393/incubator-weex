@@ -26,6 +26,7 @@
 #import "WXUtility.h"
 #import "WXLoadingComponent.h"
 #import "WXRefreshComponent.h"
+#import "Yoga.h"
 
 @interface WXScrollToTarget : NSObject
 
@@ -634,28 +635,30 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
      *  layout from children to scroller to get scroller's contentSize
      */
     if ([self needsLayout]) {
-        memcpy(_scrollerCSSNode, self.cssNode, sizeof(YGNode));
+//        memcpy(_scrollerCSSNode, self.cssNode, sizeof(struct YGNode));
+        _scrollerCSSNode = YGNodeNew();
+        YGNodeCopyStyle(_scrollerCSSNode, self.cssNode);
         YGNodeStyleSetPosition(_scrollerCSSNode, YGEdgeLeft, 0);
         YGNodeStyleSetPosition(_scrollerCSSNode, YGEdgeTop, 0);
         
         if (_scrollDirection == WXScrollDirectionVertical) {
             YGNodeStyleSetFlexDirection(_scrollerCSSNode, YGFlexDirectionColumn);
-            _scrollerCSSNode->style.dimensions[YGDimensionHeight].value = YGUndefined;
+            YGNodeStyleSetHeight(_scrollerCSSNode, YGUndefined);
         } else {
             YGNodeStyleSetFlexDirection(_scrollerCSSNode, YGFlexDirectionRow);
-            _scrollerCSSNode->style.dimensions[YGDimensionWidth].value = YGUndefined;
+            YGNodeStyleSetWidth(_scrollerCSSNode, YGUndefined);
         }
         
-        _scrollerCSSNode->layout.dimensions[YGDimensionWidth] = YGUndefined;
-        _scrollerCSSNode->layout.dimensions[YGDimensionHeight] = YGUndefined;
+//        _scrollerCSSNode->layout.dimensions[YGDimensionWidth] = YGUndefined;
+//        _scrollerCSSNode->layout.dimensions[YGDimensionHeight] = YGUndefined;
         
         YGNodeCalculateLayout(_scrollerCSSNode, YGUndefined, YGUndefined, YGDirectionInherit);
         if ([WXLog logLevel] >= WXLogLevelDebug) {
             YGNodePrint(_scrollerCSSNode, YGPrintOptionsLayout | YGPrintOptionsStyle | YGPrintOptionsChildren);
         }
         CGSize size = {
-            WXRoundPixelValue(_scrollerCSSNode->layout.dimensions[YGDimensionWidth]),
-            WXRoundPixelValue(_scrollerCSSNode->layout.dimensions[YGDimensionHeight])
+            WXRoundPixelValue(YGNodeLayoutGetWidth(_scrollerCSSNode)),
+            WXRoundPixelValue(YGNodeLayoutGetHeight(_scrollerCSSNode))
         };
 
         if (!CGSizeEqualToSize(size, _contentSize)) {
@@ -664,8 +667,8 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
             [dirtyComponents addObject:self];
         }
         
-        _scrollerCSSNode->layout.dimensions[YGDimensionWidth] = YGUndefined;
-        _scrollerCSSNode->layout.dimensions[YGDimensionHeight] = YGUndefined;
+//        _scrollerCSSNode->layout.dimensions[YGDimensionWidth] = YGUndefined;
+//        _scrollerCSSNode->layout.dimensions[YGDimensionHeight] = YGUndefined;
     }
     
     [super _calculateFrameWithSuperAbsolutePosition:superAbsolutePosition gatherDirtyComponents:dirtyComponents];

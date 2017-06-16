@@ -86,7 +86,9 @@ static NSThread *WXComponentThread;
 
 - (void)dealloc
 {
-    YGNodeFree(_rootCSSNode);
+    if (_rootCSSNode) {
+        YGNodeFree(_rootCSSNode);
+    }
     [NSMutableArray wx_releaseArray:_fixedComponents];
 }
 
@@ -145,10 +147,10 @@ static NSThread *WXComponentThread;
     if (_rootCSSNode) {
         [self _applyRootFrame:frame toRootCSSNode:_rootCSSNode];
         if (!_rootComponent.styles[@"width"]) {
-            _rootComponent.cssNode->style.dimensions[YGDimensionWidth].value = frame.size.width ?: YGUndefined;
+            YGNodeStyleSetWidth(_rootComponent.cssNode, frame.size.width ?: YGUndefined);
         }
         if (!_rootComponent.styles[@"height"]) {
-            _rootComponent.cssNode->style.dimensions[YGDimensionHeight].value = frame.size.height ?: YGUndefined;
+            YGNodeStyleSetHeight(_rootComponent.cssNode, frame.size.height ?: YGUndefined);
         }
         [_rootComponent setNeedsLayout];
         [self startComponentTasks];
@@ -161,8 +163,8 @@ static NSThread *WXComponentThread;
     YGNodeStyleSetPosition(_rootCSSNode, YGEdgeTop, self.weexInstance.frame.origin.y);
     
     // if no instance width/height, use layout width/height, as Android's wrap_content
-    _rootCSSNode->style.dimensions[YGDimensionWidth].value = self.weexInstance.frame.size.width ?: YGUndefined;
-    _rootCSSNode->style.dimensions[YGDimensionHeight].value =  self.weexInstance.frame.size.height ?: YGUndefined;
+    YGNodeStyleSetWidth(_rootCSSNode, self.weexInstance.frame.size.width ?: YGUndefined);
+    YGNodeStyleSetHeight(_rootCSSNode, self.weexInstance.frame.size.height ?: YGUndefined);
 }
 
 - (void)_addUITask:(void (^)())block
@@ -698,7 +700,7 @@ static NSThread *WXComponentThread;
     YGNodeStyleSetFlexWrap(_rootCSSNode, YGWrapNoWrap);
 //    _rootCSSNode->is_dirty = rootNodeIsDirty;
 //    _rootCSSNode->get_child = rootNodeGetChild;
-    _rootCSSNode->context = (__bridge void *)(self);
+    YGNodeSetContext(_rootCSSNode, (__bridge void *)(self));
 //    _rootCSSNode->children_count = 1;
 }
 
@@ -709,10 +711,10 @@ static NSThread *WXComponentThread;
 //    }
 //    _rootCSSNode->layout.should_update = false;
     
-    CGRect frame = CGRectMake(WXRoundPixelValue(_rootCSSNode->layout.position[YGEdgeLeft]),
-                              WXRoundPixelValue(_rootCSSNode->layout.position[YGEdgeTop]),
-                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[YGDimensionWidth]),
-                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[YGDimensionHeight]));
+    CGRect frame = CGRectMake(WXRoundPixelValue(YGNodeLayoutGetLeft(_rootCSSNode)),
+                              WXRoundPixelValue(YGNodeLayoutGetTop(_rootCSSNode)),
+                              WXRoundPixelValue(YGNodeLayoutGetWidth(_rootCSSNode)),
+                              WXRoundPixelValue(YGNodeLayoutGetHeight(_rootCSSNode)));
     WXPerformBlockOnMainThread(^{
         if(!self.weexInstance.isRootViewFrozen) {
             self.weexInstance.rootView.frame = frame;

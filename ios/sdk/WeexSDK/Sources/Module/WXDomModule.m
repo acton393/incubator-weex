@@ -208,7 +208,6 @@ WX_EXPORT_METHOD(@selector(getComponentRect:callback:))
                     callback(callbackRsp, false);
                 }
             });
-
         }
     }];
 }

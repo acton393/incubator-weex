@@ -66,9 +66,10 @@
     
 //    _cssNode->get_child = cssNodeGetChild;// 不再需要
 //    _cssNode->is_dirty = cssNodeIsDirty;// 待定
+    
     if ([self measureBlock]) {
-        
         YGNodeSetMeasureFunc(_cssNode, cssNodeMeasure);
+        YGNodeMarkDirty(_cssNode);
 //        _cssNode->measure = cssNodeMeasure;
     }
     
@@ -169,12 +170,12 @@
 //        return;
 //    }
 //    _cssNode->layout.should_update = false;
+    _cssNode->isDirty = NO;
     _isLayoutDirty = NO;
-    
     CGRect newFrame = CGRectMake(WXRoundPixelValue(_cssNode->layout.position[YGEdgeLeft]),
                                  WXRoundPixelValue(_cssNode->layout.position[YGEdgeTop]),
-                                 WXRoundPixelValue(_cssNode->layout.dimensions[YGDimensionWidth]),
-                                 WXRoundPixelValue(_cssNode->layout.dimensions[YGDimensionHeight]));
+                                 WXRoundPixelValue(!isnan(_cssNode->layout.dimensions[YGDimensionWidth])?:0),
+                                 WXRoundPixelValue(!isnan(_cssNode->layout.dimensions[YGDimensionHeight])?:0));
     
     BOOL isFrameChanged = NO;
     if (!CGRectEqualToRect(newFrame, _calculatedFrame)) {

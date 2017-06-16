@@ -302,20 +302,21 @@ do {\
         }
     
         //TODO:more elegant way to use max and min constrained size
-        if (!isnan(weakSelf.cssNode->style.minDimensions[YGDimensionWidth].value)) {
-            computedSize.width = MAX(computedSize.width, weakSelf.cssNode->style.minDimensions[YGDimensionWidth].value);
+       
+        if (!isnan(YGNodeStyleGetMinWidth(weakSelf.cssNode).value)) {
+            computedSize.width = MAX(computedSize.width, YGNodeStyleGetMinWidth(weakSelf.cssNode).value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value)) {
-            computedSize.width = MIN(computedSize.width, weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value);
+        if (!isnan(YGNodeStyleGetMaxWidth(weakSelf.cssNode).value)) {
+            computedSize.width = MIN(computedSize.width, YGNodeStyleGetMaxWidth(weakSelf.cssNode).value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.minDimensions[YGDimensionHeight].value)) {
-            computedSize.height = MAX(computedSize.height, weakSelf.cssNode->style.minDimensions[YGDimensionHeight].value);
+        if (!isnan(YGNodeStyleGetMinHeight(weakSelf.cssNode).value)) {
+            computedSize.height = MAX(computedSize.height, YGNodeStyleGetMinHeight(weakSelf.cssNode).value);
         }
         
-        if (!isnan(weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value)) {
-            computedSize.height = MIN(computedSize.height, weakSelf.cssNode->style.maxDimensions[YGDimensionWidth].value);
+        if (!isnan(YGNodeStyleGetMaxHeight(weakSelf.cssNode).value)) {
+            computedSize.height = MIN(computedSize.height, YGNodeStyleGetMaxHeight(weakSelf.cssNode).value);
         }
         if (textStorage && [WXUtility isBlankString:textStorage.string]) {
             //  if the text value is empty or nil, then set the height is 0.

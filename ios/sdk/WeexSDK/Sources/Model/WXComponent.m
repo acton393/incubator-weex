@@ -37,6 +37,7 @@
 #import <pthread/pthread.h>
 #import "WXComponent+PseudoClassManagement.h"
 #import "WXComponent+BoxShadow.h"
+#import "YGNodeList.h"
 
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 #pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
@@ -116,7 +117,7 @@
 
 - (void)dealloc
 {
-    YGNodeFreeRecursive(_cssNode);
+    YGNodeFree(_cssNode);
     
     [self _removeAllEvents];
     if (_positionType == WXPositionTypeFixed) {
@@ -343,7 +344,7 @@
     }
     
     subcomponent->_supercomponent = self;
-    
+    YGNodeInsertChild(self.cssNode, subcomponent.cssNode, (uint32_t)index);
     pthread_mutex_lock(&_propertyMutex);
     [_subcomponents insertObject:subcomponent atIndex:index];
     pthread_mutex_unlock(&_propertyMutex);
@@ -357,7 +358,7 @@
         subcomponent->_isCompositingChild = YES;
     }
     
-    [self _recomputeCSSNodeChildren];
+//    [self _recomputeCSSNodeChildren];
     [self setNeedsLayout];
 }
 
@@ -366,12 +367,13 @@
     pthread_mutex_lock(&_propertyMutex);
     [_subcomponents removeObject:subcomponent];
     pthread_mutex_unlock(&_propertyMutex);
+    YGNodeRemoveChild(self.cssNode, subcomponent.cssNode);
 }
 
 - (void)_removeFromSupercomponent
 {
     [self.supercomponent _removeSubcomponent:self];
-    [self.supercomponent _recomputeCSSNodeChildren];
+//    [self.supercomponent _recomputeCSSNodeChildren];
     [self.supercomponent setNeedsLayout];
     
     if (_positionType == WXPositionTypeFixed) {

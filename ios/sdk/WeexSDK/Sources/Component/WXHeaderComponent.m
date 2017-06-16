@@ -68,8 +68,8 @@
 
 - (void)_calculateFrameWithSuperAbsolutePosition:(CGPoint)superAbsolutePosition gatherDirtyComponents:(NSMutableSet<WXComponent *> *)dirtyComponents
 {
-    if (self.delegate && (YGFloatIsUndefined(self.cssNode->style.dimensions[YGDimensionWidth].value) || _isUseContainerWidth)) {
-        self.cssNode->style.dimensions[YGDimensionWidth].value = [self.delegate headerWidthForLayout:self];
+    if (self.delegate && (YGFloatIsUndefined(YGNodeStyleGetWidth(self.cssNode).value) || _isUseContainerWidth)) {
+        YGNodeStyleSetWidth(self.cssNode, [self.delegate headerWidthForLayout:self]);
         //TODO: set _isUseContainerWidth to NO if updateStyles have width
         _isUseContainerWidth = YES;
     }

@@ -176,7 +176,7 @@
 
 - (void)_resetCSSNodeStyles:(NSArray *)styles;
 
-- (void)_recomputeCSSNodeChildren;
+//- (void)_recomputeCSSNodeChildren;
 
 - (void)_handleBorders:(NSDictionary *)styles isUpdating:(BOOL)updating;
 

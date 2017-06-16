@@ -45,8 +45,10 @@
         _checked = attributes[@"checked"] ? [WXConvert BOOL:attributes[@"checked"]] : NO;
         _disabled = attributes[@"disabled"] ? [WXConvert BOOL:attributes[@"disabled"]] : NO;
         
-        self.cssNode->style.dimensions[YGDimensionWidth].value = 51;
-        self.cssNode->style.dimensions[YGDimensionHeight].value = 31;
+//        self.cssNode->style.dimensions[YGDimensionWidth].value = 51;
+//        self.cssNode->style.dimensions[YGDimensionHeight].value = 31;
+        YGNodeStyleSetWidth(self.cssNode, 51);
+        YGNodeStyleSetHeight(self.cssNode, 31);
     }
     return self;
 }
