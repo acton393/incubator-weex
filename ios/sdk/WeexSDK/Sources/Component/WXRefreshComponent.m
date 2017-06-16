@@ -51,6 +51,7 @@
                 WXLogError(@"");
             }
         }
+        YGNodeStyleSetPositionType(self.cssNode, YGPositionTypeAbsolute);
 //        self.cssNode->style.position_type = CSS_POSITION_ABSOLUTE;
     }
     return self;
