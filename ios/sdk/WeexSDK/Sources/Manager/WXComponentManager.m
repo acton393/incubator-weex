@@ -728,6 +728,7 @@ static NSThread *WXComponentThread;
 
 - (void)addFixedComponent:(WXComponent *)fixComponent
 {
+    YGNodeInsertChild(_rootCSSNode, fixComponent.cssNode, (uint32_t)[_fixedComponents count]);
     [_fixedComponents addObject:fixComponent];
 //    _rootCSSNode->children_count = (int)[_fixedComponents count] + 1;
 }
@@ -735,6 +736,7 @@ static NSThread *WXComponentThread;
 - (void)removeFixedComponent:(WXComponent *)fixComponent
 {
     [_fixedComponents removeObject:fixComponent];
+    YGNodeRemoveChild(_rootCSSNode, fixComponent.cssNode);
 //    _rootCSSNode->children_count = (int)[_fixedComponents count] + 1;
 }
 
