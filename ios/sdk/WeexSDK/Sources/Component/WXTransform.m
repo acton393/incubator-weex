@@ -44,6 +44,7 @@
     float _rotateY;
     float _rotateZ;
     float _perspective;
+    NSMutableArray * _transformOrder;
     
     CATransform3D _nativeTransform;
     BOOL _useNativeTransform;
@@ -62,6 +63,7 @@
         
         // default is parallel projection
         _perspective = CGFLOAT_MAX;
+        _transformOrder = [NSMutableArray new];
         
         [self parseTransform:cssValue];
         [self parseTransformOrigin:origin];
@@ -109,6 +111,11 @@
     return _rotateZ;
 }
 
+- (NSArray*)transformOrder
+{
+    return [_transformOrder copy];
+}
+
 - (WXLength *)translateX
 {
     if (_useNativeTransform) {
@@ -154,16 +161,18 @@
     
     CATransform3D nativeTransform3d = [self nativeTransformWithoutRotateWithView:view];
 
-    if (_rotateAngle != 0 || _rotateZ != 0) {
-        nativeTransform3d = CATransform3DRotate(nativeTransform3d, _rotateAngle?:_rotateZ, 0, 0, 1);
-    }
-    
-    if (_rotateY != 0) {
-        nativeTransform3d = CATransform3DRotate(nativeTransform3d, _rotateY, 0, 1, 0);
-    }
-    
-    if (_rotateX != 0) {
-        nativeTransform3d = CATransform3DRotate(nativeTransform3d, _rotateX, 1, 0, 0);
+    for (NSString * name in _transformOrder) {
+        if (([name isEqualToString:@"rotate"] || [name isEqualToString:@"rotateZ"]) && (_rotateAngle != 0 || _rotateZ != 0)) {
+            nativeTransform3d = CATransform3DRotate(nativeTransform3d, _rotateAngle?:_rotateZ, 0, 0, 1);
+        }
+        
+        if ([name isEqualToString:@"rotateY"] && _rotateY != 0) {
+            nativeTransform3d = CATransform3DRotate(nativeTransform3d, _rotateY, 0, 1, 0);
+        }
+        
+        if ([name isEqualToString:@"rotateX"] && _rotateX != 0) {
+            nativeTransform3d = CATransform3DRotate(nativeTransform3d, _rotateX, 1, 0, 0);
+        }
     }
     
     return nativeTransform3d;
@@ -172,19 +181,30 @@
 - (CATransform3D)nativeTransformWithoutRotateWithView:(UIView *)view
 {
     CATransform3D nativeTansform3D = CATransform3DIdentity;
-    
-    if (_perspective && !isinf(_perspective)) {
-        nativeTansform3D.m34 = -1.0/_perspective*[UIScreen mainScreen].scale;
-    }
     if (!view || view.bounds.size.width <= 0 || view.bounds.size.height <= 0) {
         return nativeTansform3D;
     }
-    
-    if (_translateX || _translateY) {
-        
-        nativeTansform3D = CATransform3DTranslate(nativeTansform3D, _translateX ? [_translateX valueForMaximum:view.bounds.size.width] : 0, _translateY ? [_translateY valueForMaximum:view.bounds.size.height]:0, 0);
+    if (_perspective && !isinf(_perspective)) {
+        nativeTansform3D.m34 = -1.0/_perspective*[UIScreen mainScreen].scale;
     }
-    nativeTansform3D = CATransform3DScale(nativeTansform3D, _scaleX, _scaleY, 1.0);
+    
+    for (NSString * name in _transformOrder) {
+        if ([name isEqualToString:@"translateX"] && _translateX) {
+                nativeTansform3D = CATransform3DTranslate(nativeTansform3D, _translateX ? [_translateX valueForMaximum:view.bounds.size.width] : 0, 0, 0);
+        }
+        if ([name isEqualToString:@"translateY"] && _translateY) {
+            nativeTansform3D = CATransform3DTranslate(nativeTansform3D, 0, _translateY ? [_translateY valueForMaximum:view.bounds.size.height]:0, 0);
+        }
+        
+        // for scaleX and scaleY the zero is meaningful
+        if ([name isEqualToString:@"scaleX"]) {
+            nativeTansform3D = CATransform3DScale(nativeTansform3D, _scaleX, 0, 0);
+        }
+        
+        if ([name isEqualToString:@"scaleY"]) {
+            nativeTansform3D = CATransform3DScale(nativeTansform3D, 0, _scaleY, 0);
+        }
+    }
     
     return nativeTansform3D;
 }
@@ -248,10 +268,10 @@
     
     NSArray *matches = [regex matchesInString:cssValue options:0 range:NSMakeRange(0, cssValue.length)];
     
-    for (NSTextCheckingResult *match in matches) {
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSString *name = [cssValue substringWithRange:[match rangeAtIndex:1]];
         NSArray *value = [[cssValue substringWithRange:[match rangeAtIndex:2]] componentsSeparatedByString:@","];
-        
+        [_transformOrder addObject:name];
         SEL method = NSSelectorFromString([NSString stringWithFormat:@"parse%@:", [name capitalizedString]]);
         if ([self respondsToSelector:method]) {
             @try {

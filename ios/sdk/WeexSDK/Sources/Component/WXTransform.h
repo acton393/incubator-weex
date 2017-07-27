@@ -33,6 +33,7 @@
 @property (nonatomic, assign, readonly) float scaleX;
 @property (nonatomic, assign, readonly) float scaleY;
 @property (nonatomic, assign) float perspective;
+@property (nonatomic, strong, readonly) NSArray * transformOrder;
 
 - (instancetype)initWithCSSValue:(NSString *)cssValue origin:(NSString *)origin instance:(WXSDKInstance *)instance;
 

@@ -194,75 +194,76 @@ WX_EXPORT_METHOD(@selector(transition:args:callback:))
             NSString *transformOrigin = styles[@"transformOrigin"];
             WXTransform *wxTransform = [[WXTransform alloc] initWithCSSValue:value origin:transformOrigin instance:self.weexInstance];
             WXTransform *oldTransform = target->_transform;
-            if (wxTransform.rotateAngle != oldTransform.rotateAngle) {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.rotation";
-                /**
-                 Rotate >= 180 degree not working on UIView block animation, have not found any more elegant solution than using CAAnimation
-                 See http://stackoverflow.com/questions/9844925/uiview-infinite-360-degree-rotation-animation
-                 **/
-                newInfo.fromValue = @(oldTransform.rotateAngle);
-                newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateAngle];
-                [infos addObject:newInfo];
+            for (NSString * name in wxTransform.transformOrder) {
+                if ([name isEqualToString:@"rotateX"] && wxTransform.rotateX != oldTransform.rotateX) {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.rotation.x";
+                    newInfo.fromValue = @(oldTransform.rotateX);
+                    newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateX];
+                    [infos addObject:newInfo];
+                }
+                if ([name isEqualToString:@"rotateY"] && wxTransform.rotateY != oldTransform.rotateY)
+                {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.rotation.y";
+                    newInfo.fromValue = @(oldTransform.rotateY);
+                    newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateY];
+                    [infos addObject:newInfo];
+                }
+                if ([name isEqualToString:@"rotate"] && wxTransform.rotateAngle != oldTransform.rotateAngle) {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.rotation";
+                    /**
+                     Rotate >= 180 degree not working on UIView block animation, have not found any more elegant solution than using CAAnimation
+                     See http://stackoverflow.com/questions/9844925/uiview-infinite-360-degree-rotation-animation
+                     **/
+                    newInfo.fromValue = @(oldTransform.rotateAngle);
+                    newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateAngle];
+                    [infos addObject:newInfo];
+                }
+                if ([name isEqualToString:@"rotateZ"] && wxTransform.rotateZ != oldTransform.rotateZ)
+                {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.rotation.z";
+                    newInfo.fromValue = @(oldTransform.rotateZ);
+                    newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateZ];
+                    [infos addObject:newInfo];
+                }
+                
+                if ([name isEqualToString:@"scaleX"] && wxTransform.scaleX != oldTransform.scaleX) {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.scale.x";
+                    newInfo.fromValue = @(oldTransform.scaleX);
+                    newInfo.toValue = @(wxTransform.scaleX);
+                    [infos addObject:newInfo];
+                }
+                
+                if ([name isEqualToString:@"scaleY"] && wxTransform.scaleY != oldTransform.scaleY) {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.scale.y";
+                    newInfo.fromValue = @(oldTransform.scaleY);
+                    newInfo.toValue = @(wxTransform.scaleX);
+                    [infos addObject:newInfo];
+                }
+                
+                if ([name isEqualToString:@"translateX"] && ((wxTransform.translateX && ![wxTransform.translateX isEqualToLength:oldTransform.translateX]) || (!wxTransform.translateX && oldTransform.translateX))) {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.translation.x";
+                    newInfo.fromValue = @([oldTransform.translateX valueForMaximum:view.bounds.size.width]);
+                    newInfo.toValue = @([wxTransform.translateX valueForMaximum:view.bounds.size.width]);
+                    [infos addObject:newInfo];
+                }
+                
+                if ([name isEqualToString:@"translateY"] && ((wxTransform.translateY && ![wxTransform.translateY isEqualToLength:oldTransform.translateY]) || (!wxTransform.translateY && oldTransform.translateY))) {
+                    WXAnimationInfo *newInfo = [info copy];
+                    newInfo.propertyName = @"transform.translation.y";
+                    newInfo.fromValue = @([oldTransform.translateY valueForMaximum:view.bounds.size.height]);
+                    newInfo.toValue = @([wxTransform.translateY valueForMaximum:view.bounds.size.height]);
+                    [infos addObject:newInfo];
+                }
+                
+                target->_transform = wxTransform;
             }
-            if (wxTransform.rotateX != oldTransform.rotateX)
-            {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.rotation.x";
-                newInfo.fromValue = @(oldTransform.rotateX);
-                newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateX];
-                 [infos addObject:newInfo];
-            }
-            if (wxTransform.rotateY != oldTransform.rotateY)
-            {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.rotation.y";
-                newInfo.fromValue = @(oldTransform.rotateY);
-                newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateY];
-                [infos addObject:newInfo];
-            }
-            if (wxTransform.rotateZ != oldTransform.rotateZ)
-            {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.rotation.z";
-                newInfo.fromValue = @(oldTransform.rotateZ);
-                newInfo.toValue = [NSNumber numberWithDouble:wxTransform.rotateZ];
-                [infos addObject:newInfo];
-            }
-            
-            if (wxTransform.scaleX != oldTransform.scaleX) {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.scale.x";
-                newInfo.fromValue = @(oldTransform.scaleX);
-                newInfo.toValue = @(wxTransform.scaleX);
-                [infos addObject:newInfo];
-            }
-            
-            if (wxTransform.scaleY != oldTransform.scaleY) {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.scale.y";
-                newInfo.fromValue = @(oldTransform.scaleY);
-                newInfo.toValue = @(wxTransform.scaleX);
-                [infos addObject:newInfo];
-            }
-            
-            if ((wxTransform.translateX && ![wxTransform.translateX isEqualToLength:oldTransform.translateX]) || (!wxTransform.translateX && oldTransform.translateX)) {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.translation.x";
-                newInfo.fromValue = @([oldTransform.translateX valueForMaximum:view.bounds.size.width]);
-                newInfo.toValue = @([wxTransform.translateX valueForMaximum:view.bounds.size.width]);
-                [infos addObject:newInfo];
-            }
-            
-            if ((wxTransform.translateY && ![wxTransform.translateY isEqualToLength:oldTransform.translateY]) || (!wxTransform.translateY && oldTransform.translateY)) {
-                WXAnimationInfo *newInfo = [info copy];
-                newInfo.propertyName = @"transform.translation.y";
-                newInfo.fromValue = @([oldTransform.translateY valueForMaximum:view.bounds.size.height]);
-                newInfo.toValue = @([wxTransform.translateY valueForMaximum:view.bounds.size.height]);
-                [infos addObject:newInfo];
-            }
-            
-            target->_transform = wxTransform;
         } else if ([property isEqualToString:@"backgroundColor"]) {
             info.propertyName = @"backgroundColor";
             info.fromValue = (__bridge id)(layer.backgroundColor);
