@@ -19,23 +19,10 @@
 import {
   getThrottleLazyload,
   watchAppear,
+  triggerAppear,
+  triggerDisappear,
   extend
 } from '../utils'
-
-import {
-  tagBeforeCreate,
-  // tagMounted,
-  tagRootMounted,
-  tagFirstScreen,
-  tagBeforeUpdate,
-  tagUpdated,
-  tagBegin,
-  tagEnd
-} from '../utils/perf'
-
-// import { extractComponentStyle } from '../core'
-
-const scrollableTypes = ['scroller', 'list']
 
 let lazyloadWatched = false
 function watchLazyload () {
@@ -68,21 +55,9 @@ export default {
     if (!lazyloadWatched) {
       watchLazyload()
     }
-    if (process.env.NODE_ENV === 'development') {
-      tagBeforeCreate()
-    }
   },
 
   mounted () {
-    if (this.$options._componentTag === 'image') {
-      window._has_image_in_first_screen = true
-    }
-    if (this === this.$root) {
-      tagRootMounted()
-      if (!window._has_image_in_first_screen) {
-        tagFirstScreen()
-      }
-    }
     if (!weex._root) {
       weex._root = this.$root.$el
       weex._root.classList.add('weex-root')
@@ -98,58 +73,17 @@ export default {
     if (this.$el && (i = j = this.$vnode) && (i = i.data) && (j = j.componentOptions)) {
       this.$el.attrs = extend({}, i.attrs, j.propsData)
     }
-
+    triggerAppear(this)
     watchAppear(this)
   },
 
-  beforeUpdate () {
-    if (process.env.NODE_ENV === 'development') {
-      tagBeforeUpdate()
-    }
-  },
-
-  updated () {
-    if (process.env.NODE_ENV === 'development') {
-      tagUpdated()
-    }
-    watchAppear(this)
+  destroyed () {
+    triggerDisappear(this)
   },
 
   methods: {
-    _renderHook () {
-      if (!window._first_screen_detected) {
-        window._component_count++
-      }
-    },
-
-    _getScopeIds () {
-      const arr = []
-      let ctx = this
-      let scopeId
-      while (ctx) {
-        scopeId = ctx.$options._scopeId
-        scopeId && arr.push(scopeId)
-        ctx = ctx.$options.parent
-      }
-      return arr
-    },
-
-    _getParentScroller () {
-      let parent = this
-      while (parent && scrollableTypes.indexOf(parent.$options._componentTag) <= -1) {
-        parent = parent.$options.parent
-      }
-      return parent
-    },
-
     _fireLazyload (el) {
-      if (process.env.NODE_ENV === 'development') {
-        tagBegin('base._fireLazyload')
-      }
-      getThrottleLazyload(500)()
-      if (process.env.NODE_ENV === 'development') {
-        tagEnd('base._fireLazyload')
-      }
+      getThrottleLazyload(25)()
     }
   }
 }

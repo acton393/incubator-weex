@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { camelToKebab, appendCss, isArray } from '../utils'
+import config from '../config'
+
+const utils = {}
 
 function getParentScroller (vnode) {
   if (!vnode) return null
@@ -25,7 +27,7 @@ function getParentScroller (vnode) {
     ? vnode.componentInstance || vnode.context : null
   if (!vm) return null
   const type = vm.$el && vm.$el.getAttribute('weex-type')
-  if (type === 'scroller' || type === 'list') {
+  if (config.scrollableTypes.indexOf(type) > -1) {
     return vm
   }
   return getParentScroller(vm.$parent)
@@ -85,7 +87,7 @@ function ease (k) {
   return 0.5 * (1 - Math.cos(Math.PI * k))
 }
 
-export default {
+const dom = {
   /**
    * scrollToElement
    * @param  {Vnode | VComponent} vnode
@@ -93,6 +95,7 @@ export default {
    *   ps: scroll-to has 'ease' and 'duration'(ms) as options.
    */
   scrollToElement: function (vnode, options) {
+    const { isArray } = utils
     if (isArray(vnode)) {
       if (process.env.NODE_ENV === 'development') {
         console.warn('[vue-render] the ref passed to animation.transitionOnce is a array.')
@@ -116,11 +119,22 @@ export default {
       })[scrollDirection]
 
       const ctRect = ct.getBoundingClientRect()
-      const elRect = el.getBoundingClientRect()
+      let elRect = el.getBoundingClientRect()
+
+      /**
+       * if it's a waterfall, and you want to scroll to a header, then just
+       * scroll to the top.
+       */
+      if (scroller
+        && scroller.weexType === 'waterfall'
+        && scroller._headers
+        && scroller._headers.indexOf(vnode.$vnode || vnode) > -1) {
+        // it's in waterfall. just scroll to the top.
+        elRect = ct.firstElementChild.getBoundingClientRect()
+      }
 
       const dir = dSuffix.toLowerCase()
       let offset = (isWindow ? 0 : ct[`scroll${dSuffix}`]) + elRect[dir] - ctRect[dir]
-      // let offset = el[`offset${dSuffix}`]
 
       if (options) {
         offset += options.offset && options.offset * weex.config.env.scale || 0
@@ -153,6 +167,7 @@ export default {
    * @param {Function} callback
    */
   getComponentRect: function (vnode, callback) {
+    const { isArray } = utils
     if (isArray(vnode)) {
       if (process.env.NODE_ENV === 'development') {
         console.warn('[vue-render] the ref passed to animation.transitionOnce is a array.')
@@ -160,22 +175,32 @@ export default {
       vnode = vnode[0]
     }
 
+    const scale = window.weex.config.env.scale
     const info = { result: false }
+    const rectKeys = ['width', 'height', 'top', 'bottom', 'left', 'right']
+
+    function recalc (rect) {
+      const res = {}
+      rectKeys.forEach(key => {
+        res[key] = rect[key] / scale
+      })
+      return res
+    }
 
     if (vnode && vnode === 'viewport') {
       info.result = true
-      info.size = {
+      info.size = recalc({
         width: document.documentElement.clientWidth,
         height: document.documentElement.clientHeight,
         top: 0,
         left: 0,
         right: document.documentElement.clientWidth,
         bottom: document.documentElement.clientHeight
-      }
+      })
     }
     else if (vnode && vnode.$el) {
       info.result = true
-      info.size = vnode.$el.getBoundingClientRect()
+      info.size = recalc(vnode.$el.getBoundingClientRect())
     }
 
     const message = info.result ? info : {
@@ -193,6 +218,7 @@ export default {
    * @param {object} styles rules
    */
   addRule: function (key, styles) {
+    const { camelToKebab, appendCss } = utils
     key = camelToKebab(key)
     let stylesText = ''
     for (const k in styles) {
@@ -202,5 +228,18 @@ export default {
     }
     const styleText = `@${key}{${stylesText}}`
     appendCss(styleText, 'dom-added-rules')
+  }
+}
+
+export default {
+  init (weex) {
+    const extendKeys = weex.utils.extendKeys
+    extendKeys(utils, weex.utils, [
+      'camelToKebab',
+      'appendCss',
+      'isArray'
+    ])
+
+    weex.registerModule('dom', dom)
   }
 }

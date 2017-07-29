@@ -16,8 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { extractComponentStyle } from '../../core'
-import { extend, extendKeys } from '../../utils'
 
 const _css = `
 .weex-indicator {
@@ -48,6 +46,8 @@ const _css = `
 }
 `
 
+let extractComponentStyle, extend, extendKeys
+
 function getIndicatorItemStyle (spec, isActive) {
   const style = {}
   style['background-color'] = spec[isActive ? 'itemSelectedColor' : 'itemColor']
@@ -58,9 +58,6 @@ function getIndicatorItemStyle (spec, isActive) {
 function _render (context, h) {
   const children = []
   const mergedStyle = extractComponentStyle(context)
-  // const mergedStyle = context._getComponentStyle(context.$vnode.data)
-  // context.$vnode.data.cached = {}
-  // extendKeys(context.$vnode.data.cached, mergedStyle, ['width', 'height'])
   const indicatorSpecStyle = extendKeys(
       {},
       mergedStyle,
@@ -160,8 +157,8 @@ function _reLayout (context, virtualRect, ltbr) {
   })
 }
 
-export default {
-  name: 'indicator',
+const indicator = {
+  name: 'weex-indicator',
   methods: {
     show: function () {
       this.$el.style.visibility = 'visible'
@@ -173,16 +170,21 @@ export default {
       active: 0
     }
   },
-  // props: {
-  //   count: [Number, String],
-  //   active: [Number, String]
-  // },
   render (createElement) {
     const { count, active } = this.$vnode.data.attrs || {}
     this.count = count
     this.active = active
-    this._renderHook()
+    if (!this.count) { return }
     return _render(this, createElement)
   },
   _css
+}
+
+export default {
+  init (weex) {
+    extractComponentStyle = weex.extractComponentStyle
+    extend = weex.utils.extend
+    extendKeys = weex.utils.extendKeys
+    weex.registerComponent('indicator', indicator)
+  }
 }

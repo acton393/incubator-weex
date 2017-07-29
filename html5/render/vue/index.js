@@ -18,9 +18,7 @@
  */
 import weex from './env'
 import { setVue } from './env'
-import components from './components'
-import { base, style } from './mixins'
-// import styleMixin from './mixins/style'
+import { base, style, sticky } from './mixins'
 
 /**
  * init weex.
@@ -29,7 +27,11 @@ import { base, style } from './mixins'
  *         - components.
  *         - modules.
  */
+let _inited = false
 function init (Vue/*, options = {}*/) {
+  if (_inited) { return }
+  _inited = true
+
   setVue(Vue)
 
   Vue.prototype.$getConfig = () => {
@@ -41,22 +43,9 @@ function init (Vue/*, options = {}*/) {
   Vue.config.isReservedTag = tag => htmlRegex.test(tag)
   Vue.config.parsePlatformTagName = tag => tag.replace(htmlRegex, '')
 
-  // register sdk components.
-  for (const name in components) {
-    weex.registerComponent(name, components[name])
-  }
-
-  /* istanbul ignore next */
-  // if (process.env.NODE_ENV === 'development') {
-  //   if (semver.lt(Vue.version, '2.1.5')) {
-  //     console.warn(`[Vue Render] The version of Vue should be ` +
-  //       `greater than 2.1.5, current is ${Vue.version}.`)
-  //   }
-  //   console.info(`[Vue Render] Registered components: `
-  //     + `[${Object.keys(components).join(', ')}].`)
   Vue.mixin(base)
   Vue.mixin(style)
-  // }
+  Vue.mixin(sticky)
 }
 
 // auto init in dist mode.
@@ -64,13 +53,6 @@ if (typeof window !== 'undefined' && window.Vue) {
   init(window.Vue)
 }
 
-// perf stat for componentCount.
-window._component_count = 0
-
-// perf stat for JSLibInitTime.
-window._jslib_init_end = window.performance && window.performance.now() || +new Date()
-window._weex_perf.stat.JSLibInitTime = parseInt(window._jslib_init_end - window._jslib_init_start)
-delete window._jslib_init_end
-delete window._jslib_init_start
+weex.init = init
 
 export default weex
