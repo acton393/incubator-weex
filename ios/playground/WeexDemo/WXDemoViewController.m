@@ -59,10 +59,14 @@
     
     [self setupNaviBar];
     [self setupRightBarItem];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blueColor];
     [self.view setClipsToBounds:YES];
-    
-    _weexHeight = self.view.frame.size.height - 64;
+   
+    CGFloat top = CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame);
+    if (!self.navigationController.navigationBarHidden) {
+        top = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+    }
+    _weexHeight = self.view.frame.size.height - top;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationRefreshInstance:) name:@"RefreshInstance" object:nil];
     
@@ -84,13 +88,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = NO;
-}
-
-//TODO get height
-- (void)viewDidLayoutSubviews
-{
-    _weexHeight = self.view.frame.size.height;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -100,7 +97,6 @@
 
 - (void)dealloc
 {
-    
     [_instance destroyInstance];
 #ifdef DEBUG
     [_instance forceGarbageCollection];
