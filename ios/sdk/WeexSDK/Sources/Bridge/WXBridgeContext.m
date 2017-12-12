@@ -1,4 +1,4 @@
-/*
+ /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -448,7 +448,14 @@ _Pragma("clang diagnostic pop") \
     JSContext *globalContex = ([(JSContext*)weakSelf.jsBridge valueForKey:@"jsContext"]);
    
     if (bundleType) {
-        [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, @{@"bundleType":bundleType}, data?:@[]] onContext:globalContex completion:^(JSValue *instanceContextEnvironment) {
+        NSMutableDictionary *newOptions = [options mutableCopy];
+        if (!options) {
+            newOptions = [NSMutableDictionary new];
+        } else {
+            [newOptions addEntriesFromDictionary:@{@"env":[WXUtility getEnvironment]}];
+            newOptions[@"bundleType"] = bundleType;
+        }
+        [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]] onContext:globalContex completion:^(JSValue *instanceContextEnvironment) {
              WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
             JSContextGroupRef contextGroup = JSContextGetGroup([globalContex JSGlobalContextRef]);
             JSClassDefinition classDefinition = kJSClassDefinitionEmpty;
@@ -648,7 +655,9 @@ _Pragma("clang diagnostic pop") \
         }
         WXLogDebug(@"Calling JS... method:%@, args:%@", method, args);
         JSValue *value = [[context globalObject] invokeMethod:method withArguments:args];
-        complection(value);
+        if (complection) {
+            complection(value);
+        }
     } else {
         newArg = [args mutableCopy];
         if (complection) {
