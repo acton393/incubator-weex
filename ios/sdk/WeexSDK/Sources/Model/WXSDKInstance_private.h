@@ -21,6 +21,7 @@
 #import "WXSDKInstance.h"
 #import "WXComponentManager.h"
 #import "WXModuleMethod.h"
+#import <JavaScriptCore/JavaScriptCore.h>
 
 @interface WXSDKInstance ()
 
@@ -31,6 +32,7 @@
 @property (nonatomic, strong) NSMutableDictionary *styleConfigs;
 @property (nonatomic, strong) NSMutableDictionary *attrConfigs;
 
+@property (nonatomic, strong) JSContext *instanceJavaScriptContext; // sandbox javaScript context
 @property (nonatomic, readonly, strong) WXComponentManager *componentManager;
 
 - (void)addModuleEventObservers:(NSString*)event callback:(NSString*)callbackId option:(NSDictionary*)option moduleClassName:(NSString*)moduleClassName;
