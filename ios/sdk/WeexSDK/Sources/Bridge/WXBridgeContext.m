@@ -41,6 +41,11 @@
 #import "WXPrerenderManager.h"
 #import "WXTracingManager.h"
 #import "WXExceptionUtils.h"
+#import "WXSDKEngine.h"
+#import "WXPolyfillSet.h"
+#import "WXJSExceptionProtocol.h"
+#import "WXMonitor.h"
+#import "WXAppMonitorProtocol.h"
 
 #define SuppressPerformSelectorLeakWarning(Stuff) \
 do { \
@@ -416,36 +421,54 @@ _Pragma("clang diagnostic pop") \
     return 1;
 }
 
-- (void)createInstance:(NSString *)instance
-              template:(NSString *)temp
+- (void)createInstance:(NSString *)instanceIdString
+              template:(NSString *)jsBundleString
                options:(NSDictionary *)options
                   data:(id)data
 {
     WXAssertBridgeThread();
-    WXAssertParam(instance);
+    WXAssertParam(instanceIdString);
     
-    if (![self.insStack containsObject:instance]) {
+    if (![self.insStack containsObject:instanceIdString]) {
         if ([options[@"RENDER_IN_ORDER"] boolValue]) {
-            [self.insStack addObject:instance];
+            [self.insStack addObject:instanceIdString];
         } else {
-            [self.insStack insertObject:instance atIndex:0];
+            [self.insStack insertObject:instanceIdString atIndex:0];
         }
     }
     
     //create a sendQueue bind to the current instance
     NSMutableArray *sendQueue = [NSMutableArray array];
-    [self.sendQueue setValue:sendQueue forKey:instance];
-    
+    [self.sendQueue setValue:sendQueue forKey:instanceIdString];
     NSArray *args = nil;
-    if (data){
-        args = @[instance, temp, options ?: @{}, data];
+    NSString * bundleType = @"Vue"; // bundleType can be Vue and Rax.
+    WX_MONITOR_INSTANCE_PERF_START(WXFirstScreenJSFExecuteTime, [WXSDKManager instanceForID:instanceIdString]);
+    WX_MONITOR_INSTANCE_PERF_START(WXPTJSCreateInstance, [WXSDKManager instanceForID:instanceIdString]);
+    __weak typeof(self) weakSelf = self;
+    JSContext *globalContex = ([(JSContext*)weakSelf.jsBridge valueForKey:@"jsContext"]);
+   
+    if (bundleType) {
+        [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, @{@"bundleType":bundleType}, data?:@[]] onContext:globalContex completion:^(JSValue *instanceContextEnvironment) {
+             WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
+            JSContextGroupRef contextGroup = JSContextGetGroup([globalContex JSGlobalContextRef]);
+            JSClassDefinition classDefinition = kJSClassDefinitionEmpty;
+            classDefinition.attributes = kJSClassAttributeNoAutomaticPrototype;
+            JSClassRef globalObjectClass = JSClassCreate(&classDefinition);
+            JSGlobalContextRef sandboxGlobalContextRef = JSGlobalContextCreateInGroup(contextGroup, globalObjectClass);
+            JSObjectRef sandBoxGlobalObjectRef = JSContextGetGlobalObject(sandboxGlobalContextRef);
+            JSObjectSetPrototype(sandboxGlobalContextRef, sandBoxGlobalObjectRef, [instanceContextEnvironment JSValueRef]);
+            sdkInstance.instanceJavaScriptContext = [JSContext contextWithJSGlobalContextRef:sandboxGlobalContextRef];
+            [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString];
+        }];
     } else {
-        args = @[instance, temp, options ?: @{}];
+        if (data){
+            args = @[instanceIdString, jsBundleString, options ?: @{}, data];
+        } else {
+            args = @[instanceIdString, jsBundleString, options ?: @{}];
+        }
+        [self callJSMethod:@"createInstance" args:args];
     }
-    WX_MONITOR_INSTANCE_PERF_START(WXFirstScreenJSFExecuteTime, [WXSDKManager instanceForID:instance]);
-    WX_MONITOR_INSTANCE_PERF_START(WXPTJSCreateInstance, [WXSDKManager instanceForID:instance]);
-    [self callJSMethod:@"createInstance" args:args];
-    WX_MONITOR_INSTANCE_PERF_END(WXPTJSCreateInstance, [WXSDKManager instanceForID:instance]);
+    WX_MONITOR_INSTANCE_PERF_END(WXPTJSCreateInstance, [WXSDKManager instanceForID:instanceIdString]);
 }
 
 - (void)destroyInstance:(NSString *)instance
@@ -467,6 +490,8 @@ _Pragma("clang diagnostic pop") \
     }
     
     [self callJSMethod:@"destroyInstance" args:@[instance]];
+    WXSDKInstance *sdkIntance = [WXSDKManager instanceForID:instance];
+    sdkIntance.instanceJavaScriptContext = NULL;
 }
 
 - (void)forceGarbageCollection
@@ -613,6 +638,27 @@ _Pragma("clang diagnostic pop") \
     }
 }
 
+- (void)callJSMethod:(NSString *)method args:(NSArray *)args onContext:(JSContext*)context completion:(void (^)(JSValue * value))complection
+{
+    NSMutableArray *newArg = nil;
+    if (self.frameworkLoadFinished) {
+        newArg = [args mutableCopy];
+        if ([newArg containsObject:complection]) {
+            [newArg removeObject:complection];
+        }
+        WXLogDebug(@"Calling JS... method:%@, args:%@", method, args);
+        JSValue *value = [[context globalObject] invokeMethod:method withArguments:args];
+        complection(value);
+    } else {
+        newArg = [args mutableCopy];
+        if (complection) {
+            [newArg addObject:complection];
+        }
+        [_methodQueue addObject:@{@"method":method, @"args":[newArg copy]}];
+    }
+}
+
+
 - (void)resetEnvironment
 {
     [_jsBridge resetEnvironment];
@@ -677,4 +723,96 @@ _Pragma("clang diagnostic pop") \
     }
 }
 
++ (void)mountContextEnvironment:(JSContext*)context
+{
+    NSDictionary *data = [WXUtility getEnvironment];
+    context[@"WXEnvironment"] = data;
+    context[@"btoa"] = ^(JSValue *value ) {
+        NSData *nsdata = [[value toString]
+                          dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];
+        return base64Encoded;
+    };
+    context[@"atob"] = ^(JSValue *value ) {
+        NSData *nsdataFromBase64String = [[NSData alloc]
+                                          initWithBase64EncodedString:[value toString] options:0];
+        NSString *base64Decoded = [[NSString alloc]
+                                   initWithData:nsdataFromBase64String encoding:NSUTF8StringEncoding];
+        return base64Decoded;
+    };
+    context.exceptionHandler = ^(JSContext *context, JSValue *exception){
+        context.exception = exception;
+        
+        WXSDKInstance *instance = [WXSDKEngine topInstance];
+        NSString *bundleUrl = instance.pageName?:([instance.scriptURL absoluteString]?:@"WX_KEY_EXCEPTION_WXBRIDGE");
+        NSString *errorCode = [NSString stringWithFormat:@"%d", WX_KEY_EXCEPTION_WXBRIDGE];
+        NSString *message = [NSString stringWithFormat:@"[WX_KEY_EXCEPTION_WXBRIDGE] [%@:%@:%@] %@\n%@", exception[@"sourceURL"], exception[@"line"], exception[@"column"], [exception toString], [exception[@"stack"] toObject]];
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                         instance.userInfo[@"jsMainBundleStringContentLength"]?:@"",@"jsMainBundleStringContentLength",
+                                         instance.userInfo[@"jsMainBundleStringContentMd5"]?:@"",@"jsMainBundleStringContentMd5",nil];
+        WXJSExceptionInfo * jsExceptionInfo = [[WXJSExceptionInfo alloc] initWithInstanceId:instance.instanceId bundleUrl:bundleUrl errorCode:errorCode functionName:@"" exception:message userInfo:userInfo];
+        
+        [WXExceptionUtils commitCriticalExceptionRT:jsExceptionInfo];
+        WX_MONITOR_FAIL(WXMTJSBridge, WX_ERR_JS_EXECUTE, message);
+        if (instance.onJSRuntimeException) {
+            instance.onJSRuntimeException(jsExceptionInfo);
+        }
+    };
+    
+    if (WX_SYS_VERSION_LESS_THAN(@"8.0")) {
+        // solve iOS7 memory problem
+        context[@"nativeSet"] = [WXPolyfillSet class];
+    }
+    context[@"console"][@"error"] = ^(){
+        [WXBridgeContext handleConsoleOutputWithArgument:[JSContext currentArguments] logLevel:WXLogFlagError];
+    };
+    context[@"console"][@"warn"] = ^(){
+        [WXBridgeContext handleConsoleOutputWithArgument:[JSContext currentArguments] logLevel:WXLogFlagWarning];
+    };
+    context[@"console"][@"info"] = ^(){
+        [WXBridgeContext handleConsoleOutputWithArgument:[JSContext currentArguments] logLevel:WXLogFlagInfo];
+    };
+    context[@"console"][@"debug"] = ^(){
+        [WXBridgeContext handleConsoleOutputWithArgument:[JSContext currentArguments] logLevel:WXLogFlagDebug];
+    };
+    context[@"console"][@"log"] = ^(){
+        [WXBridgeContext handleConsoleOutputWithArgument:[JSContext currentArguments] logLevel:WXLogFlagLog];
+    };
+    context[@"nativeLog"] = ^() {
+        static NSDictionary *levelMap;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            levelMap = @{
+                         @"__ERROR": @(WXLogFlagError),
+                         @"__WARN": @(WXLogFlagWarning),
+                         @"__INFO": @(WXLogFlagInfo),
+                         @"__DEBUG": @(WXLogFlagDebug),
+                         @"__LOG": @(WXLogFlagLog)
+                         };
+        });
+        
+    };
+}
++ (void)handleConsoleOutputWithArgument:(NSArray*)arguments logLevel:(WXLogFlag)logLevel
+{
+    NSMutableString *string = [NSMutableString string];
+    [string appendString:@"jsLog: "];
+    [arguments enumerateObjectsUsingBlock:^(JSValue *jsVal, NSUInteger idx, BOOL *stop) {
+        [string appendFormat:@"%@ ", jsVal];
+        if (idx == arguments.count - 1) {
+            if (logLevel) {
+                if (WXLogFlagWarning == logLevel) {
+                    id<WXAppMonitorProtocol> appMonitorHandler = [WXSDKEngine handlerForProtocol:@protocol(WXAppMonitorProtocol)];
+                    if ([appMonitorHandler respondsToSelector:@selector(commitAppMonitorAlarm:monitorPoint:success:errorCode:errorMsg:arg:)]) {
+                        [appMonitorHandler commitAppMonitorAlarm:@"weex" monitorPoint:@"jswarning" success:FALSE errorCode:@"99999" errorMsg:string arg:[WXSDKEngine topInstance].pageName];
+                    }
+                }
+                WX_LOG(logLevel, @"%@", string);
+            } else {
+                [string appendFormat:@"%@ ", jsVal]                                  ;
+                WXLogInfo(@"%@", string);
+            }
+        }
+    }];
+}
 @end
