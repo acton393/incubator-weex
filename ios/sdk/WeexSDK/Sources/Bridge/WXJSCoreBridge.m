@@ -25,18 +25,14 @@
 #import "WXUtility.h"
 #import "WXSDKEngine.h"
 #import "WXSDKError.h"
-#import "WXMonitor.h"
-#import "WXAppMonitorProtocol.h"
-#import "WXHandlerFactory.h"
 #import <sys/utsname.h>
 #import <JavaScriptCore/JavaScriptCore.h>
-#import "WXPolyfillSet.h"
 #import "JSValue+Weex.h"
-#import "WXJSExceptionProtocol.h"
 #import "WXSDKManager.h"
 #import "WXExtendCallNativeManager.h"
 #import "WXTracingManager.h"
 #import "WXExceptionUtils.h"
+#import "WXBridgeContext.h"
 
 #import <dlfcn.h>
 
@@ -71,8 +67,7 @@
 
         __weak typeof(self) weakSelf = self;
         
-        NSDictionary *data = [WXUtility getEnvironment];
-        _jsContext[@"WXEnvironment"] = data;
+        [WXBridgeContext mountContextEnvironment:_jsContext];
         
         _jsContext[@"setTimeout"] = ^(JSValue *function, JSValue *timeout) {
             // this setTimeout is used by internal logic in JS framework, normal setTimeout called by users will call WXTimerModule's method;
@@ -100,82 +95,9 @@
             [weakSelf triggerClearTimeout:[ret toString]];
         };
         
-        _jsContext[@"btoa"] = ^(JSValue *value ) {
-            NSData *nsdata = [[value toString]
-                              dataUsingEncoding:NSUTF8StringEncoding];
-            NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];
-            return base64Encoded;
-        };
-        _jsContext[@"atob"] = ^(JSValue *value ) {
-            NSData *nsdataFromBase64String = [[NSData alloc]
-                                              initWithBase64EncodedString:[value toString] options:0];
-            NSString *base64Decoded = [[NSString alloc]
-                                       initWithData:nsdataFromBase64String encoding:NSUTF8StringEncoding];
-            return base64Decoded;
-        };
         _jsContext[@"extendCallNative"] = ^(JSValue *value ) {
             return [weakSelf extendCallNative:[value toDictionary]];
         };
-        
-        _jsContext[@"nativeLog"] = ^() {
-            static NSDictionary *levelMap;
-            static dispatch_once_t onceToken;
-            dispatch_once(&onceToken, ^{
-                levelMap = @{
-                             @"__ERROR": @(WXLogFlagError),
-                             @"__WARN": @(WXLogFlagWarning),
-                             @"__INFO": @(WXLogFlagInfo),
-                             @"__DEBUG": @(WXLogFlagDebug),
-                             @"__LOG": @(WXLogFlagLog)
-                             };
-            });
-            NSMutableString *string = [NSMutableString string];
-            [string appendString:@"jsLog: "];
-            NSArray *args = [JSContext currentArguments];
-            
-            [args enumerateObjectsUsingBlock:^(JSValue *jsVal, NSUInteger idx, BOOL *stop) {
-                if (idx == args.count - 1) {
-                    NSNumber *flag = levelMap[[jsVal toString]];
-                    if (flag) {
-                        if ([flag isEqualToNumber:[NSNumber numberWithInteger:WXLogFlagWarning]]) {
-                            id<WXAppMonitorProtocol> appMonitorHandler = [WXHandlerFactory handlerForProtocol:@protocol(WXAppMonitorProtocol)];
-                            if ([appMonitorHandler respondsToSelector:@selector(commitAppMonitorAlarm:monitorPoint:success:errorCode:errorMsg:arg:)]) {
-                                [appMonitorHandler commitAppMonitorAlarm:@"weex" monitorPoint:@"jswarning" success:FALSE errorCode:@"99999" errorMsg:string arg:[WXSDKEngine topInstance].pageName];
-                            }
-                        }
-                        WX_LOG([flag unsignedIntegerValue], @"%@", string);
-                    } else {
-                        [string appendFormat:@"%@ ", jsVal];
-                        WXLogInfo(@"%@", string);
-                    }
-                }
-                [string appendFormat:@"%@ ", jsVal ];
-            }];
-        };
-        
-        _jsContext.exceptionHandler = ^(JSContext *context, JSValue *exception){
-            context.exception = exception;
-            
-            WXSDKInstance *instance = [WXSDKEngine topInstance];
-            NSString *bundleUrl = instance.pageName?:([instance.scriptURL absoluteString]?:@"WX_KEY_EXCEPTION_WXBRIDGE");
-            NSString *errorCode = [NSString stringWithFormat:@"%d", WX_KEY_EXCEPTION_WXBRIDGE];
-            NSString *message = [NSString stringWithFormat:@"[WX_KEY_EXCEPTION_WXBRIDGE] [%@:%@:%@] %@\n%@", exception[@"sourceURL"], exception[@"line"], exception[@"column"], [exception toString], [exception[@"stack"] toObject]];
-            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                instance.userInfo[@"jsMainBundleStringContentLength"]?:@"",@"jsMainBundleStringContentLength",
-                instance.userInfo[@"jsMainBundleStringContentMd5"]?:@"",@"jsMainBundleStringContentMd5",nil];
-            WXJSExceptionInfo * jsExceptionInfo = [[WXJSExceptionInfo alloc] initWithInstanceId:instance.instanceId bundleUrl:bundleUrl errorCode:errorCode functionName:@"" exception:message userInfo:userInfo];
-            
-            [WXExceptionUtils commitCriticalExceptionRT:jsExceptionInfo];
-            WX_MONITOR_FAIL(WXMTJSBridge, WX_ERR_JS_EXECUTE, message);
-            if (instance.onJSRuntimeException) {
-                instance.onJSRuntimeException(jsExceptionInfo);
-            }
-        };
-        
-        if (WX_SYS_VERSION_LESS_THAN(@"8.0")) {
-            // solve iOS7 memory problem
-            _jsContext[@"nativeSet"] = [WXPolyfillSet class];
-        }
     }
     return self;
 }
