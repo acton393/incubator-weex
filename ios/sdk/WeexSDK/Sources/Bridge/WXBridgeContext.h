@@ -18,6 +18,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 
 @class WXCallJSMethod;
 @class WXSDKInstance;
@@ -121,5 +122,7 @@
  *  Reset Environment
  **/
 - (void)resetEnvironment;
+
++ (void)mountContextEnvironment:(JSContext*)context;
 
 @end
