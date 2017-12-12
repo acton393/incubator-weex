@@ -48,7 +48,7 @@ static WXSDKManager *_sharedInstance = nil;
 {
     WXBridgeManager *bridgeMgr = [self sharedInstance].bridgeMgr;
     if (!bridgeMgr) {
-        bridgeMgr = [[WXBridgeManager alloc] init];
+        bridgeMgr = [WXBridgeManager sharedManager];
         [self sharedInstance].bridgeMgr = bridgeMgr;
     }
     return bridgeMgr;
