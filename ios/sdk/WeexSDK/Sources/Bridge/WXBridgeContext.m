@@ -462,10 +462,9 @@ _Pragma("clang diagnostic pop") \
             classDefinition.attributes = kJSClassAttributeNoAutomaticPrototype;
             JSClassRef globalObjectClass = JSClassCreate(&classDefinition);
             JSGlobalContextRef sandboxGlobalContextRef = JSGlobalContextCreateInGroup(contextGroup, globalObjectClass);
-            JSClassRelease(globalObjectClass);
+            JSObjectRef sandBoxGlobalObjectRef = JSContextGetGlobalObject(sandboxGlobalContextRef);
+            JSObjectSetPrototype(sandboxGlobalContextRef, sandBoxGlobalObjectRef, [instanceContextEnvironment JSValueRef]);
             sdkInstance.instanceJavaScriptContext = [JSContext contextWithJSGlobalContextRef:sandboxGlobalContextRef];
-            JSGlobalContextRelease(sandboxGlobalContextRef);
-            JSObjectSetPrototype(sdkInstance.instanceJavaScriptContext.JSGlobalContextRef,JSContextGetGlobalObject(sdkInstance.instanceJavaScriptContext.JSGlobalContextRef), [instanceContextEnvironment JSValueRef]);
             [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString];
         }];
     } else {
@@ -500,6 +499,8 @@ _Pragma("clang diagnostic pop") \
     sdkInstance.instanceJavaScriptContext = nil;
     
     [self callJSMethod:@"destroyInstance" args:@[instance]];
+    WXSDKInstance *sdkIntance = [WXSDKManager instanceForID:instance];
+    sdkIntance.instanceJavaScriptContext = NULL;
 }
 
 - (void)forceGarbageCollection
