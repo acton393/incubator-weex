@@ -358,7 +358,7 @@ typedef enum : NSUInteger {
     } else {
         // Fallback
     }
-    [WXBridgeContext mountContextEnvironment:self.instanceJavaScriptContext];
+    [WXBridgeContext mountContextEnvironment:_instanceJavaScriptContext];
 }
 
 - (void)refreshInstance:(id)data

@@ -546,6 +546,8 @@ _Pragma("clang diagnostic pop") \
     }
     
     [self callJSMethod:@"destroyInstance" args:@[instance]];
+    WXSDKInstance *sdkIntance = [WXSDKManager instanceForID:instance];
+    sdkIntance.instanceJavaScriptContext = NULL;
 }
 
 - (void)forceGarbageCollection
