@@ -46,6 +46,7 @@
 #import "WXJSExceptionProtocol.h"
 #import "WXTracingManager.h"
 #import "WXExceptionUtils.h"
+#import "WXBridgeContext.h"
 
 NSString *const bundleUrlOptionKey = @"bundleUrl";
 
@@ -347,6 +348,17 @@ typedef enum : NSUInteger {
     NSURLRequestCachePolicy cachePolicy = forcedReload ? NSURLRequestReloadIgnoringCacheData : NSURLRequestUseProtocolCachePolicy;
     WXResourceRequest *request = [WXResourceRequest requestWithURL:_scriptURL resourceType:WXResourceTypeMainBundle referrer:_scriptURL.absoluteString cachePolicy:cachePolicy];
     [self _renderWithRequest:request options:_options data:_jsData];
+}
+
+- (void)setInstanceJavaScriptContext:(JSContext*)instanceJavaScriptContext
+{
+    _instanceJavaScriptContext = instanceJavaScriptContext;
+    if (@available(iOS 8.0, *)) {
+        _instanceJavaScriptContext.name = self.pageName;
+    } else {
+        // Fallback
+    }
+    [WXBridgeContext mountContextEnvironment:_instanceJavaScriptContext];
 }
 
 - (void)refreshInstance:(id)data
