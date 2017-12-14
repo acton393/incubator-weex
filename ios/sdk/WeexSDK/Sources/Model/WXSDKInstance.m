@@ -401,9 +401,7 @@ typedef enum : NSUInteger {
     WXPerformBlockOnComponentThread(^{
         __strong typeof(self) strongSelf = weakSelf;
         [strongSelf.componentManager unload];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [WXSDKManager removeInstanceforID:strongSelf.instanceId];
-        });
+        [WXSDKManager removeInstanceforID:strongSelf.instanceId];
     });
     if(url.length > 0){
         [WXPrerenderManager addGlobalTask:url callback:nil];
