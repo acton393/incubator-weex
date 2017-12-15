@@ -544,8 +544,6 @@ _Pragma("clang diagnostic pop") \
     if(self.sendQueue[instance]){
         [self.sendQueue removeObjectForKey:instance];
     }
-    WXSDKInstance * sdkInstance = [WXSDKManager instanceForID:instance];
-    sdkInstance.instanceJavaScriptContext = nil;
     
     [self callJSMethod:@"destroyInstance" args:@[instance]];
 }
