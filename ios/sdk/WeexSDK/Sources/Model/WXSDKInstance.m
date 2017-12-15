@@ -358,7 +358,7 @@ typedef enum : NSUInteger {
     } else {
         // Fallback
     }
-    [WXBridgeContext mountContextEnvironment:_instanceJavaScriptContext];
+    [WXBridgeContext mountContextEnvironment:self.instanceJavaScriptContext];
 }
 
 - (void)refreshInstance:(id)data
@@ -388,12 +388,11 @@ typedef enum : NSUInteger {
     
     [WXTracingManager destroyTraincgTaskWithInstance:self.instanceId];
 
-    
     [WXPrerenderManager removePrerenderTaskforUrl:[self.scriptURL absoluteString]];
     [WXPrerenderManager destroyTask:self.instanceId];
-    
     [[WXSDKManager bridgeMgr] destroyInstance:self.instanceId];
-
+    JSGarbageCollect(_instanceJavaScriptContext.JSGlobalContextRef);
+    _instanceJavaScriptContext = nil;
     if (_componentManager) {
         [_componentManager invalidate];
     }
