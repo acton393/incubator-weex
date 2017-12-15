@@ -46,6 +46,7 @@
 #import "WXJSExceptionProtocol.h"
 #import "WXMonitor.h"
 #import "WXAppMonitorProtocol.h"
+#import "WXConfigCenterProtocol.h"
 
 #define SuppressPerformSelectorLeakWarning(Stuff) \
 do { \
@@ -441,13 +442,18 @@ _Pragma("clang diagnostic pop") \
     NSMutableArray *sendQueue = [NSMutableArray array];
     [self.sendQueue setValue:sendQueue forKey:instanceIdString];
     NSArray *args = nil;
-    NSString * bundleType = @"Vue"; // bundleType can be Vue and Rax.
+    NSString * bundleType = [self _pareJSBundleType:instanceIdString jsBundleString:jsBundleString] // bundleType can be Vue, Rax and the new framework.
     WX_MONITOR_INSTANCE_PERF_START(WXFirstScreenJSFExecuteTime, [WXSDKManager instanceForID:instanceIdString]);
     WX_MONITOR_INSTANCE_PERF_START(WXPTJSCreateInstance, [WXSDKManager instanceForID:instanceIdString]);
+    id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
+    BOOL shoudMultiContext = NO;
+    if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
+        shoudMultiContext = [configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL];
+    }
     __weak typeof(self) weakSelf = self;
     JSContext *globalContex = ([(JSContext*)weakSelf.jsBridge valueForKey:@"jsContext"]);
    
-    if (bundleType) {
+    if (bundleType&&shoudMultiContext) {
         NSMutableDictionary *newOptions = [options mutableCopy];
         if (!options) {
             newOptions = [NSMutableDictionary new];
@@ -479,6 +485,48 @@ _Pragma("clang diagnostic pop") \
     WX_MONITOR_INSTANCE_PERF_END(WXPTJSCreateInstance, [WXSDKManager instanceForID:instanceIdString]);
 }
 
+- (NSString *)_pareJSBundleType:(NSString*)instanceIdString jsBundleString:(NSString*)jsBundleString
+{
+    NSString * bundleType = nil;
+    WXSDKInstance * instance = [WXSDKManager instanceForID:instanceIdString];
+    NSURLComponents * urlComponent = [NSURLComponents componentsWithString:instance.pageName];
+    if (@available(iOS 8.0, *)) {
+        for (NSURLQueryItem * queryItem in urlComponent.queryItems) {
+            if ([queryItem.name isEqualToString:@"bundleType"] && [@[@"vue", @"rax"] containsObject:queryItem.value]) {
+                bundleType = queryItem.value;
+                return bundleType;
+            }
+        }
+    } else {
+        // Fallback on earlier versions
+        return bundleType;
+    }
+    if (!jsBundleString ) {
+        return bundleType;
+    }
+    if ([jsBundleString hasPrefix:@"// { \"framework\": \"Vue\" }"] || [jsBundleString hasPrefix:@"// { \"framework\": \"vue\" }"]) {
+        bundleType = @"Vue";
+    } else if ([jsBundleString hasPrefix:@"// { \"framework\": \"Rax\" }"] || [jsBundleString hasPrefix:@"// { \"framework\": \"rax\" }"]) {
+        bundleType = @"Rax";
+    }else {
+        // use the top 100 characters match the bundleType
+        jsBundleString = [jsBundleString substringWithRange:NSMakeRange(0, 100)];
+        NSRegularExpression * regEx = [NSRegularExpression regularExpressionWithPattern:@"(use)(\\s+)(weex:vue)" options:NSRegularExpressionCaseInsensitive error:NULL];
+        NSTextCheckingResult *match = [regEx firstMatchInString:jsBundleString options:0 range:NSMakeRange(0, jsBundleString.length)];
+        if (match) {
+            bundleType = [jsBundleString substringWithRange:match.range];
+            return bundleType;
+        }
+        regEx = [NSRegularExpression regularExpressionWithPattern:@"(use)(\\s+)(weex:rax)" options:NSRegularExpressionCaseInsensitive error:NULL];
+         NSTextCheckingResult *match = [regEx firstMatchInString:jsBundleString options:0 range:NSMakeRange(0, jsBundleString.length)];
+        if (match) {
+            bundleType = [jsBundleString substringWithRange:match.range];
+        }
+    }
+    
+    return bundleType;
+}
+
 - (void)destroyInstance:(NSString *)instance
 {
     WXAssertBridgeThread();
@@ -496,8 +544,6 @@ _Pragma("clang diagnostic pop") \
     if(self.sendQueue[instance]){
         [self.sendQueue removeObjectForKey:instance];
     }
-    WXSDKInstance * sdkInstance = [WXSDKManager instanceForID:instance];
-    sdkInstance.instanceJavaScriptContext = nil;
     
     [self callJSMethod:@"destroyInstance" args:@[instance]];
 }
