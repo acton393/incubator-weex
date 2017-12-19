@@ -442,7 +442,7 @@ _Pragma("clang diagnostic pop") \
     NSMutableArray *sendQueue = [NSMutableArray array];
     [self.sendQueue setValue:sendQueue forKey:instanceIdString];
     NSArray *args = nil;
-    NSString * bundleType = [self _pareJSBundleType:instanceIdString jsBundleString:jsBundleString] // bundleType can be Vue, Rax and the new framework.
+    NSString * bundleType = [self _pareJSBundleType:instanceIdString jsBundleString:jsBundleString]; // bundleType can be Vue, Rax and the new framework.
     WX_MONITOR_INSTANCE_PERF_START(WXFirstScreenJSFExecuteTime, [WXSDKManager instanceForID:instanceIdString]);
     WX_MONITOR_INSTANCE_PERF_START(WXPTJSCreateInstance, [WXSDKManager instanceForID:instanceIdString]);
     id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
@@ -518,7 +518,7 @@ _Pragma("clang diagnostic pop") \
             return bundleType;
         }
         regEx = [NSRegularExpression regularExpressionWithPattern:@"(use)(\\s+)(weex:rax)" options:NSRegularExpressionCaseInsensitive error:NULL];
-         NSTextCheckingResult *match = [regEx firstMatchInString:jsBundleString options:0 range:NSMakeRange(0, jsBundleString.length)];
+         match = [regEx firstMatchInString:jsBundleString options:0 range:NSMakeRange(0, jsBundleString.length)];
         if (match) {
             bundleType = [jsBundleString substringWithRange:match.range];
         }
