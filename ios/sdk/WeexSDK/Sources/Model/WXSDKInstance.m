@@ -391,8 +391,11 @@ typedef enum : NSUInteger {
     [WXPrerenderManager removePrerenderTaskforUrl:[self.scriptURL absoluteString]];
     [WXPrerenderManager destroyTask:self.instanceId];
     [[WXSDKManager bridgeMgr] destroyInstance:self.instanceId];
-    JSGarbageCollect(_instanceJavaScriptContext.JSGlobalContextRef);
-    _instanceJavaScriptContext = nil;
+    if (_instanceJavaScriptContext) {
+        JSGarbageCollect(_instanceJavaScriptContext.JSGlobalContextRef);
+        _instanceJavaScriptContext = nil;
+    }
+    
     if (_componentManager) {
         [_componentManager invalidate];
     }
