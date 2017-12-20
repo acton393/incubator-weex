@@ -857,7 +857,7 @@ _Pragma("clang diagnostic pop") \
         });
         NSArray * args = [JSContext currentArguments];
         NSString * levelStr = [[args lastObject] toString];
-        [WXBridgeContext handleConsoleOutputWithArgument:args logLevel:levelMap[levelStr]];
+        [WXBridgeContext handleConsoleOutputWithArgument:args logLevel:(WXLogFlag)levelMap[levelStr]];
     };
 }
 + (void)handleConsoleOutputWithArgument:(NSArray*)arguments logLevel:(WXLogFlag)logLevel
