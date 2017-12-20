@@ -448,7 +448,7 @@ _Pragma("clang diagnostic pop") \
     id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
     BOOL shoudMultiContext = NO;
     if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
-        shoudMultiContext = [configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL];
+        shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
     }
     __weak typeof(self) weakSelf = self;
     JSContext *globalContex = ([(JSContext*)weakSelf.jsBridge valueForKey:@"jsContext"]);
