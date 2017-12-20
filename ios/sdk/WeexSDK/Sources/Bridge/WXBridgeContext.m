@@ -471,7 +471,16 @@ _Pragma("clang diagnostic pop") \
             JSClassRelease(globalObjectClass);
             sdkInstance.instanceJavaScriptContext = [JSContext contextWithJSGlobalContextRef:sandboxGlobalContextRef];
             JSGlobalContextRelease(sandboxGlobalContextRef);
-            JSObjectSetPrototype(sdkInstance.instanceJavaScriptContext.JSGlobalContextRef,JSContextGetGlobalObject(sdkInstance.instanceJavaScriptContext.JSGlobalContextRef), [instanceContextEnvironment JSValueRef]);
+            JSContextRef instanceContextRef = sdkInstance.instanceJavaScriptContext.JSGlobalContextRef;
+            JSObjectRef globalObject = JSContextGetGlobalObject(sdkInstance.instanceJavaScriptContext.JSGlobalContextRef);
+            for (NSString * key in [[instanceContextEnvironment toDictionary] allKeys]) {
+                JSStringRef propertyName = JSStringCreateWithUTF8CString([key cStringUsingEncoding:NSUTF8StringEncoding]);
+                if ([key isEqualToString:@"Vue"]) {
+                    JSObjectSetPrototype(instanceContextRef, JSValueToObject(instanceContextRef, [instanceContextEnvironment valueForProperty:key].JSValueRef, NULL), JSObjectGetPrototype(instanceContextRef, globalObject));
+                }
+                JSObjectSetProperty(instanceContextRef, globalObject, propertyName, [instanceContextEnvironment valueForProperty:key].JSValueRef, 0, NULL);
+            }
+            
             [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString];
         }];
     } else {
