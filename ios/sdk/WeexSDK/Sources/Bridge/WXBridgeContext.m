@@ -498,7 +498,7 @@ _Pragma("clang diagnostic pop") \
 {
     NSString * bundleType = nil;
     WXSDKInstance * instance = [WXSDKManager instanceForID:instanceIdString];
-    NSURLComponents * urlComponent = [NSURLComponents componentsWithString:instance.pageName];
+    NSURLComponents * urlComponent = [NSURLComponents componentsWithString:instance.pageName?:@""];
     if (@available(iOS 8.0, *)) {
         for (NSURLQueryItem * queryItem in urlComponent.queryItems) {
             if ([queryItem.name isEqualToString:@"bundleType"] && [@[@"vue", @"rax"] containsObject:queryItem.value]) {
