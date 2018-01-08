@@ -782,7 +782,12 @@ _Pragma("clang diagnostic pop") \
     }
     
     if ([tasks count] > 0 && execIns) {
-        [self callJSMethod:@"callJS" args:@[execIns, tasks]];
+        WXSDKInstance * execInstance = [WXSDKManager instanceForID:execIns];
+        if (execInstance.instanceJavaScriptContext) {
+            [self callJSMethod:@"__WEEX_CALL_JAVASCRIPT__" args:@[execIns, tasks] onContext:execInstance.instanceJavaScriptContext completion:nil];
+        } else {
+            [self callJSMethod:@"callJS" args:@[execIns, tasks]];
+        }
     }
     
     if (hasTask) {
