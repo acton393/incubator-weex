@@ -482,6 +482,15 @@ _Pragma("clang diagnostic pop") \
                 }
                 JSObjectSetProperty(instanceContextRef, globalObject, propertyName, [instanceContextEnvironment valueForProperty:key].JSValueRef, 0, NULL);
             }
+            if ([bundleType isEqualToString:@"Rax"]) {
+                NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
+                NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+                if (script) {
+                    [sdkInstance.instanceJavaScriptContext evaluateScript:script];
+                } else {
+                    WXLogError(@"weex-rax-api can not found");
+                }
+            }
             
             [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString];
         }];
@@ -517,7 +526,8 @@ _Pragma("clang diagnostic pop") \
     }
     if ([jsBundleString hasPrefix:@"// { \"framework\": \"Vue\" }"] || [jsBundleString hasPrefix:@"// { \"framework\": \"vue\" }"]) {
         bundleType = @"Vue";
-    } else if ([jsBundleString hasPrefix:@"// { \"framework\": \"Rax\" }"] || [jsBundleString hasPrefix:@"// { \"framework\": \"rax\" }"]) {
+    } else if ([jsBundleString hasPrefix:@"// { \"framework\": \"Rax\" }"] || [jsBundleString hasPrefix:@"// { \"framework\": \"rax\" }"] ||\
+               [jsBundleString hasPrefix:@"// {\"framework\" : \"Rax\"}"] || [jsBundleString hasPrefix:@"// {\"framework\" : \"rax\"}"]) {
         bundleType = @"Rax";
     }else {
         // use the top 100 characters match the bundleType
