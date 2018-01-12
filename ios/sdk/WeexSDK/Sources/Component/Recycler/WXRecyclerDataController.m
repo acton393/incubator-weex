@@ -58,9 +58,6 @@
             [_cellToIndexPathTable setObject:indexPath forKey:obj];
         }];
         if (controller.headerComponent) {
-            if (controller.headerComponent == nil) {
-                NSLog(@"test");
-            }
             [_headerToIndexTable setObject:@(idx) forKey:controller.headerComponent];
         }
     }];
