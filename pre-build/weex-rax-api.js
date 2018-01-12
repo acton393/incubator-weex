@@ -1,4 +1,4 @@
-/* Prepare Rax Environment APIs 0.4.20, Build 2018-01-11 16:00. */
+/* Prepare Rax Environment APIs 0.4.20, Build 2018-01-12 15:20. */
 
 var global = this; var process = {env:{}};
 (function (global, factory) {
@@ -724,6 +724,13 @@ function resetInstanceContext(instanceContext) {
     clearInterval: clearInterval,
     requestAnimationFrame: requestAnimationFrame,
     cancelAnimationFrame: cancelAnimationFrame,
+    setImmediate: typeof setImmediate === 'function' && setImmediate || function (fn) {
+      setTimeout(fn, 0);
+    },
+    clearImmediate: typeof setImmediate === 'function' && setImmediate || function (id) {
+      clearTimeout(id);
+    },
+    frameworkVersion: null,
     alert: function alert(message) {
       var modal = __weex_require__(MODAL_MODULE);
       modal.alert({
@@ -5395,6 +5402,8 @@ module.exports = {
   get matchMedia() {
     return __webpack_require__(10);
   }
+};
+
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
