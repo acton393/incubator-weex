@@ -103,10 +103,6 @@
     return self;
 }
 
-- (void)dealloc {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-}
-
 #pragma mark - WXBridgeProtocol
 
 - (void)executeJSFramework:(NSString *)frameworkScript
