@@ -1,4 +1,4 @@
-/* Prepare Rax Environment APIs 0.4.20, Build 2018-01-12 15:20. */
+/* Prepare Rax Environment APIs 0.4.20, Build 2018-01-11 19:55. */
 
 var global = this; var process = {env:{}};
 (function (global, factory) {
@@ -724,12 +724,14 @@ function resetInstanceContext(instanceContext) {
     clearInterval: clearInterval,
     requestAnimationFrame: requestAnimationFrame,
     cancelAnimationFrame: cancelAnimationFrame,
-    setImmediate: typeof setImmediate === 'function' && setImmediate || function (fn) {
-      setTimeout(fn, 0);
-    },
-    clearImmediate: typeof setImmediate === 'function' && setImmediate || function (id) {
-      clearTimeout(id);
-    },
+    setImmediate: typeof setImmediate === 'function' && setImmediate ||
+          function(fn) {
+            setTimeout(fn, 0);
+          },
+    clearImmediate: typeof clearImmediate === 'function' && clearImmediate ||
+          function(id) {
+            clearTimeout(id);
+          },
     frameworkVersion: null,
     alert: function alert(message) {
       var modal = __weex_require__(MODAL_MODULE);
@@ -1865,7 +1867,7 @@ var NativeComponent = function () {
           } else {
             _host2.default.driver.removeAttribute(this$1.getNativeNode(), propKey, prevProps[propKey]);
           }
-          
+
         }
       }
 
@@ -3376,7 +3378,7 @@ var CompositeComponent = function () {
 
       if ((0, _shouldUpdateComponent2.default)(prevRenderedElement, nextRenderedElement)) {
         prevRenderedComponent.updateComponent(prevRenderedElement, nextRenderedElement, prevRenderedComponent._context, this._processChildContext(context));
-        
+
       } else {
         var oldChild = prevRenderedComponent.getNativeNode();
         prevRenderedComponent.unmountComponent(true);
