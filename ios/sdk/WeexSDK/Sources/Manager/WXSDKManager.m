@@ -44,11 +44,19 @@ static WXSDKManager *_sharedInstance = nil;
     return _sharedInstance;
 }
 
+- (instancetype)init
+{
+    if (self = [super init]){
+        
+    }
+    return self;
+}
+
 + (WXBridgeManager *)bridgeMgr
 {
     WXBridgeManager *bridgeMgr = [self sharedInstance].bridgeMgr;
     if (!bridgeMgr) {
-        bridgeMgr = [WXBridgeManager sharedManager];
+        bridgeMgr = [[WXBridgeManager alloc] init];
         [self sharedInstance].bridgeMgr = bridgeMgr;
     }
     return bridgeMgr;
@@ -77,7 +85,7 @@ static WXSDKManager *_sharedInstance = nil;
         WXSDKInstance *instance = [[self sharedInstance].instanceDict objectForKey:instanceID];
         [instance destroyInstance];
     }
-    
+    [[self sharedInstance].bridgeMgr unload];
     [self sharedInstance].bridgeMgr = nil;
 }
 

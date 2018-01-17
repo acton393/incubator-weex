@@ -213,8 +213,10 @@ typedef enum : NSUInteger {
     // ensure default modules/components/handlers are ready before create instance
     [WXSDKEngine registerDefaults];
      [[NSNotificationCenter defaultCenter] postNotificationName:WX_SDKINSTANCE_WILL_RENDER object:self];
-    
-    [self _handleConfigCenter];
+    _mainBundleString = mainBundleString;
+    if ([self _handleConfigCenter]) {
+        return;
+    }
     
     [WXTracingManager startTracingWithInstanceId:self.instanceId ref:nil className:nil name:WXTExecJS phase:WXTracingBegin functionName:@"renderWithMainBundleString" options:@{@"threadName":WXTMainThread}];
     [[WXSDKManager bridgeMgr] createInstance:self.instanceId template:mainBundleString options:dictionary data:_jsData];
@@ -223,7 +225,7 @@ typedef enum : NSUInteger {
     WX_MONITOR_PERF_SET(WXPTBundleSize, [mainBundleString lengthOfBytesUsingEncoding:NSUTF8StringEncoding], self);
 }
 
-- (void)_handleConfigCenter
+- (BOOL)_handleConfigCenter
 {
     id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
     if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
@@ -231,7 +233,30 @@ typedef enum : NSUInteger {
         [WXTextComponent setRenderUsingCoreText:useCoreText];
         BOOL useThreadSafeLock = [[configCenter configForKey:@"iOS_weex_ext_config.useThreadSafeLock" defaultValue:@NO isDefault:NULL] boolValue];
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
+        BOOL shoudMultiContext = NO;
+        if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
+            shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
+        }
+        if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
+            [WXSDKManager sharedInstance].multiContext = YES;
+            NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"weex-main-jsfm" ofType:@"js"];
+            NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+            [WXSDKEngine restartWithScript:script];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"WXSDKENFINE_RESTARTED" object:nil];
+            return YES;
+        }
+        if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
+            [WXSDKManager sharedInstance].multiContext = NO;
+            [WXSDKEngine restart];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"WXSDKENFINE_RESTARTED" object:nil];
+            return YES;
+        }
     }
+    return NO;
+}
+
+- (void)renderWithMainBundleString:(NSNotification*)notification {
+    [self _renderWithMainBundleString:_mainBundleString];
 }
 
 - (void)_renderWithRequest:(WXResourceRequest *)request options:(NSDictionary *)options data:(id)data;
@@ -607,6 +632,7 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [self addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renderWithMainBundleString:) name:@"WXSDKENFINE_RESTARTED" object:nil];
 }
 
 - (void)removeObservers

@@ -450,9 +450,11 @@ _Pragma("clang diagnostic pop") \
         shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
     }
     __weak typeof(self) weakSelf = self;
-    JSContext *globalContex = ([(JSContext*)weakSelf.jsBridge valueForKey:@"jsContext"]);
+    JSContext *globalContex = nil;
     NSString * bundleType = nil;
+    
     if (shoudMultiContext) {
+        globalContex = ([(JSContext*)weakSelf.jsBridge valueForKey:@"jsContext"]);
         bundleType = [self _pareJSBundleType:instanceIdString jsBundleString:jsBundleString]; // bundleType can be Vue, Rax and the new framework.
     }
     if (bundleType&&shoudMultiContext) {
@@ -491,8 +493,12 @@ _Pragma("clang diagnostic pop") \
                     WXLogError(@"weex-rax-api can not found");
                 }
             }
+            if ([NSURL URLWithString:sdkInstance.pageName]) {
+                [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString withSourceURL:[NSURL URLWithString:sdkInstance.pageName]];
+            } else {
+                [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString];
+            }
             
-            [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString];
         }];
     } else {
         if (data){

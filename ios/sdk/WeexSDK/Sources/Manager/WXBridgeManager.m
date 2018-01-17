@@ -74,7 +74,7 @@ static NSThread *WXBridgeThread;
 
 - (void)dealloc
 {
-   
+    NSLog(@"%s",__PRETTY_FUNCTION__);
 }
 
 #pragma mark Thread Management

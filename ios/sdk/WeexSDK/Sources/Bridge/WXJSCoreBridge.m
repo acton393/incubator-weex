@@ -64,6 +64,7 @@
         _callbacks = [NSMutableDictionary new];
         _intervalTimerId = 0;
         _intervaltimers = [NSMutableDictionary new];
+        _multiContext = NO;
 
         __weak typeof(self) weakSelf = self;
         
@@ -102,13 +103,21 @@
     return self;
 }
 
+- (void)dealloc {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
 #pragma mark - WXBridgeProtocol
 
 - (void)executeJSFramework:(NSString *)frameworkScript
 {
     WXAssertParam(frameworkScript);
     if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-        [_jsContext evaluateScript:frameworkScript withSourceURL:[NSURL URLWithString:@"native-bundle-main.js"]];
+        NSString * fileName = @"native-bundle-main.js";
+        if ([WXSDKManager sharedInstance].multiContext) {
+            fileName = @"weex-main-jsfm.js";
+        }
+        [_jsContext evaluateScript:frameworkScript withSourceURL:[NSURL URLWithString:fileName]];
     }else{
         [_jsContext evaluateScript:frameworkScript];
     }

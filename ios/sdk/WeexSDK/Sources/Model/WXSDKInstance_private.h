@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSMutableDictionary *naviBarStyles;
 @property (nonatomic, strong) NSMutableDictionary *styleConfigs;
 @property (nonatomic, strong) NSMutableDictionary *attrConfigs;
+@property (nonatomic, strong) NSString *mainBundleString;
 
 @property (nonatomic, strong) JSContext *instanceJavaScriptContext; // sandbox javaScript context
 @property (nonatomic, readonly, strong) WXComponentManager *componentManager;

@@ -31,8 +31,6 @@ extern void WXPerformBlockOnBridgeThread(void (^block)(void));
  **/
 @property (nonatomic, weak, readonly) WXSDKInstance *topInstance;
 
-+ (instancetype)sharedManager;
-
 /**
  *  Create Instance Method
  *  @param instance  :   instance id
