@@ -194,8 +194,11 @@
 
 + (void)initSDKEnvironment
 {
-    
-    NSString *filePath = [[NSBundle bundleForClass:self] pathForResource:@"native-bundle-main" ofType:@"js"];
+    NSString *fileName = @"native-bundle-main";
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
+        fileName = @"weex-main-jsfm";
+    }
+    NSString *filePath = [[NSBundle bundleForClass:self] pathForResource:fileName ofType:@"js"];
     NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     [WXSDKEngine initSDKEnvironment:script];
     
@@ -289,7 +292,11 @@ static NSDictionary *_customEnvironment;
 
 + (void)restart
 {
-    NSString *filePath = [[NSBundle bundleForClass:self] pathForResource:@"native-bundle-main" ofType:@"js"];
+    NSString *fileName = @"native-bundle-main";
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
+        fileName = @"weex-main-jsfm";
+    }
+    NSString *filePath = [[NSBundle bundleForClass:self] pathForResource:fileName ofType:@"js"];
     NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     [self restartWithScript:script];
 }

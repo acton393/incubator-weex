@@ -239,15 +239,20 @@ typedef enum : NSUInteger {
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
         BOOL shoudMultiContext = NO;
         shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
+            [WXSDKManager sharedInstance].multiContext = YES;
+        } else {
+            [WXSDKManager sharedInstance].multiContext = NO;
+        }
         if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
             [WXSDKManager sharedInstance].multiContext = YES;
-            NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"weex-main-jsfm" ofType:@"js"];
-            NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-            [WXSDKEngine restartWithScript:script];
+            [[NSUserDefaults standardUserDefaults] setObject:@true forKey:@"createInstanceUsingMutliContext"];
+            [WXSDKEngine restart];
             return YES;
         }
         if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
             [WXSDKManager sharedInstance].multiContext = NO;
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"createInstanceUsingMutliContext"];
             [WXSDKEngine restart];
             return YES;
         }
