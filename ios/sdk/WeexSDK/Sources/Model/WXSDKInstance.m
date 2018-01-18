@@ -215,6 +215,10 @@ typedef enum : NSUInteger {
      [[NSNotificationCenter defaultCenter] postNotificationName:WX_SDKINSTANCE_WILL_RENDER object:self];
     _mainBundleString = mainBundleString;
     if ([self _handleConfigCenter]) {
+        NSError * error = [NSError errorWithDomain:WX_ERROR_DOMAIN code:9999 userInfo:nil];
+        if (self.onFailed) {
+            self.onFailed(error);
+        }
         return;
     }
     
@@ -234,21 +238,17 @@ typedef enum : NSUInteger {
         BOOL useThreadSafeLock = [[configCenter configForKey:@"iOS_weex_ext_config.useThreadSafeLock" defaultValue:@NO isDefault:NULL] boolValue];
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
         BOOL shoudMultiContext = NO;
-        if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
-            shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
-        }
+        shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
         if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
             [WXSDKManager sharedInstance].multiContext = YES;
             NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"weex-main-jsfm" ofType:@"js"];
             NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
             [WXSDKEngine restartWithScript:script];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"WXSDKENFINE_RESTARTED" object:nil];
             return YES;
         }
         if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
             [WXSDKManager sharedInstance].multiContext = NO;
             [WXSDKEngine restart];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"WXSDKENFINE_RESTARTED" object:nil];
             return YES;
         }
     }
@@ -632,7 +632,6 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [self addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renderWithMainBundleString:) name:@"WXSDKENFINE_RESTARTED" object:nil];
 }
 
 - (void)removeObservers
