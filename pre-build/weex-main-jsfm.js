@@ -1,5 +1,4 @@
-(this.nativeLog || function (s) { console.log(s) })('START JS FRAMEWORK 0.24.1, Build 2018-01-22 14:39. (Vue: 2.5.11-weex.2, Rax: 0.4.20)');
-; (this.getJSFMVersion = function () { return "0.24.1" });
+(this.nativeLog || function (s) { console.log(s) })('START JS FRAMEWORK 0.24.2, Build 2018-01-22 17:06. (Vue: 2.5.11-weex.2, Rax: 0.4.20)');
 var global = this; var process = { env: {} }; var setTimeout = global.setTimeout;
 
 (function (global, factory) {
@@ -1909,7 +1908,7 @@ var global = this; var process = { env: {} }; var setTimeout = global.setTimeout
 
   setNativeConsole();
 
-  var subversion = { "framework": "0.24.1", "transformer": ">=0.1.5 <0.5" };
+  var subversion = { "framework": "0.24.2", "transformer": ">=0.1.5 <0.5" };
 
   /*
    * Licensed to the Apache Software Foundation (ASF) under one
@@ -4284,6 +4283,14 @@ var global = this; var process = { env: {} }; var setTimeout = global.setTimeout
     return 'Weex'
   }
 
+  /**
+   * Get js framework version at runtime.
+   */
+  function getJSFMVersion() {
+    // It will be converted into a version string at build time
+    return "0.24.2" // eslint-disable-line
+  }
+
   function createServices(id, env, config) {
     // Init JavaScript services for this instance.
     var serviceMap = Object.create(null);
@@ -4345,6 +4352,7 @@ var global = this; var process = { env: {} }; var setTimeout = global.setTimeout
     var runtimeContext = Object.create(null);
     Object.assign(runtimeContext, services$$1, {
       weex: weex,
+      getJSFMVersion: getJSFMVersion,
       __WEEX_CALL_JAVASCRIPT__: receiveTasks,
       services: services$$1 // Temporary compatible with some legacy APIs in Rax
     });
@@ -4450,6 +4458,7 @@ var global = this; var process = { env: {} }; var setTimeout = global.setTimeout
     createInstance: createInstance,
     createInstanceContext: createInstanceContext,
     getRoot: getRoot,
+    getJSFMVersion: getJSFMVersion,
     getDocument: getDoc,
     registerService: register,
     unregisterService: unregister,

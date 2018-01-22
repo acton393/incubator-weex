@@ -1,4 +1,4 @@
-/* Prepare Rax Environment APIs 0.4.20, Build 2018-01-22 14:40. */
+/* Prepare Rax Environment APIs 0.4.20, Build 2018-01-22 17:06. */
 
 var global = this; var process = { env: {} };
 (function (global, factory) {
@@ -767,15 +767,24 @@ var global = this; var process = { env: {} };
                 };
 
                 if (typeof BroadcastChannel === 'function') {
-                  var stack = new BroadcastChannel('message' + instanceId);
-                  stack.postMessage(event);
+                  if (targetOrigin == '*') {
+                    var stack = new BroadcastChannel('message');
+                    stack.postMessage(event);
+                  } else {
+                    var stack = new BroadcastChannel('message' + targetOrigin);
+                    stack.postMessage(event);
+                  }
                 }
               },
               addEventListener: function addEventListener(type, listener) {
                 if (type === 'message') {
                   if (typeof BroadcastChannel === 'function') {
-                    var stack = new BroadcastChannel('message' + instanceId);
+                    var stack = new BroadcastChannel('message');
+                    var thisStack = new BroadcastChannel('message' + bundleUrl);
                     stack.onmessage = function (e) {
+                      listener(e.data);
+                    };
+                    thisStack.onmessage = function (e) {
                       listener(e.data);
                     };
                   }
