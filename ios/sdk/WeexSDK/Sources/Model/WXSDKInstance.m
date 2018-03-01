@@ -223,7 +223,6 @@ typedef enum : NSUInteger {
         return;
     }
     
-    [self _handleConfigCenter];
     _needDestroy = YES;
     [WXTracingManager startTracingWithInstanceId:self.instanceId ref:nil className:nil name:WXTExecJS phase:WXTracingBegin functionName:@"renderWithMainBundleString" options:@{@"threadName":WXTMainThread}];
     [[WXSDKManager bridgeMgr] createInstance:self.instanceId template:mainBundleString options:dictionary data:_jsData];
@@ -240,24 +239,26 @@ typedef enum : NSUInteger {
         [WXTextComponent setRenderUsingCoreText:useCoreText];
         BOOL useThreadSafeLock = [[configCenter configForKey:@"iOS_weex_ext_config.useThreadSafeLock" defaultValue:@YES isDefault:NULL] boolValue];
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
-        BOOL shoudMultiContext = NO;
-        shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
-            [WXSDKManager sharedInstance].multiContext = YES;
-        } else {
-            [WXSDKManager sharedInstance].multiContext = NO;
-        }
-        if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
-            [WXSDKManager sharedInstance].multiContext = YES;
-            [[NSUserDefaults standardUserDefaults] setObject:@true forKey:@"createInstanceUsingMutliContext"];
-            [WXSDKEngine restart];
-            return YES;
-        }
-        if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
-            [WXSDKManager sharedInstance].multiContext = NO;
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"createInstanceUsingMutliContext"];
-            [WXSDKEngine restart];
-            return YES;
+        if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
+            BOOL shoudMultiContext = NO;
+            shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
+                [WXSDKManager sharedInstance].multiContext = YES;
+            } else {
+                [WXSDKManager sharedInstance].multiContext = NO;
+            }
+            if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
+                [WXSDKManager sharedInstance].multiContext = YES;
+                [[NSUserDefaults standardUserDefaults] setObject:@true forKey:@"createInstanceUsingMutliContext"];
+                [WXSDKEngine restart];
+                return YES;
+            }
+            if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
+                [WXSDKManager sharedInstance].multiContext = NO;
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"createInstanceUsingMutliContext"];
+                [WXSDKEngine restart];
+                return YES;
+            }
         }
     }
     return NO;
