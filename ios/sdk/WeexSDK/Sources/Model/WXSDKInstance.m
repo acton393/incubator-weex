@@ -70,7 +70,8 @@ typedef enum : NSUInteger {
     WXComponentManager *_componentManager;
     WXRootView *_rootView;
     WXThreadSafeMutableDictionary *_moduleEventObservers;
-    BOOL  _performanceCommit;
+    BOOL _performanceCommit;
+    BOOL _needDestroy;
 }
 
 - (void)dealloc
@@ -98,7 +99,7 @@ typedef enum : NSUInteger {
         _pageName = @"";
 
         _performanceDict = [WXThreadSafeMutableDictionary new];
-        _moduleInstances = [NSMutableDictionary new];
+        _moduleInstances = [WXThreadSafeMutableDictionary new];
         _styleConfigs = [NSMutableDictionary new];
         _attrConfigs = [NSMutableDictionary new];
         _moduleEventObservers = [WXThreadSafeMutableDictionary new];
@@ -222,6 +223,8 @@ typedef enum : NSUInteger {
         return;
     }
     
+    [self _handleConfigCenter];
+    _needDestroy = YES;
     [WXTracingManager startTracingWithInstanceId:self.instanceId ref:nil className:nil name:WXTExecJS phase:WXTracingBegin functionName:@"renderWithMainBundleString" options:@{@"threadName":WXTMainThread}];
     [[WXSDKManager bridgeMgr] createInstance:self.instanceId template:mainBundleString options:dictionary data:_jsData];
     [WXTracingManager startTracingWithInstanceId:self.instanceId ref:nil className:nil name:WXTExecJS phase:WXTracingEnd functionName:@"renderWithMainBundleString" options:@{@"threadName":WXTMainThread}];
@@ -413,6 +416,11 @@ typedef enum : NSUInteger {
     if (_instanceJavaScriptContext) {
         JSGarbageCollect(_instanceJavaScriptContext.JSGlobalContextRef);
         _instanceJavaScriptContext = nil;
+    }
+    
+    if (_needDestroy) {
+        [[WXSDKManager bridgeMgr] destroyInstance:self.instanceId];
+        _needDestroy = NO;
     }
     
     if (_componentManager) {

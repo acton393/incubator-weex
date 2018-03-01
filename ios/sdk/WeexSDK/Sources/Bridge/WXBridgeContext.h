@@ -123,6 +123,8 @@
  **/
 - (void)resetEnvironment;
 
+- (void)callJSMethod:(NSString *)method args:(NSArray *)args onContext:(JSContext*)context completion:(void (^)(JSValue * value))complection;
+
 + (void)mountContextEnvironment:(JSContext*)context;
 
 @end
