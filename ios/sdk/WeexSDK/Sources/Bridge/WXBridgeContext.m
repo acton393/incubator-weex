@@ -444,11 +444,7 @@ _Pragma("clang diagnostic pop") \
     NSArray *args = nil;
     WX_MONITOR_INSTANCE_PERF_START(WXFirstScreenJSFExecuteTime, [WXSDKManager instanceForID:instanceIdString]);
     WX_MONITOR_INSTANCE_PERF_START(WXPTJSCreateInstance, [WXSDKManager instanceForID:instanceIdString]);
-    id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
-    BOOL shoudMultiContext = NO;
-    if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
-        shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
-    }
+    BOOL shoudMultiContext = [WXSDKManager sharedInstance].multiContext;
     __weak typeof(self) weakSelf = self;
     JSContext *globalContex = nil;
     NSString * bundleType = nil;
