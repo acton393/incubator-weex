@@ -72,6 +72,7 @@ typedef enum : NSUInteger {
     WXThreadSafeMutableDictionary *_moduleEventObservers;
     BOOL _performanceCommit;
     BOOL _needDestroy;
+    BOOL _syncDestroyComponentManager;
 }
 
 - (void)dealloc
@@ -79,6 +80,11 @@ typedef enum : NSUInteger {
     [_moduleEventObservers removeAllObjects];
     [self removeObservers];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (_syncDestroyComponentManager) {
+        WXPerformBlockSyncOnComponentThread(^{
+            _componentManager = nil;
+        });
+    }
 }
 
 - (instancetype)init
@@ -105,6 +111,11 @@ typedef enum : NSUInteger {
         _moduleEventObservers = [WXThreadSafeMutableDictionary new];
         _trackComponent = NO;
         _performanceCommit = NO;
+        
+        id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
+        if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
+            _syncDestroyComponentManager = [configCenter configForKey:@"iOS_weex_ext_config.syncDestroyComponentManager" defaultValue:@(YES) isDefault:NULL];
+        }
        
         [self addObservers];
     }
