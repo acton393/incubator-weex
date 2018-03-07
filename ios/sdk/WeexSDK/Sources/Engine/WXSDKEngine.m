@@ -194,9 +194,19 @@
 
 + (void)initSDKEnvironment
 {
-    NSString *fileName = @"native-bundle-main";
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
-        fileName = @"weex-main-jsfm";
+    NSString *fileName = @"weex-main-jsfm";
+    [WXSDKManager sharedInstance].multiContext = YES;
+    if (WX_SYS_VERSION_LESS_THAN(@"9.0")) {
+        fileName = @"native-bundle-main";
+        [WXSDKManager sharedInstance].multiContext = NO;
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
+            BOOL createInstanceUsingMutliContext = [[[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"] boolValue];
+            if (!createInstanceUsingMutliContext) {
+                fileName = @"native-bundle-main";
+                [WXSDKManager sharedInstance].multiContext = NO;
+            }
+        }
     }
     NSString *filePath = [[NSBundle bundleForClass:self] pathForResource:fileName ofType:@"js"];
     NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
@@ -230,7 +240,6 @@
 
 + (void)initSDKEnvironment:(NSString *)script
 {
-    
     WX_MONITOR_PERF_START(WXPTInitalize)
     WX_MONITOR_PERF_START(WXPTInitalizeSync)
     
@@ -292,9 +301,19 @@ static NSDictionary *_customEnvironment;
 
 + (void)restart
 {
-    NSString *fileName = @"native-bundle-main";
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
-        fileName = @"weex-main-jsfm";
+    NSString *fileName = @"weex-main-jsfm";
+    [WXSDKManager sharedInstance].multiContext = YES;
+    if (WX_SYS_VERSION_LESS_THAN(@"9.0")) {
+        fileName = @"native-bundle-main";
+        [WXSDKManager sharedInstance].multiContext = NO;
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
+            BOOL createInstanceUsingMutliContext = [[[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"] boolValue];
+            if (!createInstanceUsingMutliContext) {
+                fileName = @"native-bundle-main";
+                [WXSDKManager sharedInstance].multiContext = NO;
+            }
+        }
     }
     NSString *filePath = [[NSBundle bundleForClass:self] pathForResource:fileName ofType:@"js"];
     NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];

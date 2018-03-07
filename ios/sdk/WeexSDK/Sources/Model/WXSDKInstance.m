@@ -252,21 +252,16 @@ typedef enum : NSUInteger {
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
         if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
             BOOL shoudMultiContext = NO;
-            shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(NO) isDefault:NULL] boolValue];
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"createInstanceUsingMutliContext"]) {
-                [WXSDKManager sharedInstance].multiContext = YES;
-            } else {
-                [WXSDKManager sharedInstance].multiContext = NO;
-            }
+            shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(YES) isDefault:NULL] boolValue];
             if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
                 [WXSDKManager sharedInstance].multiContext = YES;
-                [[NSUserDefaults standardUserDefaults] setObject:@true forKey:@"createInstanceUsingMutliContext"];
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"createInstanceUsingMutliContext"];
                 [WXSDKEngine restart];
                 return YES;
             }
             if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
                 [WXSDKManager sharedInstance].multiContext = NO;
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"createInstanceUsingMutliContext"];
+                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"createInstanceUsingMutliContext"];
                 [WXSDKEngine restart];
                 return YES;
             }
