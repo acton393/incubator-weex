@@ -104,11 +104,8 @@ SEL WXSwizzledSelectorForSelector(SEL selector)
 
 CGFloat WXScreenScale(void)
 {
-    static CGFloat _scale;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _scale = [UIScreen mainScreen].scale;
-    });
+    CGFloat _scale;
+    _scale = [UIScreen mainScreen].scale;
     return _scale;
 }
 
@@ -671,34 +668,13 @@ CGFloat WXFloorPixelValue(CGFloat value)
 
 + (CGSize)portraitScreenSize
 {
-    if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
-        return [UIScreen mainScreen].bounds.size;
-    }
-    static CGSize portraitScreenSize;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        CGSize screenSize = [UIScreen mainScreen].bounds.size;
-        portraitScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height),
-                                        MAX(screenSize.width, screenSize.height));
-    });
-    
-    return portraitScreenSize;
+    return [UIScreen mainScreen].bounds.size;
 }
 
 + (CGFloat)defaultPixelScaleFactor
 {
-    if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
-        return [self portraitScreenSize].width / WXDefaultScreenWidth;
-    }
-    static CGFloat defaultScaleFactor;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        defaultScaleFactor = [self portraitScreenSize].width / WXDefaultScreenWidth;
-    });
-    
-    return defaultScaleFactor;
+    return [self portraitScreenSize].width / WXDefaultScreenWidth;
 }
-
 
 #pragma mark - get deviceID
 + (NSString *)getDeviceID {

@@ -172,12 +172,13 @@ static NSThread *WXComponentThread;
 
 - (void)_applyRootFrame:(CGRect)rootFrame toRootCSSNode:(css_node_t *)rootCSSNode
 {
-    _rootCSSNode->style.position[CSS_LEFT] = self.weexInstance.frame.origin.x;
-    _rootCSSNode->style.position[CSS_TOP] = self.weexInstance.frame.origin.y;
+    CGFloat pixelScaleFactor = self.weexInstance.pixelScaleFactor;
+    _rootCSSNode->style.position[CSS_LEFT] = self.weexInstance.frame.origin.x/pixelScaleFactor;
+    _rootCSSNode->style.position[CSS_TOP] = self.weexInstance.frame.origin.y/pixelScaleFactor;
     
     // if no instance width/height, use layout width/height, as Android's wrap_content
-    _rootCSSNode->style.dimensions[CSS_WIDTH] = self.weexInstance.frame.size.width ?: CSS_UNDEFINED;
-    _rootCSSNode->style.dimensions[CSS_HEIGHT] =  self.weexInstance.frame.size.height ?: CSS_UNDEFINED;
+    _rootCSSNode->style.dimensions[CSS_WIDTH] = self.weexInstance.frame.size.width/pixelScaleFactor ?: CSS_UNDEFINED;
+    _rootCSSNode->style.dimensions[CSS_HEIGHT] =  self.weexInstance.frame.size.height/pixelScaleFactor ?: CSS_UNDEFINED;
 }
 
 - (void)_addUITask:(void (^)(void))block
@@ -865,10 +866,10 @@ static css_node_t * rootNodeGetChild(void *context, int i)
     }
     _rootCSSNode->layout.should_update = false;
     
-    CGRect frame = CGRectMake(WXRoundPixelValue(_rootCSSNode->layout.position[CSS_LEFT]),
-                              WXRoundPixelValue(_rootCSSNode->layout.position[CSS_TOP]),
-                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[CSS_WIDTH]),
-                              WXRoundPixelValue(_rootCSSNode->layout.dimensions[CSS_HEIGHT]));
+    CGRect frame = CGRectMake(WXRoundPixelValue([WXConvert WXPixelType:@(_rootCSSNode->layout.position[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor]),
+                              WXRoundPixelValue([WXConvert WXPixelType:@(_rootCSSNode->layout.position[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor]),
+                              WXRoundPixelValue([WXConvert WXPixelType:@(_rootCSSNode->layout.dimensions[CSS_WIDTH]) scaleFactor:self.weexInstance.pixelScaleFactor]),
+                              WXRoundPixelValue([WXConvert WXPixelType:@(_rootCSSNode->layout.dimensions[CSS_HEIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]));
     WXPerformBlockOnMainThread(^{
         if(!self.weexInstance.isRootViewFrozen) {
             self.weexInstance.rootView.frame = frame;

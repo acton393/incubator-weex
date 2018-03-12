@@ -166,10 +166,10 @@
     _cssNode->layout.should_update = false;
     _isLayoutDirty = NO;
     
-    CGRect newFrame = CGRectMake(isnan(WXRoundPixelValue(_cssNode->layout.position[CSS_LEFT]))?0:WXRoundPixelValue(_cssNode->layout.position[CSS_LEFT]),
-                                 isnan(WXRoundPixelValue(_cssNode->layout.position[CSS_TOP]))?0:WXRoundPixelValue(_cssNode->layout.position[CSS_TOP]),
-                                 isnan(WXRoundPixelValue(_cssNode->layout.dimensions[CSS_WIDTH]))?0:WXRoundPixelValue(_cssNode->layout.dimensions[CSS_WIDTH]),
-                                 isnan(WXRoundPixelValue(_cssNode->layout.dimensions[CSS_HEIGHT]))?0:WXRoundPixelValue(_cssNode->layout.dimensions[CSS_HEIGHT]));
+    CGRect newFrame = CGRectMake(isnan(WXRoundPixelValue(_cssNode->layout.position[CSS_LEFT]))?0:WXRoundPixelValue([WXConvert WXPixelType:@(_cssNode->layout.position[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor]),
+                                 isnan(WXRoundPixelValue(_cssNode->layout.position[CSS_TOP]))?0:WXRoundPixelValue([WXConvert WXPixelType:@(_cssNode->layout.position[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor]),
+                                 isnan(WXRoundPixelValue(_cssNode->layout.dimensions[CSS_WIDTH]))?0:WXRoundPixelValue([WXConvert WXPixelType:@(_cssNode->layout.dimensions[CSS_WIDTH]) scaleFactor:self.weexInstance.pixelScaleFactor]),
+                                 isnan(WXRoundPixelValue(_cssNode->layout.dimensions[CSS_HEIGHT]))?0:WXRoundPixelValue([WXConvert WXPixelType:@(_cssNode->layout.dimensions[CSS_HEIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]));
     
     BOOL isFrameChanged = NO;
     if (!CGRectEqualToRect(newFrame, _calculatedFrame)) {
@@ -220,13 +220,12 @@ do {\
 
 #define WX_STYLE_FILL_CSS_NODE_PIXEL(key, cssProp)\
 do {\
-    id value = styles[@#key];\
+    CGFloat value = [styles[@#key] floatValue];\
     if (value) {\
-        CGFloat pixel = [self WXPixelType:value];\
-        if (isnan(pixel)) {\
+        if (isnan(value)) {\
             WXLogError(@"Invalid NaN value for style:%@, ref:%@", @#key, self.ref);\
         } else {\
-            _cssNode->style.cssProp = pixel;\
+            _cssNode->style.cssProp = value;\
             [self setNeedsLayout];\
         }\
     }\
