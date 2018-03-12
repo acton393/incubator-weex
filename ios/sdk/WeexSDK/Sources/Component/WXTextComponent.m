@@ -275,15 +275,20 @@ do {\
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repaintText:) name:WX_ICONFONT_DOWNLOAD_NOTIFICATION object:nil];
         _observerIconfont = YES;
     }
-    UIEdgeInsets padding = {
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_TOP] + self.cssNode->style.border[CSS_TOP]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_LEFT] + self.cssNode->style.border[CSS_LEFT]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_BOTTOM] + self.cssNode->style.border[CSS_BOTTOM]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_RIGHT] + self.cssNode->style.border[CSS_RIGHT])
+    
+    UIEdgeInsets padding = UIEdgeInsetsMake([WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_BOTTOM]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_RIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
+    
+    UIEdgeInsets border = UIEdgeInsetsMake([WXConvert WXPixelType:@(self.cssNode->style.border[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_BOTTOM]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_RIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
+    
+    UIEdgeInsets contentInset = {
+        WXFloorPixelValue(padding.top + border.top),
+        WXFloorPixelValue(padding.left + border.left),
+        WXFloorPixelValue(padding.bottom + border.bottom),
+        WXFloorPixelValue(padding.right + border.right)
     };
     
-    if (!UIEdgeInsetsEqualToEdgeInsets(padding, _padding)) {
-        _padding = padding;
+    if (!UIEdgeInsetsEqualToEdgeInsets(contentInset, _padding)) {
+        _padding = contentInset;
         [self setNeedsRepaint];
     }
 }
@@ -380,11 +385,11 @@ do {\
         
         //TODO:more elegant way to use max and min constrained size
         if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_WIDTH])) {
-            constrainedSize.width = MAX(constrainedSize.width, weakSelf.cssNode->style.minDimensions[CSS_WIDTH]);
+            constrainedSize.width = MAX(constrainedSize.width, [WXConvert WXPixelType:@(weakSelf.cssNode->style.minDimensions[CSS_WIDTH]) scaleFactor:weakSelf.weexInstance.pixelScaleFactor]);
         }
         
         if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_WIDTH])) {
-            constrainedSize.width = MIN(constrainedSize.width, weakSelf.cssNode->style.maxDimensions[CSS_WIDTH]);
+            constrainedSize.width = MIN(constrainedSize.width, [WXConvert WXPixelType:@(weakSelf.cssNode->style.maxDimensions[CSS_WIDTH]) scaleFactor:weakSelf.weexInstance.pixelScaleFactor]);
         }
         
         if (![self useCoreText]) {
@@ -397,11 +402,11 @@ do {\
         }
         
         if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_HEIGHT])) {
-            computedSize.height = MAX(computedSize.height, weakSelf.cssNode->style.minDimensions[CSS_HEIGHT]);
+            computedSize.height = MAX(computedSize.height, [WXConvert WXPixelType:@(weakSelf.cssNode->style.minDimensions[CSS_HEIGHT]) scaleFactor:weakSelf.weexInstance.pixelScaleFactor]);
         }
         
         if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT])) {
-            computedSize.height = MIN(computedSize.height, weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT]);
+            computedSize.height = MIN(computedSize.height, [WXConvert WXPixelType:@(weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT]) scaleFactor:weakSelf.weexInstance.pixelScaleFactor]);
         }
         if (textStorage && [WXUtility isBlankString:textStorage.string]) {
             //  if the text value is empty or nil, then set the height is 0.

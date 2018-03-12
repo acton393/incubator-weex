@@ -20,6 +20,7 @@
 #import "WXSwitchComponent.h"
 #import "WXConvert.h"
 #import "WXComponent_internal.h"
+#import "WXSDKInstance.h"
 
 @interface WXSwitchView : UISwitch
 
@@ -46,8 +47,8 @@
         _checked = attributes[@"checked"] ? [WXConvert BOOL:attributes[@"checked"]] : NO;
         _disabled = attributes[@"disabled"] ? [WXConvert BOOL:attributes[@"disabled"]] : NO;
         
-        self.cssNode->style.dimensions[CSS_WIDTH] = 51;
-        self.cssNode->style.dimensions[CSS_HEIGHT] = 31;
+        self.cssNode->style.dimensions[CSS_WIDTH] = 51/weexInstance.pixelScaleFactor;
+        self.cssNode->style.dimensions[CSS_HEIGHT] = 31/weexInstance.pixelScaleFactor;
     }
     return self;
 }

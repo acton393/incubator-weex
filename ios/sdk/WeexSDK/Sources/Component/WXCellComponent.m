@@ -124,7 +124,7 @@
 - (void)_calculateFrameWithSuperAbsolutePosition:(CGPoint)superAbsolutePosition gatherDirtyComponents:(NSMutableSet<WXComponent *> *)dirtyComponents
 {
     if (self.delegate && (isUndefined(self.cssNode->style.dimensions[CSS_WIDTH]) || _isUseContainerWidth)) {
-        self.cssNode->style.dimensions[CSS_WIDTH] = [self.delegate containerWidthForLayout:self];
+        self.cssNode->style.dimensions[CSS_WIDTH] = [self.delegate containerWidthForLayout:self]/self.weexInstance.pixelScaleFactor;
         //TODO: set _isUseContainerWidth to NO if updateStyles have width
         _isUseContainerWidth = YES;
     }

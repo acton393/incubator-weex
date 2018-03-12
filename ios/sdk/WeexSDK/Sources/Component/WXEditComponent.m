@@ -480,12 +480,13 @@ WX_EXPORT_METHOD(@selector(setTextFormatter:))
 
 -(void)updatePattern
 {
-    UIEdgeInsets padding = UIEdgeInsetsMake(self.cssNode->style.padding[CSS_TOP], self.cssNode->style.padding[CSS_LEFT], self.cssNode->style.padding[CSS_BOTTOM], self.cssNode->style.padding[CSS_RIGHT]);
+    UIEdgeInsets padding = UIEdgeInsetsMake([WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_BOTTOM]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_RIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
     if (!UIEdgeInsetsEqualToEdgeInsets(padding, _padding)) {
         [self setPadding:padding];
     }
     
-    UIEdgeInsets border = UIEdgeInsetsMake(self.cssNode->style.border[CSS_TOP], self.cssNode->style.border[CSS_LEFT], self.cssNode->style.border[CSS_BOTTOM], self.cssNode->style.border[CSS_RIGHT]);
+    UIEdgeInsets border = UIEdgeInsetsMake([WXConvert WXPixelType:@(self.cssNode->style.border[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_BOTTOM]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_RIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
+    
     if (!UIEdgeInsetsEqualToEdgeInsets(border, _border)) {
         [self setBorder:border];
     }
@@ -499,19 +500,19 @@ WX_EXPORT_METHOD(@selector(setTextFormatter:))
         CGSize computedSize = [[[NSString alloc] init]sizeWithAttributes:nil];
         //TODO:more elegant way to use max and min constrained size
         if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_WIDTH])) {
-            computedSize.width = MAX(computedSize.width, weakSelf.cssNode->style.minDimensions[CSS_WIDTH]);
+            computedSize.width = MAX(computedSize.width, [WXConvert WXPixelType:@(weakSelf.cssNode->style.minDimensions[CSS_WIDTH]) scaleFactor:self.weexInstance.pixelScaleFactor]);
         }
         
         if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_WIDTH])) {
-            computedSize.width = MIN(computedSize.width, weakSelf.cssNode->style.maxDimensions[CSS_WIDTH]);
+            computedSize.width = MIN(computedSize.width, [WXConvert WXPixelType:@(weakSelf.cssNode->style.maxDimensions[CSS_WIDTH]) scaleFactor:self.weexInstance.pixelScaleFactor]);
         }
         
         if (!isnan(weakSelf.cssNode->style.minDimensions[CSS_HEIGHT])) {
-            computedSize.height = MAX(computedSize.height, weakSelf.cssNode->style.minDimensions[CSS_HEIGHT]);
+            computedSize.height = MAX(computedSize.height, [WXConvert WXPixelType:@(weakSelf.cssNode->style.minDimensions[CSS_HEIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
         }
         
         if (!isnan(weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT])) {
-            computedSize.height = MIN(computedSize.height, weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT]);
+            computedSize.height = MIN(computedSize.height, [WXConvert WXPixelType:@(weakSelf.cssNode->style.maxDimensions[CSS_HEIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
         }
         
         return (CGSize) {

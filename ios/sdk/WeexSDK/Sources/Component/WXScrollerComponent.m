@@ -791,8 +791,8 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
             print_css_node(_scrollerCSSNode, CSS_PRINT_LAYOUT | CSS_PRINT_STYLE | CSS_PRINT_CHILDREN);
         }
         CGSize size = {
-            WXRoundPixelValue(_scrollerCSSNode->layout.dimensions[CSS_WIDTH]),
-            WXRoundPixelValue(_scrollerCSSNode->layout.dimensions[CSS_HEIGHT])
+            WXRoundPixelValue([WXConvert WXPixelType:@(_scrollerCSSNode->layout.dimensions[CSS_WIDTH]) scaleFactor:self.weexInstance.pixelScaleFactor]),
+            WXRoundPixelValue([WXConvert WXPixelType:@(_scrollerCSSNode->layout.dimensions[CSS_HEIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor])
         };
 
         if (!CGSizeEqualToSize(size, _contentSize)) {

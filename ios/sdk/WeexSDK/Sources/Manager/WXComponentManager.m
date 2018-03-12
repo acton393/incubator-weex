@@ -159,11 +159,12 @@ static NSThread *WXComponentThread;
     
     if (_rootCSSNode) {
         [self _applyRootFrame:frame toRootCSSNode:_rootCSSNode];
+        CGFloat pixelScaleFactor = self.weexInstance.pixelScaleFactor;
         if (!_rootComponent.styles[@"width"]) {
-            _rootComponent.cssNode->style.dimensions[CSS_WIDTH] = frame.size.width ?: CSS_UNDEFINED;
+            _rootComponent.cssNode->style.dimensions[CSS_WIDTH] = frame.size.width/pixelScaleFactor ?: CSS_UNDEFINED;
         }
         if (!_rootComponent.styles[@"height"]) {
-            _rootComponent.cssNode->style.dimensions[CSS_HEIGHT] = frame.size.height ?: CSS_UNDEFINED;
+            _rootComponent.cssNode->style.dimensions[CSS_HEIGHT] = frame.size.height/pixelScaleFactor ?: CSS_UNDEFINED;
         }
         [_rootComponent setNeedsLayout];
         [self startComponentTasks];

@@ -465,7 +465,7 @@ typedef enum : NSUInteger {
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView contentWidthForLayout:(UICollectionViewLayout *)collectionViewLayout
 {
-    return self.scrollerCSSNode->style.dimensions[CSS_WIDTH];
+    return [WXConvert WXPixelType:@(self.scrollerCSSNode->style.dimensions[CSS_WIDTH]) scaleFactor:self.weexInstance.pixelScaleFactor];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout heightForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -635,15 +635,19 @@ typedef enum : NSUInteger {
 
 - (void)_fillPadding
 {
-    UIEdgeInsets padding = {
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_TOP] + self.cssNode->style.border[CSS_TOP]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_LEFT] + self.cssNode->style.border[CSS_LEFT]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_BOTTOM] + self.cssNode->style.border[CSS_BOTTOM]),
-        WXFloorPixelValue(self.cssNode->style.padding[CSS_RIGHT] + self.cssNode->style.border[CSS_RIGHT])
+    UIEdgeInsets padding = UIEdgeInsetsMake([WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_BOTTOM]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.padding[CSS_RIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
+    
+    UIEdgeInsets border = UIEdgeInsetsMake([WXConvert WXPixelType:@(self.cssNode->style.border[CSS_TOP]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_LEFT]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_BOTTOM]) scaleFactor:self.weexInstance.pixelScaleFactor], [WXConvert WXPixelType:@(self.cssNode->style.border[CSS_RIGHT]) scaleFactor:self.weexInstance.pixelScaleFactor]);
+    
+    UIEdgeInsets contentInset = {
+        WXFloorPixelValue(padding.top + border.top),
+        WXFloorPixelValue(padding.left + border.left),
+        WXFloorPixelValue(padding.bottom + border.bottom),
+        WXFloorPixelValue(padding.right + border.right)
     };
     
-    if (!UIEdgeInsetsEqualToEdgeInsets(padding, _padding)) {
-        _padding = padding;
+    if (!UIEdgeInsetsEqualToEdgeInsets(contentInset, _padding)) {
+        _padding = contentInset;
         [self setNeedsLayout];
         
         for (WXComponent *component in self.subcomponents) {

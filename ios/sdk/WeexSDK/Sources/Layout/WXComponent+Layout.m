@@ -76,12 +76,13 @@
     
     // To be in conformity with Android/Web, hopefully remove this in the future.
     if ([self.ref isEqualToString:WX_SDK_ROOT_REF]) {
+        CGFloat pixelScaleFactor = self.weexInstance.pixelScaleFactor;
         if (isUndefined(_cssNode->style.dimensions[CSS_HEIGHT]) && self.weexInstance.frame.size.height) {
-            _cssNode->style.dimensions[CSS_HEIGHT] = self.weexInstance.frame.size.height;
+            _cssNode->style.dimensions[CSS_HEIGHT] = self.weexInstance.frame.size.height/pixelScaleFactor;
         }
         
         if (isUndefined(_cssNode->style.dimensions[CSS_WIDTH]) && self.weexInstance.frame.size.width) {
-            _cssNode->style.dimensions[CSS_WIDTH] = self.weexInstance.frame.size.width;
+            _cssNode->style.dimensions[CSS_WIDTH] = self.weexInstance.frame.size.width/pixelScaleFactor;
         }
     }
 }
