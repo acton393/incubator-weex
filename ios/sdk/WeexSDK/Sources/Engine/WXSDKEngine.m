@@ -196,7 +196,7 @@
 {
     NSString *fileName = @"weex-main-jsfm";
     [WXSDKManager sharedInstance].multiContext = YES;
-    if (WX_SYS_VERSION_LESS_THAN(@"9.0")) {
+    if (WX_SYS_VERSION_LESS_THAN(@"10.0")) {
         fileName = @"native-bundle-main";
         [WXSDKManager sharedInstance].multiContext = NO;
     } else {
@@ -303,7 +303,7 @@ static NSDictionary *_customEnvironment;
 {
     NSString *fileName = @"weex-main-jsfm";
     [WXSDKManager sharedInstance].multiContext = YES;
-    if (WX_SYS_VERSION_LESS_THAN(@"9.0")) {
+    if (WX_SYS_VERSION_LESS_THAN(@"10.0")) {
         fileName = @"native-bundle-main";
         [WXSDKManager sharedInstance].multiContext = NO;
     } else {

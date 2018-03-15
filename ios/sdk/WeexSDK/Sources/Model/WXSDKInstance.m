@@ -250,7 +250,7 @@ typedef enum : NSUInteger {
         [WXTextComponent setRenderUsingCoreText:useCoreText];
         BOOL useThreadSafeLock = [[configCenter configForKey:@"iOS_weex_ext_config.useThreadSafeLock" defaultValue:@YES isDefault:NULL] boolValue];
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
-        if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
+        if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")) {
             BOOL shoudMultiContext = NO;
             shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(YES) isDefault:NULL] boolValue];
             if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
