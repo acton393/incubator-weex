@@ -35,6 +35,7 @@ typedef void (^WXJSCallNativeComponent)(NSString *instanceId, NSString *componen
 @protocol WXBridgeProtocol <NSObject>
 
 @property (nonatomic, readonly) JSValue* exception;
+@property (nonatomic, readonly) JSContext * globalJSContext;
 
 /**
  * Executes the js framework code in javascript engine

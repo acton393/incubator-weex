@@ -450,7 +450,7 @@ _Pragma("clang diagnostic pop") \
     NSString * bundleType = nil;
     
     if (shoudMultiContext) {
-        globalContex = ([(JSContext*)weakSelf.jsBridge valueForKey:@"jsContext"]);
+        globalContex = self.jsBridge.globalJSContext;
         bundleType = [self _pareJSBundleType:instanceIdString jsBundleString:jsBundleString]; // bundleType can be Vue, Rax and the new framework.
     }
     if (bundleType&&shoudMultiContext) {

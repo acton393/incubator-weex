@@ -51,6 +51,8 @@
 
 @implementation WXJSCoreBridge
 
+@synthesize globalJSContext;
+
 - (instancetype)init
 {
     self = [super init];
@@ -99,6 +101,7 @@
         _jsContext[@"extendCallNative"] = ^(JSValue *value ) {
             return [weakSelf extendCallNative:[value toDictionary]];
         };
+        globalJSContext = _jsContext;
     }
     return self;
 }
