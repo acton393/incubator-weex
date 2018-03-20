@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
                    }
   s.platform     = :ios
   s.ios.deployment_target = '8.0'
+  s.source =  { :path => '.' }
   s.source_files = 'ios/sdk/WeexSDK/Sources/**/*.{h,m,mm,c}'
   s.resources = 'pre-build/native-bundle-main.js', 'ios/sdk/WeexSDK/Resources/wx_load_error@3x.png'
   s.private_header_files = 'ios/sdk/WeexSDK/Sources/Component/RecycleList/WXJSASTParser.h'
@@ -52,6 +53,7 @@ Pod::Spec.new do |s|
                           'ios/sdk/WeexSDK/Sources/Model/WXJSExceptionInfo.h',
                           'ios/sdk/WeexSDK/Sources/Model/WXComponent.h',
                           'ios/sdk/WeexSDK/Sources/Monitor/WXMonitor.h',
+                          'ios/sdk/WeexSDK/Sources/Monitor/WXExceptionUtils.h',
                           'ios/sdk/WeexSDK/Sources/Manager/WXTracingManager.h',
                           'ios/sdk/WeexSDK/Sources/Manager/WXSDKManager.h',
                           'ios/sdk/WeexSDK/Sources/Manager/WXBridgeManager.h',
