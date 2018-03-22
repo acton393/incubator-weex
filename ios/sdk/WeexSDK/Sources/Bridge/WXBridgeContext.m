@@ -818,9 +818,12 @@ _Pragma("clang diagnostic pop") \
 {
     NSDictionary *data = [WXUtility getEnvironment];
     context[@"WXEnvironment"] = data;
+    // use latin1 encode also named ISO/IEC_8859-1 more: https://en.wikipedia.org/wiki/ISO/IEC_8859-1
+    // 8-bit single-byte coded graphic character sets as webkit does
+    // https://github.com/WebKit/webkit/blob/master/Source/WebCore/page/Base64Utilities.cpp
     context[@"btoa"] = ^(JSValue *value ) {
         NSData *nsdata = [[value toString]
-                          dataUsingEncoding:NSUTF8StringEncoding];
+                          dataUsingEncoding:NSISOLatin1StringEncoding];
         NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];
         return base64Encoded;
     };
@@ -828,7 +831,7 @@ _Pragma("clang diagnostic pop") \
         NSData *nsdataFromBase64String = [[NSData alloc]
                                           initWithBase64EncodedString:[value toString] options:0];
         NSString *base64Decoded = [[NSString alloc]
-                                   initWithData:nsdataFromBase64String encoding:NSUTF8StringEncoding];
+                                   initWithData:nsdataFromBase64String encoding:NSISOLatin1StringEncoding];
         return base64Decoded;
     };
     context.exceptionHandler = ^(JSContext *context, JSValue *exception){
