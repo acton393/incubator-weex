@@ -457,10 +457,9 @@ _Pragma("clang diagnostic pop") \
         NSMutableDictionary *newOptions = [options mutableCopy];
         if (!options) {
             newOptions = [NSMutableDictionary new];
-        } else {
-            [newOptions addEntriesFromDictionary:@{@"env":[WXUtility getEnvironment]}];
-            newOptions[@"bundleType"] = bundleType;
         }
+        [newOptions addEntriesFromDictionary:@{@"env":[WXUtility getEnvironment]}];
+        newOptions[@"bundleType"] = bundleType;
         [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]] onContext:globalContex completion:^(JSValue *instanceContextEnvironment) {
              WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
             JSContextGroupRef contextGroup = JSContextGetGroup([globalContex JSGlobalContextRef]);
