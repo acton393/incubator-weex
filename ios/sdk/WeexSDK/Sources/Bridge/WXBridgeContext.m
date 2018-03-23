@@ -552,7 +552,9 @@ _Pragma("clang diagnostic pop") \
         bundleType = @"Rax";
     }else {
         // use the top 100 characters match the bundleType
-        jsBundleString = [jsBundleString substringWithRange:NSMakeRange(0, 100)];
+        if (jsBundleString.length > 100) {
+            jsBundleString = [jsBundleString substringWithRange:NSMakeRange(0, 100)];
+        }
         NSRegularExpression * regEx = [NSRegularExpression regularExpressionWithPattern:@"(use)(\\s+)(weex:vue)" options:NSRegularExpressionCaseInsensitive error:NULL];
         NSTextCheckingResult *match = [regEx firstMatchInString:jsBundleString options:0 range:NSMakeRange(0, jsBundleString.length)];
         if (match) {
