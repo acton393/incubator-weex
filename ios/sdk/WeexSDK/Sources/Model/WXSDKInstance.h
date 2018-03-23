@@ -133,6 +133,11 @@ typedef NS_ENUM(NSInteger, WXErrorCode) {//error.code
 @property (nonatomic, copy) void (^refreshFinish)(UIView *);
 
 /**
+ * bundleType is the DSL type
+ */
+@property (nonatomic, strong) NSString * bundleType;
+
+/**
  *  The callback triggered when the instance fails to render.
  *
  *  @return A block that takes a NSError argument, which is the error occured

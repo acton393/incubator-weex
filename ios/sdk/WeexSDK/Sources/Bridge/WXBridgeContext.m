@@ -338,8 +338,26 @@ _Pragma("clang diagnostic pop") \
             WXLogInfo(@"instance not found for callNativeModule:%@.%@, maybe already destroyed", moduleName, methodName);
             return nil;
         }
+        NSMutableDictionary * newOptions = [options mutableCopy];
+        NSMutableArray * newArguments = [arguments mutableCopy];
         
-        WXModuleMethod *method = [[WXModuleMethod alloc] initWithModuleName:moduleName methodName:methodName arguments:arguments options:options instance:instance];
+        if ([WXSDKManager sharedInstance].multiContext && [instance.bundleType.lowercaseString isEqualToString:@"rax"]) {
+            // we need to adjust __weex_options__ params in arguments to options compatible with rax javaScript framework.
+            NSDictionary * weexOptions = nil;
+            for(int i = 0;i < [arguments count]; i ++) {
+                if ([arguments[i] isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary * dict = (NSDictionary*)arguments[i];
+                    if (dict[@"__weex_options__"] && [dict[@"__weex_options__"] isKindOfClass:[NSDictionary class]]) {
+                        weexOptions = dict;
+                        [newOptions addEntriesFromDictionary:(NSDictionary*)(weexOptions[@"__weex_options__"])];
+                    }
+                }
+            }
+            if (weexOptions) {
+                [newArguments removeObject:weexOptions];
+            }
+        }
+        WXModuleMethod *method = [[WXModuleMethod alloc] initWithModuleName:moduleName methodName:methodName arguments:[newArguments copy] options:[newOptions copy] instance:instance];
         if(![moduleName isEqualToString:@"dom"] && instance.needPrerender){
             [WXPrerenderManager storePrerenderModuleTasks:method forUrl:instance.scriptURL.absoluteString];
             return nil;
@@ -461,7 +479,8 @@ _Pragma("clang diagnostic pop") \
         [newOptions addEntriesFromDictionary:@{@"env":[WXUtility getEnvironment]}];
         newOptions[@"bundleType"] = bundleType;
         [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]] onContext:globalContex completion:^(JSValue *instanceContextEnvironment) {
-             WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
+            WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
+            sdkInstance.bundleType = bundleType;
             JSContextGroupRef contextGroup = JSContextGetGroup([globalContex JSGlobalContextRef]);
             JSClassDefinition classDefinition = kJSClassDefinitionEmpty;
             classDefinition.attributes = kJSClassAttributeNoAutomaticPrototype;
