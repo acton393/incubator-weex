@@ -320,6 +320,7 @@
 		DC03ADBA1D508719003F76E7 /* WXTextAreaComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DC03ADB81D508719003F76E7 /* WXTextAreaComponent.h */; };
 		DC15A3DB2010BC93009C8977 /* weex-main-jsfm.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3D92010BC93009C8977 /* weex-main-jsfm.js */; };
 		DC15A3DC2010BC93009C8977 /* weex-rax-api.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3DA2010BC93009C8977 /* weex-rax-api.js */; };
+		DC3411E7206CF3AB00D406AA /* weex-polyfill.js in Resources */ = {isa = PBXBuildFile; fileRef = DC3411E6206CF3AA00D406AA /* weex-polyfill.js */; };
 		DC6836E61EBB12B200AD2D84 /* WXConfigCenterProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DC6836E51EBB12B200AD2D84 /* WXConfigCenterProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DC7764931F3C2CA300B5727E /* WXRecyclerDragController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7764911F3C2CA300B5727E /* WXRecyclerDragController.m */; };
 		DC7764941F3C2CA300B5727E /* WXRecyclerDragController.h in Headers */ = {isa = PBXBuildFile; fileRef = DC7764921F3C2CA300B5727E /* WXRecyclerDragController.h */; };
@@ -907,6 +908,7 @@
 		DC03ADB81D508719003F76E7 /* WXTextAreaComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXTextAreaComponent.h; sourceTree = "<group>"; };
 		DC15A3D92010BC93009C8977 /* weex-main-jsfm.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "weex-main-jsfm.js"; path = "../../../../pre-build/weex-main-jsfm.js"; sourceTree = "<group>"; };
 		DC15A3DA2010BC93009C8977 /* weex-rax-api.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "weex-rax-api.js"; path = "../../../../pre-build/weex-rax-api.js"; sourceTree = "<group>"; };
+		DC3411E6206CF3AA00D406AA /* weex-polyfill.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = "weex-polyfill.js"; path = "../../pre-build/weex-polyfill.js"; sourceTree = "<group>"; };
 		DC6836E51EBB12B200AD2D84 /* WXConfigCenterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXConfigCenterProtocol.h; sourceTree = "<group>"; };
 		DC7764911F3C2CA300B5727E /* WXRecyclerDragController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WXRecyclerDragController.m; path = WeexSDK/Sources/Component/Recycler/WXRecyclerDragController.m; sourceTree = SOURCE_ROOT; };
 		DC7764921F3C2CA300B5727E /* WXRecyclerDragController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXRecyclerDragController.h; path = WeexSDK/Sources/Component/Recycler/WXRecyclerDragController.h; sourceTree = SOURCE_ROOT; };
@@ -1206,6 +1208,7 @@
 		77D160F31C02DBE70010B15B = {
 			isa = PBXGroup;
 			children = (
+				DC3411E6206CF3AA00D406AA /* weex-polyfill.js */,
 				77D160FF1C02DBE70010B15B /* WeexSDK */,
 				2A42AF861C23B33E00818EA6 /* WeexSDK_MTL */,
 				74C8963E1D2AC2210043B82A /* WeexSDKTests */,
@@ -2014,6 +2017,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC3411E7206CF3AB00D406AA /* weex-polyfill.js in Resources */,
 				DC15A3DC2010BC93009C8977 /* weex-rax-api.js in Resources */,
 				DCF0CD9E1EAF3A6B0062CA8F /* native-bundle-main.js in Resources */,
 				DC15A3DB2010BC93009C8977 /* weex-main-jsfm.js in Resources */,
