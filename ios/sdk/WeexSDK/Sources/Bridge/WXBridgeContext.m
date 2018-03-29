@@ -498,6 +498,16 @@ _Pragma("clang diagnostic pop") \
                 }
                 JSObjectSetProperty(instanceContextRef, globalObject, propertyName, [instanceContextEnvironment valueForProperty:key].JSValueRef, 0, NULL);
             }
+            
+            if (WX_SYS_VERSION_LESS_THAN(@"10.2")) {
+                NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-polyfill" ofType:@"js"];
+                NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+                if (script) {
+                    [sdkInstance.instanceJavaScriptContext evaluateScript:script];
+                } else {
+                    WXLogError(@"weex-pollyfill can not found");
+                }
+            }
             if ([bundleType isEqualToString:@"Rax"]) {
                 NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
                 NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
@@ -541,19 +551,20 @@ _Pragma("clang diagnostic pop") \
         // Fallback on earlier versions
         return bundleType;
     }
+    // use the top 100 characters match the bundleType
+    if (jsBundleString.length > 100) {
+        jsBundleString = [jsBundleString substringWithRange:NSMakeRange(0, 100)];
+    }
+    
     jsBundleString = [jsBundleString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (!jsBundleString ) {
         return bundleType;
     }
     if ([jsBundleString hasPrefix:@"// { \"framework\": \"Vue\""] || [jsBundleString hasPrefix:@"// { \"framework\": \"vue\""]) {
         bundleType = @"Vue";
-    } else if ([jsBundleString hasPrefix:@"// { \"framework\": \"Rax\""] || [jsBundleString hasPrefix:@"// { \"framework\": \"rax\""]) {
+    } else if ([jsBundleString hasPrefix:@"// { \"framework\": \"Rax\""] || [jsBundleString hasPrefix:@"// { \"framework\": \"rax\""] || [jsBundleString hasPrefix:@"// {\"framework\" : \"Rax\"}"] || [jsBundleString hasPrefix:@"// {\"framework\" : \"rax\"}"]) {
         bundleType = @"Rax";
     }else {
-        // use the top 100 characters match the bundleType
-        if (jsBundleString.length > 100) {
-            jsBundleString = [jsBundleString substringWithRange:NSMakeRange(0, 100)];
-        }
         NSRegularExpression * regEx = [NSRegularExpression regularExpressionWithPattern:@"(use)(\\s+)(weex:vue)" options:NSRegularExpressionCaseInsensitive error:NULL];
         NSTextCheckingResult *match = [regEx firstMatchInString:jsBundleString options:0 range:NSMakeRange(0, jsBundleString.length)];
         if (match) {

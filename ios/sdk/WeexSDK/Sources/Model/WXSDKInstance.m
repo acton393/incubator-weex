@@ -250,21 +250,20 @@ typedef enum : NSUInteger {
         [WXTextComponent setRenderUsingCoreText:useCoreText];
         BOOL useThreadSafeLock = [[configCenter configForKey:@"iOS_weex_ext_config.useThreadSafeLock" defaultValue:@YES isDefault:NULL] boolValue];
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
-        if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
-            BOOL shoudMultiContext = NO;
-            shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(YES) isDefault:NULL] boolValue];
-            if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
-                [WXSDKManager sharedInstance].multiContext = YES;
-                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"createInstanceUsingMutliContext"];
-                [WXSDKEngine restart];
-                return YES;
-            }
-            if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
-                [WXSDKManager sharedInstance].multiContext = NO;
-                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"createInstanceUsingMutliContext"];
-                [WXSDKEngine restart];
-                return YES;
-            }
+        
+        BOOL shoudMultiContext = NO;
+        shoudMultiContext = [[configCenter configForKey:@"iOS_weex_ext_config.createInstanceUsingMutliContext" defaultValue:@(YES) isDefault:NULL] boolValue];
+        if(shoudMultiContext && ![WXSDKManager sharedInstance].multiContext) {
+            [WXSDKManager sharedInstance].multiContext = YES;
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"createInstanceUsingMutliContext"];
+            [WXSDKEngine restart];
+            return YES;
+        }
+        if (!shoudMultiContext && [WXSDKManager sharedInstance].multiContext) {
+            [WXSDKManager sharedInstance].multiContext = NO;
+            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"createInstanceUsingMutliContext"];
+            [WXSDKEngine restart];
+            return YES;
         }
     }
     return NO;
