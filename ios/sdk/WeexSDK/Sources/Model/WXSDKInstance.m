@@ -73,6 +73,8 @@ typedef enum : NSUInteger {
     BOOL _performanceCommit;
     BOOL _needDestroy;
     BOOL _syncDestroyComponentManager;
+    BOOL _debugJS;
+    id<WXBridgeProtocol> _instanceJavaScriptContext; // sandbox javaScript context
 }
 
 - (void)dealloc
@@ -116,10 +118,44 @@ typedef enum : NSUInteger {
         if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
             _syncDestroyComponentManager = [[configCenter configForKey:@"iOS_weex_ext_config.syncDestroyComponentManager" defaultValue:@(YES) isDefault:NULL] boolValue];
         }
-       
+        
         [self addObservers];
     }
     return self;
+}
+
+- (id<WXBridgeProtocol>)instanceJavaScriptContext
+{
+    _debugJS = [WXDebugTool isDevToolDebug];
+    
+    Class bridgeClass = _debugJS ? NSClassFromString(@"WXDebugger") : [WXJSCoreBridge class];
+    
+    if (_instanceJavaScriptContext && [_instanceJavaScriptContext isKindOfClass:bridgeClass]) {
+        return _instanceJavaScriptContext;
+    }
+    
+    if (_instanceJavaScriptContext) {
+        _instanceJavaScriptContext = nil;
+    }
+    
+    _instanceJavaScriptContext = _debugJS ? [NSClassFromString(@"WXDebugger") alloc] : [[WXJSCoreBridge alloc] init];
+    
+    if(!_debugJS) {
+        id<WXBridgeProtocol> jsBridge = [[WXSDKManager bridgeMgr] valueForKeyPath:@"bridgeCtx.jsBridge"];
+        JSContext* globalContex = jsBridge.javaScriptContext;
+        JSContextGroupRef contextGroup = JSContextGetGroup([globalContex JSGlobalContextRef]);
+        JSClassDefinition classDefinition = kJSClassDefinitionEmpty;
+        classDefinition.attributes = kJSClassAttributeNoAutomaticPrototype;
+        JSClassRef globalObjectClass = JSClassCreate(&classDefinition);
+        JSGlobalContextRef sandboxGlobalContextRef = JSGlobalContextCreateInGroup(contextGroup, globalObjectClass);
+        JSClassRelease(globalObjectClass);
+        JSContext * instanceContext = [JSContext contextWithJSGlobalContextRef:sandboxGlobalContextRef];
+        JSGlobalContextRelease(sandboxGlobalContextRef);
+        [WXBridgeContext mountContextEnvironment:instanceContext];
+        [_instanceJavaScriptContext setJSContext:instanceContext];
+    }
+    
+    return _instanceJavaScriptContext;
 }
 
 - (NSString *)description
@@ -384,16 +420,16 @@ typedef enum : NSUInteger {
     [self _renderWithRequest:request options:_options data:_jsData];
 }
 
-- (void)setInstanceJavaScriptContext:(JSContext*)instanceJavaScriptContext
-{
-    _instanceJavaScriptContext = instanceJavaScriptContext;
-    if (@available(iOS 8.0, *)) {
-        _instanceJavaScriptContext.name = self.pageName;
-    } else {
-        // Fallback
-    }
-    [WXBridgeContext mountContextEnvironment:self.instanceJavaScriptContext];
-}
+//- (void)setInstanceJavaScriptContext:(JSContext*)instanceJavaScriptContext
+//{
+//    _instanceJavaScriptContext = instanceJavaScriptContext;
+//    if (@available(iOS 8.0, *)) {
+//        _instanceJavaScriptContext.name = self.pageName;
+//    } else {
+//        // Fallback
+//    }
+//    [WXBridgeContext mountContextEnvironment:self.instanceJavaScriptContext];
+//}
 
 - (void)refreshInstance:(id)data
 {
@@ -426,7 +462,7 @@ typedef enum : NSUInteger {
     [WXPrerenderManager destroyTask:self.instanceId];
     [[WXSDKManager bridgeMgr] destroyInstance:self.instanceId];
     if (_instanceJavaScriptContext) {
-        JSGarbageCollect(_instanceJavaScriptContext.JSGlobalContextRef);
+        [_instanceJavaScriptContext garbageCollect];
         _instanceJavaScriptContext = nil;
     }
     

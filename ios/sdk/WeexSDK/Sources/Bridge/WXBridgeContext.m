@@ -464,11 +464,9 @@ _Pragma("clang diagnostic pop") \
     WX_MONITOR_INSTANCE_PERF_START(WXPTJSCreateInstance, [WXSDKManager instanceForID:instanceIdString]);
     BOOL shoudMultiContext = [WXSDKManager sharedInstance].multiContext;
     __weak typeof(self) weakSelf = self;
-    JSContext *globalContex = nil;
     NSString * bundleType = nil;
     
     if (shoudMultiContext) {
-        globalContex = self.jsBridge.globalJSContext;
         bundleType = [self _pareJSBundleType:instanceIdString jsBundleString:jsBundleString]; // bundleType can be Vue, Rax and the new framework.
     }
     if (bundleType&&shoudMultiContext) {
@@ -478,52 +476,52 @@ _Pragma("clang diagnostic pop") \
         }
         [newOptions addEntriesFromDictionary:@{@"env":[WXUtility getEnvironment]}];
         newOptions[@"bundleType"] = bundleType;
-        [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]] onContext:globalContex completion:^(JSValue *instanceContextEnvironment) {
-            WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
-            sdkInstance.bundleType = bundleType;
-            JSContextGroupRef contextGroup = JSContextGetGroup([globalContex JSGlobalContextRef]);
-            JSClassDefinition classDefinition = kJSClassDefinitionEmpty;
-            classDefinition.attributes = kJSClassAttributeNoAutomaticPrototype;
-            JSClassRef globalObjectClass = JSClassCreate(&classDefinition);
-            JSGlobalContextRef sandboxGlobalContextRef = JSGlobalContextCreateInGroup(contextGroup, globalObjectClass);
-            JSClassRelease(globalObjectClass);
-            sdkInstance.instanceJavaScriptContext = [JSContext contextWithJSGlobalContextRef:sandboxGlobalContextRef];
-            JSGlobalContextRelease(sandboxGlobalContextRef);
-            JSContextRef instanceContextRef = sdkInstance.instanceJavaScriptContext.JSGlobalContextRef;
-            JSObjectRef globalObject = JSContextGetGlobalObject(sdkInstance.instanceJavaScriptContext.JSGlobalContextRef);
-            for (NSString * key in [[instanceContextEnvironment toDictionary] allKeys]) {
-                JSStringRef propertyName = JSStringCreateWithUTF8CString([key cStringUsingEncoding:NSUTF8StringEncoding]);
-                if ([key isEqualToString:@"Vue"]) {
-                    JSObjectSetPrototype(instanceContextRef, JSValueToObject(instanceContextRef, [instanceContextEnvironment valueForProperty:key].JSValueRef, NULL), JSObjectGetPrototype(instanceContextRef, globalObject));
+        if ([WXDebugTool isDevToolDebug]) {
+            [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]]];
+        } else {
+            [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]] onContext:nil completion:^(JSValue *instanceContextEnvironment) {
+                WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
+                sdkInstance.bundleType = bundleType;
+                if (sdkInstance.pageName) {
+                    [sdkInstance.instanceJavaScriptContext.javaScriptContext setName:sdkInstance.pageName];
                 }
-                JSObjectSetProperty(instanceContextRef, globalObject, propertyName, [instanceContextEnvironment valueForProperty:key].JSValueRef, 0, NULL);
-            }
-            
-            if (WX_SYS_VERSION_LESS_THAN(@"10.2")) {
-                NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-polyfill" ofType:@"js"];
-                NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-                if (script) {
-                    [sdkInstance.instanceJavaScriptContext evaluateScript:script];
+                JSGlobalContextRef instanceContextRef = sdkInstance.instanceJavaScriptContext.javaScriptContext.JSGlobalContextRef;
+                JSObjectRef instanceGlobalObject = JSContextGetGlobalObject(instanceContextRef);
+                for (NSString * key in [[instanceContextEnvironment toDictionary] allKeys]) {
+                    JSStringRef propertyName = JSStringCreateWithUTF8CString([key cStringUsingEncoding:NSUTF8StringEncoding]);
+                    if ([key isEqualToString:@"Vue"]) {
+                        JSObjectSetPrototype(instanceContextRef, JSValueToObject(instanceContextRef, [instanceContextEnvironment valueForProperty:key].JSValueRef, NULL), JSObjectGetPrototype(instanceContextRef, instanceGlobalObject));
+                    }
+                    JSObjectSetProperty(instanceContextRef, instanceGlobalObject, propertyName, [instanceContextEnvironment valueForProperty:key].JSValueRef, 0, NULL);
+                }
+                
+                if (WX_SYS_VERSION_LESS_THAN(@"10.2")) {
+                    NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-polyfill" ofType:@"js"];
+                    NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+                    if (script) {
+                        [sdkInstance.instanceJavaScriptContext executeJavascript:script withSourceURL:[NSURL URLWithString:filePath]];
+                    } else {
+                        WXLogError(@"weex-pollyfill can not found");
+                    }
+                }
+                if ([bundleType isEqualToString:@"Rax"]) {
+                    NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
+                    NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+                    if (script) {
+                        [sdkInstance.instanceJavaScriptContext executeJavascript:script withSourceURL:[NSURL URLWithString:filePath]];
+                    } else {
+                        WXLogError(@"weex-rax-api can not found");
+                    }
+                }
+                if ([NSURL URLWithString:sdkInstance.pageName]) {
+                    [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString withSourceURL:[NSURL URLWithString:[NSURL URLWithString:sdkInstance.pageName]]];
                 } else {
-                    WXLogError(@"weex-pollyfill can not found");
+                    [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString];
                 }
-            }
-            if ([bundleType isEqualToString:@"Rax"]) {
-                NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
-                NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-                if (script) {
-                    [sdkInstance.instanceJavaScriptContext evaluateScript:script];
-                } else {
-                    WXLogError(@"weex-rax-api can not found");
-                }
-            }
-            if ([NSURL URLWithString:sdkInstance.pageName]) {
-                [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString withSourceURL:[NSURL URLWithString:sdkInstance.pageName]];
-            } else {
-                [sdkInstance.instanceJavaScriptContext evaluateScript:jsBundleString];
-            }
-            
-        }];
+                
+            }];
+        }
+        
     } else {
         if (data){
             args = @[instanceIdString, jsBundleString, options ?: @{}, data];
@@ -690,12 +688,12 @@ _Pragma("clang diagnostic pop") \
     [self performSelector:@selector(_sendQueueLoop) withObject:nil];
 }
 
-- (void)callJSMethod:(NSString *)method args:(NSArray *)args onContext:(JSContext*)context completion:(void (^)(JSValue * value))complection
+- (void)callJSMethod:(NSString *)method args:(NSArray *)args onContext:(id<WXBridgeProtocol>)bridge completion:(void (^)(JSValue * value))complection
 {
     NSMutableArray *newArg = nil;
-    if (!context) {
+    if (!bridge) {
         if ([self.jsBridge isKindOfClass:[WXJSCoreBridge class]]) {
-           context = [(NSObject*)_jsBridge valueForKey:@"jsContext"];
+            bridge = self.jsBridge;
         }
     }
     if (self.frameworkLoadFinished) {
@@ -704,9 +702,13 @@ _Pragma("clang diagnostic pop") \
             [newArg removeObject:complection];
         }
         WXLogDebug(@"Calling JS... method:%@, args:%@", method, args);
-        JSValue *value = [[context globalObject] invokeMethod:method withArguments:args];
-        if (complection) {
-            complection(value);
+        if ([bridge isKindOfClass:[WXJSCoreBridge class]]) {
+            JSValue *value = [bridge callJSMethod:method args:args];
+            if (complection) {
+                complection(value);
+            }
+        } else {
+            [bridge callJSMethod:method args:args];
         }
     } else {
         newArg = [args mutableCopy];

@@ -33,11 +33,13 @@
 #import "WXTracingManager.h"
 #import "WXExceptionUtils.h"
 #import "WXBridgeContext.h"
+#import "WXMonitor.h"
+#import "WXPolyfillSet.h"
+#import "WXAppMonitorProtocol.h"
 
 #import <dlfcn.h>
 
 #import <mach/mach.h>
-
 
 @interface WXJSCoreBridge ()
 
@@ -50,8 +52,6 @@
 @end
 
 @implementation WXJSCoreBridge
-
-@synthesize globalJSContext;
 
 - (instancetype)init
 {
@@ -101,9 +101,18 @@
         _jsContext[@"extendCallNative"] = ^(JSValue *value ) {
             return [weakSelf extendCallNative:[value toDictionary]];
         };
-        globalJSContext = _jsContext;
     }
     return self;
+}
+
+- (void)setJSContext:(JSContext *)context
+{
+    _jsContext = context;
+}
+
+- (JSContext *)javaScriptContext
+{
+    return _jsContext;
 }
 
 #pragma mark - WXBridgeProtocol
@@ -145,6 +154,16 @@
 {
     WXAssertParam(script);
     [_jsContext evaluateScript:script];
+}
+
+- (JSValue*)executeJavascript:(NSString *)script withSourceURL:(NSURL*)sourceURL
+{
+    WXAssertParam(script);
+    if (sourceURL) {
+        return [_jsContext evaluateScript:script withSourceURL:sourceURL];
+    } else {
+        return [_jsContext evaluateScript:script];
+    }
 }
 
 - (void)registerCallAddElement:(WXJSCallAddElement)callAddElement
@@ -347,6 +366,7 @@
 //    if (garbageCollect != NULL) {
 //        garbageCollect(_jsContext.JSGlobalContextRef);
 //    }
+//    JSGarbageCollect(_jsContext.JSGlobalContextRef);
 }
 
 #pragma mark - Public
