@@ -696,9 +696,7 @@ _Pragma("clang diagnostic pop") \
 {
     NSMutableArray *newArg = nil;
     if (!bridge) {
-        if ([self.jsBridge isKindOfClass:[WXJSCoreBridge class]]) {
-            bridge = self.jsBridge;
-        }
+        bridge = self.jsBridge;
     }
     if (self.frameworkLoadFinished) {
         newArg = [args mutableCopy];
