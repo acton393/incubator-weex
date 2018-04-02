@@ -35,7 +35,6 @@
 @property (nonatomic, strong) NSMutableDictionary *attrConfigs;
 @property (nonatomic, strong) NSString *mainBundleString;
 
-@property (nonatomic, strong) JSContext *instanceJavaScriptContext; // sandbox javaScript context
 @property (nonatomic, readonly, strong) WXComponentManager *componentManager;
 
 - (void)addModuleEventObservers:(NSString*)event callback:(NSString*)callbackId option:(NSDictionary*)option moduleClassName:(NSString*)moduleClassName;
