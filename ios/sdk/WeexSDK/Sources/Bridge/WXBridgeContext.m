@@ -514,7 +514,7 @@ _Pragma("clang diagnostic pop") \
                     }
                 }
                 if ([NSURL URLWithString:sdkInstance.pageName]) {
-                    [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString withSourceURL:[NSURL URLWithString:[NSURL URLWithString:sdkInstance.pageName]]];
+                    [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString withSourceURL:[NSURL URLWithString:sdkInstance.pageName]];
                 } else {
                     [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString];
                 }
