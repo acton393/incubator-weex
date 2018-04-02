@@ -483,7 +483,11 @@ _Pragma("clang diagnostic pop") \
                 WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
                 sdkInstance.bundleType = bundleType;
                 if (sdkInstance.pageName) {
-                    [sdkInstance.instanceJavaScriptContext.javaScriptContext setName:sdkInstance.pageName];
+                    if (@available(iOS 8.0, *)) {
+                          [sdkInstance.instanceJavaScriptContext.javaScriptContext setName:sdkInstance.pageName];
+                    } else {
+                        // Fallback
+                    }
                 }
                 JSGlobalContextRef instanceContextRef = sdkInstance.instanceJavaScriptContext.javaScriptContext.JSGlobalContextRef;
                 JSObjectRef instanceGlobalObject = JSContextGetGlobalObject(instanceContextRef);

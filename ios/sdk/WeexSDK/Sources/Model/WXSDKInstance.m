@@ -421,17 +421,6 @@ typedef enum : NSUInteger {
     [self _renderWithRequest:request options:_options data:_jsData];
 }
 
-//- (void)setInstanceJavaScriptContext:(JSContext*)instanceJavaScriptContext
-//{
-//    _instanceJavaScriptContext = instanceJavaScriptContext;
-//    if (@available(iOS 8.0, *)) {
-//        _instanceJavaScriptContext.name = self.pageName;
-//    } else {
-//        // Fallback
-//    }
-//    [WXBridgeContext mountContextEnvironment:self.instanceJavaScriptContext];
-//}
-
 - (void)refreshInstance:(id)data
 {
     WXLogDebug(@"refresh instance: %@, data:%@", self, [WXUtility JSONString:data]);
