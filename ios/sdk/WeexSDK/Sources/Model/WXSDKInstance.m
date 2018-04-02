@@ -48,6 +48,7 @@
 #import "WXExceptionUtils.h"
 #import "WXBridgeContext.h"
 #import "WXMonitor.h"
+#import "WXJSCoreBridge.h"
 
 NSString *const bundleUrlOptionKey = @"bundleUrl";
 
