@@ -477,10 +477,13 @@ _Pragma("clang diagnostic pop") \
         [newOptions addEntriesFromDictionary:@{@"env":[WXUtility getEnvironment]}];
         newOptions[@"bundleType"] = bundleType;
         NSString *raxAPIScript = nil;
+        NSString *raxAPIScriptPath = nil;
+        WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
+        sdkInstance.bundleType = bundleType;
         if ([bundleType.lowercaseString isEqualToString:@"rax"]) {
-            NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
-            raxAPIScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-            if (!script) {
+             raxAPIScriptPath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
+            raxAPIScript = [NSString stringWithContentsOfFile:raxAPIScriptPath encoding:NSUTF8StringEncoding error:nil];
+            if (!raxAPIScript) {
                 WXLogError(@"weex-rax-api can not found");
             }
         }
@@ -495,8 +498,6 @@ _Pragma("clang diagnostic pop") \
             }
         } else {
             [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]] onContext:nil completion:^(JSValue *instanceContextEnvironment) {
-                WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
-                sdkInstance.bundleType = bundleType;
                 if (sdkInstance.pageName) {
                     if (@available(iOS 8.0, *)) {
                           [sdkInstance.instanceJavaScriptContext.javaScriptContext setName:sdkInstance.pageName];
@@ -525,7 +526,7 @@ _Pragma("clang diagnostic pop") \
                 }
                 
                 if (raxAPIScript) {
-                    [sdkInstance.instanceJavaScriptContext executeJavascript:script withSourceURL:[NSURL URLWithString:filePath]];
+                    [sdkInstance.instanceJavaScriptContext executeJavascript:raxAPIScript withSourceURL:[NSURL URLWithString:raxAPIScriptPath]];
                 }
                 
                 if ([NSURL URLWithString:sdkInstance.pageName]) {
