@@ -81,6 +81,9 @@
     }
     
     id<WXModuleProtocol> moduleInstance = [self.instance moduleForClass:moduleClass];
+    if ([moduleInstance respondsToSelector:@selector(setMethodOptions:)]) {
+        [moduleInstance setMethodOptions:self.options];
+    }
     WXAssert(moduleInstance, @"No instance found for module name:%@, class:%@", _moduleName, moduleClass);
     BOOL isSync = NO;
     SEL selector = [WXModuleFactory selectorWithModuleName:self.moduleName methodName:self.methodName isSync:&isSync];

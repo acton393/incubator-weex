@@ -75,4 +75,9 @@ typedef void (^WXModuleKeepAliveCallback)(id result, BOOL keepAlive);
  */
 @property (nonatomic, weak) WXSDKInstance *weexInstance;
 
+/*
+ * retain moduleMethod options for extend params
+ */
+@property (nonatomic, strong) NSDictionary * methodOptions;
+
 @end

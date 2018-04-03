@@ -578,6 +578,10 @@
 		DCD8D0F42073392A0002C420 /* weex-polyfill.js in Resources */ = {isa = PBXBuildFile; fileRef = DCD8D0F22073392A0002C420 /* weex-polyfill.js */; };
 		DCD8D0F52073393B0002C420 /* weex-main-jsfm.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3D92010BC93009C8977 /* weex-main-jsfm.js */; };
 		DCD8D0F62073393B0002C420 /* weex-rax-api.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3DA2010BC93009C8977 /* weex-rax-api.js */; };
+		DCD8D0FD20735BE40002C420 /* WXScriptModule.h in Headers */ = {isa = PBXBuildFile; fileRef = DCD8D0FB20735BE30002C420 /* WXScriptModule.h */; };
+		DCD8D0FE20735BE40002C420 /* WXScriptModule.h in Headers */ = {isa = PBXBuildFile; fileRef = DCD8D0FB20735BE30002C420 /* WXScriptModule.h */; };
+		DCD8D0FF20735BE40002C420 /* WXScriptModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD8D0FC20735BE40002C420 /* WXScriptModule.m */; };
+		DCD8D10020735BE40002C420 /* WXScriptModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD8D0FC20735BE40002C420 /* WXScriptModule.m */; };
 		DCDFED011E68238F00C228D7 /* WXJSExceptionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCDFED001E68238F00C228D7 /* WXJSExceptionProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCE2CF9A1F46D4220021BDC4 /* WXVoiceOverModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2CF981F46D4220021BDC4 /* WXVoiceOverModule.m */; };
 		DCE2CF9B1F46D4220021BDC4 /* WXVoiceOverModule.h in Headers */ = {isa = PBXBuildFile; fileRef = DCE2CF991F46D4220021BDC4 /* WXVoiceOverModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -927,6 +931,8 @@
 		DCC77C111D770AE300CE7288 /* WXSliderNeighborComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXSliderNeighborComponent.m; sourceTree = "<group>"; };
 		DCC77C121D770AE300CE7288 /* WXSliderNeighborComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXSliderNeighborComponent.h; sourceTree = "<group>"; };
 		DCD8D0F22073392A0002C420 /* weex-polyfill.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "weex-polyfill.js"; path = "../../../../pre-build/weex-polyfill.js"; sourceTree = "<group>"; };
+		DCD8D0FB20735BE30002C420 /* WXScriptModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXScriptModule.h; sourceTree = "<group>"; };
+		DCD8D0FC20735BE40002C420 /* WXScriptModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXScriptModule.m; sourceTree = "<group>"; };
 		DCDFED001E68238F00C228D7 /* WXJSExceptionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXJSExceptionProtocol.h; sourceTree = "<group>"; };
 		DCE2CF981F46D4220021BDC4 /* WXVoiceOverModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXVoiceOverModule.m; sourceTree = "<group>"; };
 		DCE2CF991F46D4220021BDC4 /* WXVoiceOverModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXVoiceOverModule.h; sourceTree = "<group>"; };
@@ -1443,6 +1449,8 @@
 				59A5961F1CB6311F0012CD52 /* WXNavigatorModule.m */,
 				59A596201CB6311F0012CD52 /* WXStorageModule.h */,
 				59A596211CB6311F0012CD52 /* WXStorageModule.m */,
+				DCD8D0FB20735BE30002C420 /* WXScriptModule.h */,
+				DCD8D0FC20735BE40002C420 /* WXScriptModule.m */,
 				74A4BAA41CB4F98300195969 /* WXStreamModule.h */,
 				74A4BAA51CB4F98300195969 /* WXStreamModule.m */,
 				594C28911CF9E61A009793A4 /* WXAnimationModule.h */,
@@ -1666,6 +1674,7 @@
 				74BA4AB31F70F4B600AC29BF /* WXRecycleListLayout.h in Headers */,
 				742AD7311DF98C45007DC46C /* WXResourceRequestHandlerDefaultImpl.h in Headers */,
 				C4F0127D1E1502A6003378D0 /* WXWebSocketHandler.h in Headers */,
+				DCD8D0FD20735BE40002C420 /* WXScriptModule.h in Headers */,
 				DC03ADBA1D508719003F76E7 /* WXTextAreaComponent.h in Headers */,
 				2AC750241C7565690041D390 /* WXIndicatorComponent.h in Headers */,
 				DCAB35FE1D658EB700C0EA70 /* WXRuleManager.h in Headers */,
@@ -1801,6 +1810,7 @@
 				DCA445E31EFA59DA00D0CFA8 /* WXEmbedComponent.h in Headers */,
 				DCA445DF1EFA59BC00D0CFA8 /* WXLoadingComponent.h in Headers */,
 				C42E8FAD1F3C7C3F001EBE9D /* WXExtendCallNativeManager.h in Headers */,
+				DCD8D0FE20735BE40002C420 /* WXScriptModule.h in Headers */,
 				DCA445CB1EFA590600D0CFA8 /* WXComponent+Layout.h in Headers */,
 				DCA4460F1EFA5A8100D0CFA8 /* WXDiffUtil.h in Headers */,
 				DCA445F91EFA5A3700D0CFA8 /* WXClipboardModule.h in Headers */,
@@ -2214,6 +2224,7 @@
 				2AE5B7531CAB7DBD0082FDDB /* WXAComponent.m in Sources */,
 				333D9A291F41507A007CED39 /* WXTransition.m in Sources */,
 				74CFDD3A1F45939C007A1A66 /* WXRecycleListComponent.m in Sources */,
+				DCD8D0FF20735BE40002C420 /* WXScriptModule.m in Sources */,
 				741DFE031DDD7D18009B020F /* WXRoundedRect.mm in Sources */,
 				59A596301CB632050012CD52 /* WXBaseViewController.m in Sources */,
 				74CC7A211C2BF9DC00829368 /* WXListComponent.m in Sources */,
@@ -2296,6 +2307,7 @@
 				DCA4454E1EFA55B300D0CFA8 /* WXImageComponent.m in Sources */,
 				DCA4454F1EFA55B300D0CFA8 /* WXTextComponent.m in Sources */,
 				DCA445501EFA55B300D0CFA8 /* WXScrollerComponent.m in Sources */,
+				DCD8D10020735BE40002C420 /* WXScriptModule.m in Sources */,
 				DCA445511EFA55B300D0CFA8 /* WXCycleSliderComponent.m in Sources */,
 				DCE2CF9D1F46D4370021BDC4 /* WXVoiceOverModule.m in Sources */,
 				DCA445531EFA55B300D0CFA8 /* WXCellComponent.m in Sources */,
