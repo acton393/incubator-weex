@@ -63,6 +63,7 @@
     [self registerModule:@"meta" withClass:NSClassFromString(@"WXMetaModule")];
     [self registerModule:@"webSocket" withClass:NSClassFromString(@"WXWebSocketModule")];
     [self registerModule:@"voice-over" withClass:NSClassFromString(@"WXVoiceOverModule")];
+    [self registerModule:@"script" withClass:NSClassFromString(@"WXScriptModule")];
 }
 
 + (void)registerModule:(NSString *)name withClass:(Class)clazz

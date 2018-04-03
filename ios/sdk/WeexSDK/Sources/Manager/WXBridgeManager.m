@@ -340,7 +340,10 @@ void WXPerformBlockOnBridgeThread(void (^block)(void))
     NSArray *args = nil;
     if (keepAlive) {
         args = @[[funcId copy], params? [params copy]:@"\"{}\"", @true];
-    }else {
+    } else if([params isKindOfClass:[JSValue class]]) {
+        // JSValue cannot use copy
+        args = @[[funcId copy], params?:@""];
+    } else {
         args = @[[funcId copy], params? [params copy]:@"\"{}\""];
     }
     WXSDKInstance *instance = [WXSDKManager instanceForID:instanceId];
