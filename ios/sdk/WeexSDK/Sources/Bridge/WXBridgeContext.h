@@ -19,6 +19,7 @@
 
 #import <Foundation/Foundation.h>
 #import <JavaScriptCore/JavaScriptCore.h>
+#import "WXBridgeProtocol.h"
 
 #import "WXBridgeProtocol.h"
 
@@ -82,6 +83,9 @@
  *  @param method    :   object of bridge method
  **/
 - (void)executeJsMethod:(WXCallJSMethod *)method;
+
+- (JSValue *)excuteJSMethodWithResult:(WXCallJSMethod *)method;
+
 /**
  *  Register Modules Method
  *  @param modules   :   module list
