@@ -476,8 +476,23 @@ _Pragma("clang diagnostic pop") \
         }
         [newOptions addEntriesFromDictionary:@{@"env":[WXUtility getEnvironment]}];
         newOptions[@"bundleType"] = bundleType;
+        NSString *raxAPIScript = nil;
+        if ([bundleType.lowercaseString isEqualToString:@"rax"]) {
+            NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
+            raxAPIScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+            if (!script) {
+                WXLogError(@"weex-rax-api can not found");
+            }
+        }
+        
         if ([WXDebugTool isDevToolDebug]) {
-            [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]]];
+            [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[],raxAPIScript?:@""]];
+            
+            if ([NSURL URLWithString:sdkInstance.pageName]) {
+                [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString withSourceURL:[NSURL URLWithString:sdkInstance.pageName]];
+            } else {
+                [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString];
+            }
         } else {
             [self callJSMethod:@"createInstanceContext" args:@[instanceIdString, newOptions, data?:@[]] onContext:nil completion:^(JSValue *instanceContextEnvironment) {
                 WXSDKInstance *sdkInstance = [WXSDKManager instanceForID:instanceIdString];
@@ -508,15 +523,11 @@ _Pragma("clang diagnostic pop") \
                         WXLogError(@"weex-pollyfill can not found");
                     }
                 }
-                if ([bundleType isEqualToString:@"Rax"]) {
-                    NSString *filePath = [[NSBundle bundleForClass:[weakSelf class]] pathForResource:@"weex-rax-api" ofType:@"js"];
-                    NSString *script = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-                    if (script) {
-                        [sdkInstance.instanceJavaScriptContext executeJavascript:script withSourceURL:[NSURL URLWithString:filePath]];
-                    } else {
-                        WXLogError(@"weex-rax-api can not found");
-                    }
+                
+                if (raxAPIScript) {
+                    [sdkInstance.instanceJavaScriptContext executeJavascript:script withSourceURL:[NSURL URLWithString:filePath]];
                 }
+                
                 if ([NSURL URLWithString:sdkInstance.pageName]) {
                     [sdkInstance.instanceJavaScriptContext executeJavascript:jsBundleString withSourceURL:[NSURL URLWithString:sdkInstance.pageName]];
                 } else {
