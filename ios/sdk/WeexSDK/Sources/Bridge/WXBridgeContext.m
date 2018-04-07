@@ -565,11 +565,11 @@ _Pragma("clang diagnostic pop") \
         return bundleType;
     }
     // use the top 100 characters match the bundleType
+    jsBundleString = [jsBundleString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (jsBundleString.length > 100) {
         jsBundleString = [jsBundleString substringWithRange:NSMakeRange(0, 100)];
     }
     
-    jsBundleString = [jsBundleString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (!jsBundleString ) {
         return bundleType;
     }
