@@ -20,7 +20,6 @@
 #import "WXEventModule.h"
 #import "WXDemoViewController.h"
 #import "WXScannerVC.h"
-#import <WeexSDK/WeexSDK.h>
 
 @implementation WXEventModule
 

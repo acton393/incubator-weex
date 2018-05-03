@@ -18,7 +18,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <WeexSDK/WeexSDK.h>
+//#import <WeexSDK/WeexSDK.h>
 #import "DebugAnalyzer.h"
 
 

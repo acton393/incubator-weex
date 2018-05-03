@@ -19,7 +19,8 @@
 
 #import "WXNavigationHandlerImpl.h"
 #import "WXDemoViewController.h"
-#import <WeexSDK/WeexSDK.h>
+#import <WeexSDK/WXConvert.h>
+#import <WeexSDK/WXBaseViewController.h>
 
 @implementation WXNavigationHandlerImpl
 

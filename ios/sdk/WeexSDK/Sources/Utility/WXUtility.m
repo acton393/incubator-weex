@@ -36,8 +36,6 @@
 #import <CoreText/CoreText.h>
 #import "WXAppMonitorProtocol.h"
 
-#import "WXTextComponent.h"
-
 #define KEY_PASSWORD  @"com.taobao.Weex.123456"
 #define KEY_USERNAME_PASSWORD  @"com.taobao.Weex.weex123456"
 

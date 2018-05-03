@@ -20,7 +20,6 @@
 #import "WXComponentManager.h"
 #import "WXComponent.h"
 #import "WXComponent_internal.h"
-#import "WXComponent+DataBinding.h"
 #import "WXComponentFactory.h"
 #import "WXDefine.h"
 #import "NSArray+Weex.h"
@@ -574,7 +573,7 @@ static css_node_t * rootNodeGetChild(void *context, int i)
     NSDictionary *bindingAttibutes;
     NSDictionary *bindingEvents;
     NSDictionary *bindingProps;
-    if (isTemplate) {
+    if (isTemplate && NSClassFromString(@"WXRecycleListComponent")) {
         bindingProps = [self _extractBindingProps:&attributes];
         bindingStyles = [self _extractBindings:&styles];
         bindingAttibutes = [self _extractBindings:&attributes];
@@ -599,6 +598,11 @@ static css_node_t * rootNodeGetChild(void *context, int i)
 {
     [_indexDict setObject:component forKey:ref];
 }
+
+extern  const NSString *WXBindingMatchIdentify;
+extern  const NSString *WXBindingRepeatIdentify;
+extern  const NSString *WXBindingOnceIdentify;
+extern  const NSString *WXBindingIdentify;
 
 - (NSDictionary *)_extractBindings:(NSDictionary **)attributesOrStylesPoint
 {

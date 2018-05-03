@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#import <WeexSDK/WeexSDK.h>
+#import <WeexSDK/WXAnalyzerProtocol.h>
 
 
 @interface DebugAnalyzer :NSObject<WXAnalyzerProtocol>

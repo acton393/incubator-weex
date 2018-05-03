@@ -17,12 +17,12 @@
  * under the License.
  */
 
-#import <WeexSDK/WeexSDK.h>
 #import "WXScannerVC.h"
 #import "AppDelegate.h"
 #import "UIViewController+WXDemoNaviBar.h"
 #import "WXDemoViewController.h"
 #import "WXDebugTool.h"
+#import <WeexSDK/WXSDKEngine.h>
 
 #import <TBWXDevTool/WXDevTool.h>
 #import <AudioToolbox/AudioToolbox.h>

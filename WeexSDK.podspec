@@ -27,12 +27,14 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.ios.deployment_target = '8.0'
   s.source =  { :path => '.' }
-  s.source_files = 'ios/sdk/WeexSDK/Sources/**/*.{h,m,mm,c,cpp}'
+  # s.source_files = 'ios/sdk/WeexSDK/Sources/**/*.{h,m,mm,c,cpp}'
+  s.source_files = 'ios/sdk/WeexSDK/Sources/{Bridge,Controller,Debug,Display,Engine,Events,Layout,Loader,Manager,Model,Monitor,Network,Protocol,Utility,View}/*.{h,m,mm,c,cpp}', 'ios/sdk/WeexSDK/Sources/WeexSDK.h'
   s.resources = 'pre-build/*.js','ios/sdk/WeexSDK/Resources/wx_load_error@3x.png'
 
-  s.user_target_xcconfig  = { 'FRAMEWORK_SEARCH_PATHS' => "'$(PODS_ROOT)/WeexSDK'" }
+  s.user_target_xcconfig  = {
+    'FRAMEWORK_SEARCH_PATHS' => "'$(PODS_ROOT)/WeexSDK'",
+    'OTHER_LDFLAGS'  => '$(inherited) -undefined dynamic_lookup' }
   s.requires_arc = true
-  s.prefix_header_file = 'ios/sdk/WeexSDK/Sources/Supporting Files/WeexSDK-Prefix.pch'
 
 #  s.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => '$(inherited) DEBUG=1' }
 
@@ -41,4 +43,7 @@ Pod::Spec.new do |s|
   s.frameworks = 'CoreMedia','MediaPlayer','AVFoundation','AVKit','JavaScriptCore', 'GLKit', 'OpenGLES', 'CoreText', 'QuartzCore', 'CoreGraphics'
   s.libraries = "stdc++"
 
+  # s.subspec 'RecycleList' do |recyclelist|
+  #   recyclelist.source_files ='ios/sdk/WeexSDK/Sources/Component/RecycleList/*.{h,mm,m}'
+  # end
 end

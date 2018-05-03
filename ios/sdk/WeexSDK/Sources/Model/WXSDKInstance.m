@@ -39,7 +39,6 @@
 #import "WXSDKEngine.h"
 #import "WXValidateProtocol.h"
 #import "WXConfigCenterProtocol.h"
-#import "WXTextComponent.h"
 #import "WXConvert.h"
 #import "WXPrerenderManager.h"
 #import "WXTracingManager.h"
@@ -50,6 +49,7 @@
 #import "WXBridgeContext.h"
 #import "WXJSCoreBridge.h"
 #import "WXSDKInstance_performance.h"
+#import <objc/message.h>
 
 NSString *const bundleUrlOptionKey = @"bundleUrl";
 
@@ -310,7 +310,7 @@ typedef enum : NSUInteger {
     id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
     if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
         BOOL useCoreText = [[configCenter configForKey:@"iOS_weex_ext_config.text_render_useCoreText" defaultValue:@YES isDefault:NULL] boolValue];
-        [WXTextComponent setRenderUsingCoreText:useCoreText];
+        ((void(*)(id, SEL, BOOL))objc_msgSend)(NSClassFromString(@"WXTextComponent"), NSSelectorFromString(@"setRenderUsingCoreText:"), useCoreText);
         BOOL useThreadSafeLock = [[configCenter configForKey:@"iOS_weex_ext_config.useThreadSafeLock" defaultValue:@YES isDefault:NULL] boolValue];
         [WXUtility setThreadSafeCollectionUsingLock:useThreadSafeLock];
         

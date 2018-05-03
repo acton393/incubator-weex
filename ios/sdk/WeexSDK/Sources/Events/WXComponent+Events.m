@@ -27,13 +27,13 @@
 #import "WXSDKManager.h"
 #import "WXSDKInstance_private.h"
 #import "WXDefine.h"
-#import "WXRecycleListComponent.h"
-#import "WXRecycleListDataManager.h"
 #import <objc/runtime.h>
 #import <UIKit/UIGestureRecognizerSubclass.h>
 #import "WXComponent+PseudoClassManagement.h"
 
 #pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+
+@class WXRecycleListComponent;
 
 @interface UITouch (WXTouchGestureRecognizer)
 @property (nonatomic, strong) NSNumber *wx_identifier;
@@ -152,11 +152,15 @@
     if (params) {
         [dict addEntriesFromDictionary:params];
     }
-    WXRecycleListComponent * recyleListComponent  = (WXRecycleListComponent*)[self getRecycleListComponent];
-    if (recyleListComponent) {
+    
+    WXComponent * recyleListComponent  = (WXComponent*)[self getRecycleListComponent];
+    if (recyleListComponent && [recyleListComponent isKindOfClass:NSClassFromString(@"WXRecycleListComponent")]) {
         NSIndexPath * indexPath = [((UICollectionView*)recyleListComponent.view) indexPathForItemAtPoint:[self.view.superview
                                                                                                           convertPoint:self.view.center toView:recyleListComponent.view]];
-        NSString * virtualComponentId = [recyleListComponent.dataManager virtualComponentIdWithIndexPath:indexPath];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        NSString * virtualComponentId = [[recyleListComponent valueForKey:@"dataManager"] performSelector:NSSelectorFromString(@"virtualComponentIdWithIndexPath:") withObject:indexPath];
+#pragma clang diagnostic pop
         if (virtualComponentId) {
             dict[@"componentId"] = virtualComponentId;
         }
@@ -840,7 +844,7 @@ if ([removeEventName isEqualToString:@#eventName]) {\
 // find virtual component's root component
 - (WXComponent*)getRecycleListComponent
 {
-    if ([self isKindOfClass:[WXRecycleListComponent class]]) {
+    if ([self isKindOfClass:NSClassFromString(@"WXRecycleListComponent")]) {
         return self;
     }
     if ([self.ref isEqualToString:WX_SDK_ROOT_REF]) {

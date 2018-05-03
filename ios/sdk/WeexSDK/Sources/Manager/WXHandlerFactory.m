@@ -19,7 +19,6 @@
 
 #import "WXHandlerFactory.h"
 #import "WXThreadSafeMutableDictionary.h"
-#import "WXNavigationDefaultImpl.h"
 #import "WXAssert.h"
 
 @interface WXHandlerFactory ()
