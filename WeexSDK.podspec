@@ -30,7 +30,8 @@ Pod::Spec.new do |s|
   s.resources = 'pre-build/*.js','ios/sdk/WeexSDK/Resources/wx_load_error@3x.png'
   s.user_target_xcconfig  = {
     'FRAMEWORK_SEARCH_PATHS' => "'$(PODS_ROOT)/WeexSDK'",
-    'OTHER_LDFLAGS'  => '$(inherited) -undefined dynamic_lookup' }
+    # 'OTHER_LDFLAGS'  => '$(inherited) -undefined dynamic_lookup' 
+  }
   s.requires_arc = true
 
 #  s.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => '$(inherited) DEBUG=1' }
