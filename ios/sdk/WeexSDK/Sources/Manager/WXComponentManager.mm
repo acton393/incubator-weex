@@ -599,11 +599,6 @@ static css_node_t * rootNodeGetChild(void *context, int i)
     [_indexDict setObject:component forKey:ref];
 }
 
-extern  const NSString *WXBindingMatchIdentify;
-extern  const NSString *WXBindingRepeatIdentify;
-extern  const NSString *WXBindingOnceIdentify;
-extern  const NSString *WXBindingIdentify;
-
 - (NSDictionary *)_extractBindings:(NSDictionary **)attributesOrStylesPoint
 {
     NSDictionary *attributesOrStyles = *attributesOrStylesPoint;

@@ -89,6 +89,14 @@ parts = [parts subarrayWithRange:(NSRange){0, parts.count - 1}];\
 
 #define WX_BRIDGE_THREAD_NAME @"com.taobao.weex.bridge"
 
+static const NSString *WXBindingIdentify = @"@binding";
+static const NSString *WXBindingMatchIdentify = @"[[match]]";
+static const NSString *WXBindingRepeatIdentify = @"[[repeat]]";
+static const NSString *WXBindingOnceIdentify = @"[[once]]";
+static const NSString *WXBindingRepeatExprIdentify = @"@expression";
+static const NSString *WXBindingRepeatIndexIdentify = @"@index";
+static const NSString *WXBindingRepeatLabelIdentify = @"@alias";
+
 #define WX_FONT_DOWNLOAD_DIR [[WXUtility cacheDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"wxdownload"]]
 
 #define WX_EXPORT_METHOD_INTERNAL(method, token) \
