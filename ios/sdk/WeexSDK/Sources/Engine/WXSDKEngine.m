@@ -82,37 +82,86 @@
 // register some default components when the engine initializes.
 + (void)_registerDefaultComponents
 {
-    [self registerComponent:@"container" withClass:NSClassFromString(@"WXDivComponent") withProperties:nil];
     [self registerComponent:@"div" withClass:NSClassFromString(@"WXComponent") withProperties:nil];
-    [self registerComponent:@"text" withClass:NSClassFromString(@"WXTextComponent") withProperties:nil];
-    [self registerComponent:@"image" withClass:NSClassFromString(@"WXImageComponent") withProperties:nil];
-    [self registerComponent:@"scroller" withClass:NSClassFromString(@"WXScrollerComponent") withProperties:nil];
-    [self registerComponent:@"list" withClass:NSClassFromString(@"WXListComponent") withProperties:nil];
-    [self registerComponent:@"recycler" withClass:NSClassFromString(@"WXRecyclerComponent") withProperties:nil];
-    [self registerComponent:@"waterfall" withClass:NSClassFromString(@"WXRecyclerComponent") withProperties:nil];
-    
-    [self registerComponent:@"header" withClass:NSClassFromString(@"WXHeaderComponent")];
-    [self registerComponent:@"cell" withClass:NSClassFromString(@"WXCellComponent")];
-    [self registerComponent:@"embed" withClass:NSClassFromString(@"WXEmbedComponent")];
-    [self registerComponent:@"a" withClass:NSClassFromString(@"WXAComponent")];
-    
-    [self registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
-    [self registerComponent:@"switch" withClass:NSClassFromString(@"WXSwitchComponent")];
-    [self registerComponent:@"input" withClass:NSClassFromString(@"WXTextInputComponent")];
-    [self registerComponent:@"video" withClass:NSClassFromString(@"WXVideoComponent")];
-    [self registerComponent:@"indicator" withClass:NSClassFromString(@"WXIndicatorComponent")];
-    [self registerComponent:@"slider" withClass:NSClassFromString(@"WXCycleSliderComponent")];
-    [self registerComponent:@"cycleslider" withClass:NSClassFromString(@"WXCycleSliderComponent")];
-    [self registerComponent:@"web" withClass:NSClassFromString(@"WXWebComponent")];
-    [self registerComponent:@"loading" withClass:NSClassFromString(@"WXLoadingComponent")];
-    [self registerComponent:@"loading-indicator" withClass:NSClassFromString(@"WXLoadingIndicator")];
-    [self registerComponent:@"refresh" withClass:NSClassFromString(@"WXRefreshComponent")];
-    [self registerComponent:@"textarea" withClass:NSClassFromString(@"WXTextAreaComponent")];
-	[self registerComponent:@"canvas" withClass:NSClassFromString(@"WXCanvasComponent")];
-    [self registerComponent:@"slider-neighbor" withClass:NSClassFromString(@"WXSliderNeighborComponent")];
-    
-    [self registerComponent:@"recycle-list" withClass:NSClassFromString(@"WXRecycleListComponent")];
-    [self registerComponent:@"cell-slot" withClass:NSClassFromString(@"WXCellSlotComponent") withProperties: @{@"append":@"tree", @"isTemplate":@YES}];
+    if (NSClassFromString(@"WXDivComponent")) {
+        [self registerComponent:@"container" withClass:NSClassFromString(@"WXDivComponent") withProperties:nil];
+    }
+    if (NSClassFromString(@"WXTextComponent")) {
+        [self registerComponent:@"text" withClass:NSClassFromString(@"WXTextComponent") withProperties:nil];
+    }
+    if (NSClassFromString(@"WXImageComponent")){
+        [self registerComponent:@"image" withClass:NSClassFromString(@"WXImageComponent") withProperties:nil];
+    }
+    if (NSClassFromString(@"WXScrollerComponent")) {
+        [self registerComponent:@"scroller" withClass:NSClassFromString(@"WXScrollerComponent") withProperties:nil];
+    }
+    if (NSClassFromString(@"WXListComponent")) {
+        [self registerComponent:@"list" withClass:NSClassFromString(@"WXListComponent") withProperties:nil];
+    }
+    if (NSClassFromString(@"WXRecyclerComponent")) {
+        [self registerComponent:@"recycler" withClass:NSClassFromString(@"WXRecyclerComponent") withProperties:nil];
+        [self registerComponent:@"waterfall" withClass:NSClassFromString(@"WXRecyclerComponent") withProperties:nil];
+    }
+    if (NSClassFromString(@"WXHeaderComponent")) {
+        [self registerComponent:@"header" withClass:NSClassFromString(@"WXHeaderComponent")];
+    }
+    if (NSClassFromString(@"WXCellComponent")) {
+        [self registerComponent:@"cell" withClass:NSClassFromString(@"WXCellComponent")];
+    }
+    if (NSClassFromString(@"WXEmbedComponent")) {
+        [self registerComponent:@"embed" withClass:NSClassFromString(@"WXEmbedComponent")];
+    }
+    if (NSClassFromString(@"WXAComponent")) {
+        [self registerComponent:@"a" withClass:NSClassFromString(@"WXAComponent")];
+    }
+    if (NSClassFromString(@"WXSelectComponent")) {
+        [self registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
+    }
+    if (NSClassFromString(@"WXSwitchComponent")) {
+        [self registerComponent:@"switch" withClass:NSClassFromString(@"WXSwitchComponent")];
+    }
+    if (NSClassFromString(@"WXTextInputComponent")) {
+        [self registerComponent:@"input" withClass:NSClassFromString(@"WXTextInputComponent")];
+    }
+    if (NSClassFromString(@"WXVideoComponent")) {
+        [self registerComponent:@"video" withClass:NSClassFromString(@"WXVideoComponent")];
+    }
+    if (NSClassFromString(@"WXIndicatorComponent")) {
+        [self registerComponent:@"indicator" withClass:NSClassFromString(@"WXIndicatorComponent")];
+    }
+    if (NSClassFromString(@"WXCycleSliderComponent")) {
+        [self registerComponent:@"slider" withClass:NSClassFromString(@"WXCycleSliderComponent")];
+    }
+    if (NSClassFromString(@"WXCycleSliderComponent")) {
+        [self registerComponent:@"cycleslider" withClass:NSClassFromString(@"WXCycleSliderComponent")];
+    }
+    if (NSClassFromString(@"WXWebComponent")) {
+        [self registerComponent:@"web" withClass:NSClassFromString(@"WXWebComponent")];
+    }
+    if (NSClassFromString(@"WXLoadingComponent")) {
+        [self registerComponent:@"loading" withClass:NSClassFromString(@"WXLoadingComponent")];
+    }
+    if (NSClassFromString(@"WXLoadingIndicator")) {
+        [self registerComponent:@"loading-indicator" withClass:NSClassFromString(@"WXLoadingIndicator")];
+    }
+    if (NSClassFromString(@"WXRefreshComponent")) {
+        [self registerComponent:@"refresh" withClass:NSClassFromString(@"WXRefreshComponent")];
+    }
+    if (NSClassFromString(@"WXTextAreaComponent")) {
+        [self registerComponent:@"textarea" withClass:NSClassFromString(@"WXTextAreaComponent")];
+    }
+    if (NSClassFromString(@"WXCanvasComponent")) {
+        [self registerComponent:@"canvas" withClass:NSClassFromString(@"WXCanvasComponent")];
+    }
+    if (NSClassFromString(@"WXSliderNeighborComponent")) {
+        [self registerComponent:@"slider-neighbor" withClass:NSClassFromString(@"WXSliderNeighborComponent")];
+    }
+    if (NSClassFromString(@"WXRecycleListComponent")) {
+        [self registerComponent:@"recycle-list" withClass:NSClassFromString(@"WXRecycleListComponent")];
+    }
+    if (NSClassFromString(@"WXCellSlotComponent")) {
+        [self registerComponent:@"cell-slot" withClass:NSClassFromString(@"WXCellSlotComponent") withProperties: @{@"append":@"tree", @"isTemplate":@YES}];
+    }
     
 }
 
