@@ -17,10 +17,14 @@
  * under the License.
  */
 
-#import <UIKit/UIKit.h>
-
 @class WXSDKInstance;
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
 @interface WXRootView : UIView
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+@interface WXRootView : NSView
+#endif
 
 @property (nonatomic, weak) WXSDKInstance *instance;
 

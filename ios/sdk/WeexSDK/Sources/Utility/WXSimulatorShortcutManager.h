@@ -16,8 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <Foundation/Foundation.h>
+
 #import <UIKit/UIKit.h>
 
 @interface WXSimulatorShortcutManager : NSObject
@@ -25,3 +26,4 @@
 + (void)registerSimulatorShortcutWithKey:(NSString *)key modifierFlags:(UIKeyModifierFlags)flags action:(dispatch_block_t)action;
 
 @end
+#endif

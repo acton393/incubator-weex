@@ -23,8 +23,11 @@
 @interface WXComponent (Navigation)
 
 - (void)setNavigationBarHidden:(BOOL)hidden;
-
+#if TARGET_OS_IPHONE
 - (void)setNavigationBackgroundColor:(UIColor *)backgroundColor;
+#elif TARGET_OS_MAC
+- (void)setNavigationBackgroundColor:(NSColor *)backgroundColor;
+#endif
 
 - (void)setNavigationItemWithParam:(NSDictionary *)param position:(WXNavigationItemPosition)position;
 

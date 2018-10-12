@@ -53,7 +53,11 @@
         [self setNavigationBarHidden:NO];
         
         NSString *backgroundColor = styles[@"backgroundColor"];
+#if TARGET_OS_IPHONE
         [self setNavigationBackgroundColor:[WXConvert UIColor:backgroundColor]];
+#elif TARGET_OS_MAC
+        [self setNavigationBackgroundColor:[WXConvert NSColor:backgroundColor]];
+#endif
     }
     
     NSString *position = attributes[@"naviItemPosition"];
@@ -84,7 +88,11 @@
             
             NSDictionary *style = self.styles[@"style"];
             NSString *backgroundColor = style[@"backgroundColor"];
+#if TARGET_OS_IPHONE
             [self setNavigationBackgroundColor:[WXConvert UIColor:backgroundColor]];
+#elif TARGET_OS_MAC
+            [self setNavigationBackgroundColor:[WXConvert NSColor:backgroundColor]];
+#endif
         }
     }
 }
@@ -92,22 +100,33 @@
 
 - (void)setNavigationBarHidden:(BOOL)hidden
 {
+#if TARGET_OS_IPHONE
     UIViewController *container = self.weexInstance.viewController;
+#elif TARGET_OS_MAC
+    NSViewController *container = self.weexInstance.viewController;
+#endif
     id<WXNavigationProtocol> navigator = [self navigator];
     
     WXPerformBlockOnMainThread(^{
         [navigator setNavigationBarHidden:hidden animated:NO withContainer:container];
     });
 }
-
+#if TARGET_OS_IPHONE
 - (void)setNavigationBackgroundColor:(UIColor *)backgroundColor
+#elif TARGET_OS_MAC
+- (void)setNavigationBackgroundColor:(NSColor *)backgroundColor
+#endif
 {
     if (!backgroundColor) return;
     
     NSMutableDictionary *styles = self.weexInstance.naviBarStyles;
     [styles setObject:backgroundColor forKey:kBarTintColor];
     
+#if TARGET_OS_IPHONE
     UIViewController *container = self.weexInstance.viewController;
+#elif TARGET_OS_MAC
+    NSViewController *container = self.weexInstance.viewController;
+#endif
     id<WXNavigationProtocol> navigator = [self navigator];
     
     WXPerformBlockOnMainThread(^{
@@ -126,8 +145,11 @@
     [self _parse:param resultBlock:^(NSDictionary *dict) {
         NSMutableDictionary *styles = weakSelf.weexInstance.naviBarStyles;
         [styles setObject:dict forKey: array[position]];
-        
+#if TARGET_OS_IPHONE
         UIViewController *container = weakSelf.weexInstance.viewController;
+#elif TARGET_OS_MAC
+        NSViewController *container = weakSelf.weexInstance.viewController;
+#endif
         id<WXNavigationProtocol> navigator = [weakSelf navigator];
         
         WXPerformBlockOnMainThread(^{
@@ -138,7 +160,11 @@
 
 - (void)setNavigationWithStyles:(NSDictionary *)styles
 {
+#if TARGET_OS_IPHONE
     UIViewController *container = self.weexInstance.viewController;
+#elif TARGET_OS_MAC
+    NSViewController *container = self.weexInstance.viewController;
+#endif
     id<WXNavigationProtocol> navigator = [self navigator];
 
     if (styles) {

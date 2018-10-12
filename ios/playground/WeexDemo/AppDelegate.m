@@ -38,6 +38,7 @@
 #import "WXNavigationHandlerImpl.h"
 //#import "WXAnalyzerCenter.h"
 #import "WXApmGeneratorImpl.h"
+#import "WXBluetoothModule.h"
 
 
 #ifdef DEBUG
@@ -132,6 +133,7 @@
     [WXSDKEngine registerModule:@"titleBar" withClass:NSClassFromString(@"WXTitleBarModule")];
     [WXSDKEngine registerExtendCallNative:@"test" withClass:NSClassFromString(@"WXExtendCallNativeTest")];
     [WXSDKEngine registerModule:@"ext" withClass:[WXExtModule class]];
+    [WXSDKEngine registerModule:@"bluetooth" withClass:[WXBluetoothModule class]];
 #ifdef DEBUG
     [WXAnalyzerCenter addWxAnalyzer:[DebugAnalyzer new]];
 #endif
@@ -143,7 +145,7 @@
 #ifdef DEBUG
     [self atAddPlugin];
     [WXDebugTool setDebug:YES];
-    [WXLog setLogLevel:WXLogLevelLog];
+    [WXLog setLogLevel:WXLogLevelAll];
     
     #ifndef UITEST
         [[ATManager shareInstance] show];
@@ -157,7 +159,7 @@
 - (UIViewController *)demoController
 {
     UIViewController *demo = [[WXDemoViewController alloc] init];
-    ((WXDemoViewController *)demo).url = [NSURL URLWithString:BUNDLE_URL];
+    ((WXDemoViewController *)demo).url = [NSURL URLWithString:@"http://dotwe.org/raw/dist/87a59cd2bd7fc54e6fd32498d4137a02.bundle.wx"];
     return demo;
 }
 

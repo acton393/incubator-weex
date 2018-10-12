@@ -18,7 +18,11 @@
  */
 
 #import <Foundation/Foundation.h>
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#endif
 @class WXSDKInstance;
 @class WXLength;
 
@@ -37,8 +41,11 @@
 - (instancetype)initWithCSSValue:(NSString *)cssValue origin:(NSString *)origin instance:(WXSDKInstance *)instance;
 
 - (instancetype)initWithNativeTransform:(CATransform3D)transform instance:(WXSDKInstance *)instance;
-
+#if TARGET_OS_IPHONE
 - (void)applyTransformForView:(UIView *)view;
+#elif TARGET_OS_MAC
+- (void)applyTransformForView:(NSView *)view;
+#endif
 
 - (void)setTransformOrigin:(NSString *)transformOriginCSS;
 

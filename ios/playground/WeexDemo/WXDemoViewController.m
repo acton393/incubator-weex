@@ -85,7 +85,7 @@
     [super viewWillAppear:animated];
     [self setupNaviBar];
     [self setupRightBarItem];
-    [self.navigationController setNavigationBarHidden:_showNavigationBar];
+//    [self.navigationController setNavigationBarHidden:_showNavigationBar];
 }
 
 //TODO get height
@@ -94,11 +94,11 @@
     _weexHeight = [UIScreen mainScreen].bounds.size.height - CGRectGetMaxY(self.navigationController.navigationBar.frame);
     UIEdgeInsets safeArea = UIEdgeInsetsZero;
 #ifdef __IPHONE_11_0
-    if (@available(iOS 11.0, *)) {
-        safeArea = self.view.safeAreaInsets;
-    } else {
-        // Fallback on earlier versions
-    }
+//    if (@available(iOS 11.0, *)) {
+//        safeArea = self.view.safeAreaInsets;
+//    } else {
+//        // Fallback on earlier versions
+//    }
 #endif
     _instance.frame = CGRectMake(safeArea.left, safeArea.top, self.view.frame.size.width-safeArea.left-safeArea.right, _weexHeight-safeArea.top-safeArea.bottom);
 }
@@ -123,7 +123,7 @@
 {
     CGFloat width = self.view.frame.size.width;
 //    if ([_url.absoluteString isEqualToString:HOME_URL]) {
-//        [self.navigationController setNavigationBarHidden:YES];
+        [self.navigationController setNavigationBarHidden:YES];
 //    }
     [_instance destroyInstance];
     _instance = [[WXSDKInstance alloc] init];

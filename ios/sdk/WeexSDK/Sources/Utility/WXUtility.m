@@ -30,7 +30,15 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <sys/utsname.h>
+#if TARGET_OS_IPHONE
 #import <UIKit/UIScreen.h>
+#endif
+#if TARGET_OS_MAC
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#endif
 #import <Security/Security.h>
 #import <CommonCrypto/CommonCrypto.h>
 #import <CoreText/CoreText.h>
@@ -108,10 +116,14 @@ SEL WXSwizzledSelectorForSelector(SEL selector)
 CGFloat WXScreenScale(void)
 {
     static CGFloat _scale;
+#if TARGET_OS_IPHONE
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _scale = [UIScreen mainScreen].scale;
     });
+#elif TARGET_OS_MAC
+    _scale = 1;
+#endif
     return _scale;
 }
 
@@ -196,8 +208,14 @@ CGFloat WXFloorPixelValue(CGFloat value)
 
 + (NSDictionary *)getEnvironment
 {
+    
+#if TARGET_OS_IPHONE
     NSString *platform = @"iOS";
     NSString *sysVersion = [[UIDevice currentDevice] systemVersion] ?: @"";
+#elif TARGET_OS_MAC
+    NSString *platform = @"MacOS";
+    NSString *sysVersion = [[NSProcessInfo processInfo] operatingSystemVersionString]?:@"";
+#endif
     NSString *weexVersion = WX_SDK_VERSION;
     NSString *machine = [self deviceName] ? : @"";
     NSString *appVersion = [WXAppConfiguration appVersion] ? : @"";
@@ -205,7 +223,11 @@ CGFloat WXFloorPixelValue(CGFloat value)
     
     CGFloat deviceWidth = [self portraitScreenSize].width;
     CGFloat deviceHeight = [self portraitScreenSize].height;
+#if TARGET_OS_IPHONE
     CGFloat scale = [[UIScreen mainScreen] scale];
+#elif TARGET_OS_MAC
+    CGFloat scale = 1.0;
+#endif
     
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{
                                     @"platform":platform,
@@ -221,6 +243,7 @@ CGFloat WXFloorPixelValue(CGFloat value)
                                     @"logLevel":[WXLog logLevelString] ?: @"error"
                                 }];
     
+#if TARGET_OS_IPHONE
     if ([[[UIDevice currentDevice] systemVersion] integerValue] >= 11) {
         id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
         if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
@@ -233,6 +256,7 @@ CGFloat WXFloorPixelValue(CGFloat value)
             }
         }
     }
+#endif
     
     if ([WXSDKEngine customEnvironment]) {
         [data addEntriesFromDictionary:[WXSDKEngine customEnvironment]];
@@ -260,7 +284,14 @@ CGFloat WXFloorPixelValue(CGFloat value)
 + (NSString *)userAgent
 {
     // Device UA
-    NSString *deviceUA = [NSString stringWithFormat:@"%@(iOS/%@)", [self deviceName]?:@"UNKNOWN", [[UIDevice currentDevice] systemVersion]]?:@"0.0.0";
+#if TARGET_OS_IPHONE
+    NSString *platform = @"iOS";
+    NSString *sysVersion = [[UIDevice currentDevice] systemVersion] ?: @"";
+#elif TARGET_OS_MAC
+    NSString *platform = @"MacOS";
+    NSString *sysVersion = [[NSProcessInfo processInfo] operatingSystemVersionString]?:@"";
+#endif
+    NSString *deviceUA = [NSString stringWithFormat:@"%@(%@/%@)", [self deviceName]?:@"UNKNOWN",platform, sysVersion?:@"0.0.0"];
     
     // App UA
     NSString *appUA = [NSString stringWithFormat:@"%@(%@/%@)", [WXAppConfiguration appGroup]?:@"WeexGroup", [WXAppConfiguration appName]?:@"WeexApp", [WXAppConfiguration appVersion]?:@"0.0.0"];
@@ -272,9 +303,15 @@ CGFloat WXFloorPixelValue(CGFloat value)
     NSString *externalUA = [WXAppConfiguration externalUserAgent] ? [NSString stringWithFormat:@" %@", [WXAppConfiguration externalUserAgent]] : @"";
     
     // Screen Size
+#if TARGET_OS_IPHONE
     CGFloat w = [[UIScreen mainScreen] bounds].size.width;
     CGFloat h = [[UIScreen mainScreen] bounds].size.height;
     CGFloat s = [[UIScreen mainScreen] scale];
+#elif TARGET_OS_MAC
+    CGFloat w = [[NSScreen mainScreen] frame].size.width;
+    CGFloat h = [[NSScreen mainScreen] frame].size.height;
+    CGFloat s = 1.0;
+#endif
     NSString * screenUA = [NSString stringWithFormat:@"%dx%d", (int)(s * w), (int)(s * h)];
     
     // New UA
@@ -413,14 +450,23 @@ CGFloat WXFloorPixelValue(CGFloat value)
         NSString *str = [backgroundImage substringWithRange:range];
         NSArray *array = [str componentsSeparatedByString:@","];
         WXGradientType gradientType = WXGradientTypeToTop;
+#if TARGET_OS_IPHONE
         UIColor *startColor, *endColor;
+#elif TARGET_OS_MAC
+        NSColor *startColor, *endColor;
+#endif
         if ([array count] < 3) {
             return linearGradient;
         }
         if ([array count] == 3) {
             gradientType = [WXConvert gradientType:array[0]];
+#if TARGET_OS_IPHONE
             startColor = [WXConvert UIColor:array[1]];
             endColor = [WXConvert UIColor:array[2]];
+#elif TARGET_OS_MAC
+            startColor = [WXConvert NSColor:array[1]];
+            endColor = [WXConvert NSColor:array[2]];
+#endif
         } else if ([array count] > 3) {
             NSString *gradientTypeStr = array[0];
             NSString *subStr = [str substringFromIndex:gradientTypeStr.length + 1];
@@ -434,17 +480,29 @@ CGFloat WXFloorPixelValue(CGFloat value)
                 }
                 NSString *startColorStr = [subStr substringToIndex:range.location + 1];
                 NSString *endColorStr = [subStr substringFromIndex:range.location + 2];
+#if TARGET_OS_IPHONE
                 startColor = [WXConvert UIColor:startColorStr];
                 endColor = [WXConvert UIColor:endColorStr];
+#elif TARGET_OS_MAC
+                startColor = [WXConvert NSColor:startColorStr];
+                endColor = [WXConvert NSColor:endColorStr];
+#endif
+                
             }
             else {
                 gradientType = [WXConvert gradientType:gradientTypeStr];
                 
-                startColor = [WXConvert UIColor:array[1]];
-                
                 NSString *startColorStr = array[1];
                 NSString *endColorStr = [subStr substringFromIndex:startColorStr.length + 1];
+                
+#if TARGET_OS_IPHONE
+                startColor = [WXConvert UIColor:array[1]];
                 endColor = [WXConvert UIColor:endColorStr];
+#elif TARGET_OS_MAC
+                startColor = [WXConvert NSColor:array[1]];
+                endColor = [WXConvert NSColor:endColorStr];
+#endif
+                
             }
         }
         
@@ -462,9 +520,15 @@ CGFloat WXFloorPixelValue(CGFloat value)
 {
     CAGradientLayer * gradientLayer = [CAGradientLayer layer];
     NSMutableArray *newColors = [NSMutableArray new];
+#if TARGET_OS_IPHONE
     for(UIColor *color in colors) {
         [newColors addObject:(id)color.CGColor];
     }
+#elif TARGET_OS_MAC
+    for(NSColor *color in colors) {
+        [newColors addObject:(id)color.CGColor];
+    }
+#endif
     if (colors) {
         gradientLayer.colors = newColors;
     }
@@ -508,16 +572,27 @@ CGFloat WXFloorPixelValue(CGFloat value)
     
     return gradientLayer;
 }
-
+#if TARGET_OS_IPHONE
 + (UIFont *)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *)fontFamily
+#elif TARGET_OS_MAC
++ (NSFont *)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *)fontFamily
+#endif
 {
     return [self fontWithSize:size textWeight:textWeight textStyle:textStyle fontFamily:fontFamily scaleFactor:[self defaultPixelScaleFactor]];
 }
 
+#if TARGET_OS_IPHONE
 + (UIFont *)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *)fontFamily scaleFactor:(CGFloat)scaleFactor useCoreText:(BOOL)useCoreText
+#elif TARGET_OS_MAC
++ (NSFont *)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *)fontFamily scaleFactor:(CGFloat)scaleFactor useCoreText:(BOOL)useCoreText
+#endif
 {
     CGFloat fontSize = (isnan(size) || size == 0) ?  32 * scaleFactor : size;
+#if TARGET_OS_IPHONE
     UIFont *font = nil;
+#elif TARGET_OS_MAC
+    NSFont *font = nil;
+#endif
     
     WXThreadSafeMutableDictionary *fontFace = [[WXRuleManager sharedInstance] getRule:@"fontFace"];
     WXThreadSafeMutableDictionary *fontFamilyDic = fontFace[fontFamily];
@@ -564,9 +639,15 @@ CGFloat WXFloorPixelValue(CGFloat value)
                     }
                     NSArray *descriptors = (__bridge_transfer NSArray *)CTFontManagerCreateFontDescriptorsFromURL(fontURL);
                     // length of descriptors here will be only one.
+#if TARGET_OS_IPHONE
                     for (UIFontDescriptor *desc in descriptors) {
                         font = [UIFont fontWithDescriptor:desc size:fontSize];
                     }
+#elif TARGET_OS_MAC
+                    for (NSFontDescriptor *desc in descriptors) {
+                        font = [NSFont fontWithDescriptor:desc size:fontSize];
+                    }
+#endif
                     CFRelease(fontURL);
                 }
             }
@@ -576,19 +657,28 @@ CGFloat WXFloorPixelValue(CGFloat value)
     }
     if (!font) {
         if (fontFamily) {
+#if TARGET_OS_IPHONE
             font = [UIFont fontWithName:fontFamily size:fontSize];
+#elif TARGET_OS_MAC
+            font = [NSFont fontWithName:fontFamily size:fontSize];
+#endif
         }
         if (!font) {
             if (fontFamily) {
                 WXLogWarning(@"Unknown fontFamily:%@", fontFamily);
             }
+#if TARGET_OS_IPHONE
             if(WX_SYS_VERSION_LESS_THAN(@"8.2")) {
                 font = [UIFont systemFontOfSize:fontSize];
             } else {
                 font = [UIFont systemFontOfSize:fontSize weight:textWeight];
             }
+#elif TARGET_OS_MAC
+            font  = [NSFont systemFontOfSize:fontSize];
+#endif
         }
     }
+#if TARGET_OS_IPHONE
     UIFontDescriptor *fontD = font.fontDescriptor;
     UIFontDescriptorSymbolicTraits traits = 0;
     
@@ -605,11 +695,29 @@ CGFloat WXFloorPixelValue(CGFloat value)
             font = tempFont;
         }
     }
+#elif TARGET_OS_MAC
+    NSFontDescriptor *fontD = font.fontDescriptor;
+    NSFontDescriptorSymbolicTraits traits = 0;
+    
+    traits = (textStyle == WXTextStyleItalic) ? (traits | NSFontDescriptorTraitItalic) : traits;
+    traits = (textWeight-NSFontWeightBold >= 0.0) ? (traits | NSFontDescriptorTraitBold) : traits;
+    if (traits != 0) {
+        fontD = [fontD fontDescriptorWithSymbolicTraits:traits];
+        NSFont *tempFont = [NSFont fontWithDescriptor:fontD size:0];
+        if (tempFont) {
+            font = tempFont;
+        }
+    }
+#endif
     
     return font;
 }
 
+#if TARGET_OS_IPHONE
 + (UIFont *)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *)fontFamily scaleFactor:(CGFloat)scaleFactor
+#elif TARGET_OS_MAC
++ (NSFont *)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *)fontFamily scaleFactor:(CGFloat)scaleFactor
+#endif
 {
     return [self fontWithSize:size textWeight:textWeight textStyle:textStyle fontFamily:fontFamily scaleFactor:scaleFactor useCoreText:NO];
 }
@@ -703,10 +811,11 @@ CGFloat WXFloorPixelValue(CGFloat value)
     dispatch_once(&onceToken, ^{
         cache = [NSCache new];
         cache.totalCostLimit = 5 * 1024 * 1024;
-        
+#if TARGET_OS_IPHONE
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:nil usingBlock:^(__unused NSNotification *note) {
             [cache removeAllObjects];
         }];
+#endif
     });
     return cache;
 }
@@ -721,33 +830,59 @@ CGFloat WXFloorPixelValue(CGFloat value)
 
 + (NSString *)registeredDeviceName
 {
+#if TARGET_OS_IPHONE
     NSString *machine = [[UIDevice currentDevice] model];
     NSString *systemVer = [[UIDevice currentDevice] systemVersion] ? : @"";
+#elif TARGET_OS_MAC
+    size_t len = 0;
+    NSString *machine = @"";
+    sysctlbyname("hw.model", NULL, &len, NULL, 0);
+    if (len) {
+        char *model = malloc(len*sizeof(char));
+        sysctlbyname("hw.model", model, &len, NULL, 0);
+        printf("%s\n", model);
+        free(model);
+        machine = [NSString stringWithFormat:@"%s",model];
+    }
+    NSString *systemVer = [[NSProcessInfo processInfo] operatingSystemVersionString]?:@"";
+#endif
     NSString *model = [NSString stringWithFormat:@"%@:%@",machine,systemVer];
     return model;
 }
 
 + (CGSize)portraitScreenSize
 {
+    static CGSize portraitScreenSize;
+    static dispatch_once_t onceToken;
+#if TARGET_OS_IPHONE
     if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
         return [UIScreen mainScreen].bounds.size;
     }
-    static CGSize portraitScreenSize;
-    static dispatch_once_t onceToken;
+    
     dispatch_once(&onceToken, ^{
         CGSize screenSize = [UIScreen mainScreen].bounds.size;
         portraitScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height),
                                         MAX(screenSize.width, screenSize.height));
     });
+#elif TARGET_OS_MAC
+    dispatch_once(&onceToken, ^{
+        CGSize screenSize = [NSScreen mainScreen].frame.size;
+        portraitScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height),
+                                        MAX(screenSize.width, screenSize.height));
+    });
+    
+#endif
     
     return portraitScreenSize;
 }
 
 + (CGFloat)defaultPixelScaleFactor
 {
+#if TARGET_OS_IPHONE
     if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
         return [self portraitScreenSize].width / WXDefaultScreenWidth;
     }
+#endif
     static CGFloat defaultScaleFactor;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -931,6 +1066,7 @@ BOOL WXFloatGreaterThanWithPrecision(CGFloat a, CGFloat b ,double precision){
     return a-b > precision;
 }
 
+#if TARGET_OS_IPHONE
 + (NSString *_Nullable)returnKeyType:(UIReturnKeyType)type
 {
     NSString *typeStr = @"default";
@@ -959,6 +1095,7 @@ BOOL WXFloatGreaterThanWithPrecision(CGFloat a, CGFloat b ,double precision){
     }
     return typeStr;
 }
+#endif
 
 + (void)customMonitorInfo:(WXSDKInstance *_Nullable)instance key:(NSString * _Nonnull)key value:(id _Nonnull)value
 {

@@ -16,9 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-
 @interface WXView : UIView
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+@interface WXView : NSView
+#endif
 
 @end

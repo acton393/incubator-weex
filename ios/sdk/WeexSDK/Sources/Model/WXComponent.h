@@ -24,6 +24,7 @@
 
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 #import "WXType.h"
 
 @class WXSDKInstance;
@@ -197,7 +198,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @warning It must be on accessed on the main thread.Subclasses must not override this;
  */
+#if TARGET_OS_IPHONE
 @property(nonatomic, readonly, strong) UIView *view;
+#elif TARGET_OS_MAC
+@property(nonatomic, readonly, strong) NSView *view;
+#endif
+
 
 /**
  * @abstract The layer that the component manages.
@@ -217,7 +223,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @warning Your custom implementation of this method should not call super
  */
+#if TARGET_OS_IPHONE
 - (UIView *)loadView;
+#elif TARGET_OS_MAC
+- (NSView *)loadView;
+#endif
+
 
 /**
  * @abstract Returns a Boolean value indicating whether the view is currently loaded.
@@ -379,7 +390,12 @@ NS_ASSUME_NONNULL_BEGIN
  * If you already have an image that represents the content of the component, then you should just return the image and do no drawing, otherwise you should draw your content in the current context and return nil.
  * You should never call this method directly yourself. To invalidate part of your component's content, and thus cause that portion to be redrawn, call the `setNeedsDisplay` method instead.
  */
+#if TARGET_OS_IPHONE
 - (UIImage *)drawRect:(CGRect)rect;
+#elif TARGET_OS_MAC
+- (NSImage *)drawRect:(CGRect)rect;
+#endif
+
 
 /**
  * @abstract Called when a component finishes drawing its content.
@@ -408,8 +424,11 @@ NS_ASSUME_NONNULL_BEGIN
  * @abstract Removes the current graphics context and returns an image based on the contents of the current graphics context.
  * @discussion You can override this method to use your own graphics context. The image will be set to layer,  if your drawing system do not have layer and do not need image, returning nil is fine.
  */
+#if TARGET_OS_IPHONE
 - (UIImage *)endDrawContext:(CGContextRef)context;
-
+#elif TARGET_OS_MAC
+- (NSImage *)endDrawContext:(CGContextRef)context;
+#endif
 /**
  * @abstract Return a shapelayer when compoent need border radius.（Especially video components）
  *
@@ -432,7 +451,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WXComponent (Deprecated)
 
+#if TARGET_OS_IPHONE
 typedef UIImage * _Nonnull(^WXDisplayBlock)(CGRect bounds, BOOL(^isCancelled)(void));
+#elif TARGET_OS_MAC
+typedef NSImage * _Nonnull(^WXDisplayBlock)(CGRect bounds, BOOL(^isCancelled)(void));
+#endif
+
 typedef void(^WXDisplayCompletionBlock)(CALayer *layer, BOOL finished);
 
 /**
@@ -453,7 +477,12 @@ typedef void(^WXDisplayCompletionBlock)(CALayer *layer, BOOL finished);
 
 @end
 
+#if TARGET_OS_IPHONE
 @interface UIView (WXComponent)
+#elif TARGET_OS_MAC
+@interface NSView (WXComponent)
+#endif
+
 
 @property (nonatomic, weak) WXComponent *wx_component;
 

@@ -48,6 +48,7 @@
 		DC5E503F1D0D97130059F0EB /* weex@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DC5E503D1D0D97130059F0EB /* weex@2x.png */; };
 		DC65C4FA1CEB032F00B2F84F /* bundlejs in Resources */ = {isa = PBXBuildFile; fileRef = DC65C4F91CEB032F00B2F84F /* bundlejs */; };
 		DC6DD9D21CFE9BC400549297 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7475ACA01CD8444A0044E96C /* libsqlite3.0.tbd */; };
+		DC75B163215A6BA1005F29F8 /* WXBluetoothModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DC75B162215A6BA1005F29F8 /* WXBluetoothModule.m */; };
 		DCA812FA1D0401500029BF62 /* WXEventModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABB0001D02975E001C8592 /* WXEventModule.m */; };
 		DCA812FB1D0401570029BF62 /* WXImgLoaderDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABAFFD1D029753001C8592 /* WXImgLoaderDefaultImpl.m */; };
 		DCABAFF31D029685001C8592 /* WXATLoggerPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABAFF01D029685001C8592 /* WXATLoggerPlugin.m */; };
@@ -123,6 +124,8 @@
 		DC5E503C1D0D97130059F0EB /* weex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weex.png; sourceTree = "<group>"; };
 		DC5E503D1D0D97130059F0EB /* weex@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weex@2x.png"; sourceTree = "<group>"; };
 		DC65C4F91CEB032F00B2F84F /* bundlejs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundlejs; sourceTree = "<group>"; };
+		DC75B15B215A2635005F29F8 /* WXBluetoothModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WXBluetoothModule.h; path = extend/module/WXBluetoothModule.h; sourceTree = "<group>"; };
+		DC75B162215A6BA1005F29F8 /* WXBluetoothModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WXBluetoothModule.m; path = extend/module/WXBluetoothModule.m; sourceTree = "<group>"; };
 		DCABAFEF1D029685001C8592 /* WXATLoggerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXATLoggerPlugin.h; path = debug/WXATLoggerPlugin.h; sourceTree = "<group>"; };
 		DCABAFF01D029685001C8592 /* WXATLoggerPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WXATLoggerPlugin.m; path = debug/WXATLoggerPlugin.m; sourceTree = "<group>"; };
 		DCABAFF11D029685001C8592 /* WXATViewHierarchyPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXATViewHierarchyPlugin.h; path = debug/WXATViewHierarchyPlugin.h; sourceTree = "<group>"; };
@@ -325,6 +328,8 @@
 			children = (
 				DCABAFFF1D02975E001C8592 /* WXEventModule.h */,
 				DCABB0001D02975E001C8592 /* WXEventModule.m */,
+				DC75B15B215A2635005F29F8 /* WXBluetoothModule.h */,
+				DC75B162215A6BA1005F29F8 /* WXBluetoothModule.m */,
 				DC15A3C5200C505C009C8977 /* WXTitleBarModule.h */,
 				DC15A3C6200C505C009C8977 /* WXTitleBarModule.m */,
 				7478481C1E0CD4910044500D /* WXSyncTestModule.h */,
@@ -432,6 +437,7 @@
 				TargetAttributes = {
 					775BEE7A1C1E8ECC008D1629 = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = NKL427X3J4;
 					};
 					775BEE931C1E8ECC008D1629 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -633,6 +639,7 @@
 				775BEE801C1E8ECC008D1629 /* main.m in Sources */,
 				DCABAFFE1D029753001C8592 /* WXImgLoaderDefaultImpl.m in Sources */,
 				747DF6681E2F176A005C53A8 /* UIView+UIThreadCheck.m in Sources */,
+				DC75B163215A6BA1005F29F8 /* WXBluetoothModule.m in Sources */,
 				C47B78D21F299E27001D3B0C /* WXExtendCallNativeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -770,7 +777,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = NKL427X3J4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -785,7 +792,7 @@
 					"$(inherited)",
 					"-licucore",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.taobao.WeexPlayground;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taobao.WeexPlayground.zifanx267;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -800,7 +807,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = NKL427X3J4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -815,7 +822,7 @@
 					"$(inherited)",
 					"-licucore",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.taobao.WeexPlayground;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taobao.WeexPlayground.zifanx267;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

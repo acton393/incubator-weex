@@ -60,20 +60,30 @@
 - (CGSize)contentSize;
 
 - (void)setContentSize:(CGSize)size;
-
+#if TARGET_OS_IPHONE
 - (UIEdgeInsets)contentInset;
+#elif TARGET_OS_MAC
+- (NSEdgeInsets)contentInset;
+#endif
 
+#if TARGET_OS_IPHONE
 - (void)setContentInset:(UIEdgeInsets)contentInset;
+#elif TARGET_OS_MAC
+- (void)setContentInset:(NSEdgeInsets)contentInset;
+#endif
 
 - (void)resetLoadmore;
-
+#if TARGET_OS_IPHONE
 - (void)addScrollDelegate:(id<UIScrollViewDelegate>)delegate;
 - (void)removeScrollDelegate:(id<UIScrollViewDelegate>)delegate;
+#endif
 
 - (WXScrollDirection)scrollDirection;
 
 @optional
 - (NSString*)refreshType;
+#if TARGET_OS_IPHONE
 - (BOOL)requestGestureShouldStopPropagation:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
+#endif
 @end
 

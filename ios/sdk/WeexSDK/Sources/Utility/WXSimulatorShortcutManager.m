@@ -21,6 +21,7 @@
 #import "WXUtility.h"
 #import <objc/message.h>
 
+#if TARGET_OS_IPHONE
 #if TARGET_OS_SIMULATOR
 
 @interface UIEvent (WXSimulatorShortcutManager)
@@ -126,4 +127,5 @@
 
 @end
 
+#endif
 #endif

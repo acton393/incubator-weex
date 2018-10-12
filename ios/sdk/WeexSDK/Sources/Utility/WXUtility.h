@@ -18,7 +18,11 @@
  */
 
 #import <Foundation/Foundation.h>
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#endif
 #import "WXDefine.h"
 #import "WXType.h"
 #import "WXLog.h"
@@ -240,9 +244,15 @@ _Nonnull SEL WXSwizzledSelectorForSelector(_Nonnull SEL selector);
  * @return A font object according to the above params.
  *
  */
+#if TARGET_OS_IPHONE
 + (UIFont *_Nonnull)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *_Nullable)fontFamily scaleFactor:(CGFloat)scaleFactor;
 
 + (UIFont *_Nonnull)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *_Nullable)fontFamily scaleFactor:(CGFloat)scaleFactor useCoreText:(BOOL)useCoreText;
+#elif TARGET_OS_MAC
++ (NSFont *_Nonnull)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *_Nullable)fontFamily scaleFactor:(CGFloat)scaleFactor;
+
++ (NSFont *_Nonnull)fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString *_Nullable)fontFamily scaleFactor:(CGFloat)scaleFactor useCoreText:(BOOL)useCoreText;
+#endif
 
 /**
  * @abstract download remote font from specified url
@@ -391,7 +401,13 @@ CGFloat WXScreenResizeRadio(void) DEPRECATED_MSG_ATTRIBUTE("Use [WXUtility defau
 CGFloat WXPixelResize(CGFloat value) DEPRECATED_MSG_ATTRIBUTE("Use WXPixelScale Instead");
 CGRect WXPixelFrameResize(CGRect value) DEPRECATED_MSG_ATTRIBUTE("Use WXPixelScale Instead");
 CGPoint WXPixelPointResize(CGPoint value) DEPRECATED_MSG_ATTRIBUTE("Use WXPixelScale Instead");
+
+#if TARGET_OS_IPHONE
 + (UIFont  * _Nullable )fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString * _Nullable)fontFamily DEPRECATED_MSG_ATTRIBUTE("Use +[WXUtility fontWithSize:textWeight:textStyle:fontFamily:scaleFactor:]");
+#elif TARGET_OS_MAC
++ (NSFont  * _Nullable )fontWithSize:(CGFloat)size textWeight:(CGFloat)textWeight textStyle:(WXTextStyle)textStyle fontFamily:(NSString * _Nullable)fontFamily DEPRECATED_MSG_ATTRIBUTE("Use +[WXUtility fontWithSize:textWeight:textStyle:fontFamily:scaleFactor:]");
+#endif
+
 
 
 /**
@@ -459,11 +475,13 @@ BOOL WXFloatGreaterThanWithPrecision(CGFloat a,CGFloat b,double precision);
 };
 #endif
 
+#if TARGET_OS_IPHONE
 /**
  *  @abstract convert returnKeyType to type string .
  *
  */
 + (NSString *_Nullable)returnKeyType:(UIReturnKeyType)type;
+#endif
 
 /**
  *  @abstract custorm monitor info

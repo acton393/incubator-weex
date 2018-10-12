@@ -30,7 +30,11 @@
 @interface WXBaseViewController ()
 
 @property (nonatomic, strong) WXSDKInstance *instance;
+#if TARGET_OS_IPHONE
 @property (nonatomic, strong) UIView *weexView;
+#elif TARGET_OS_MAC
+@property (nonatomic, strong) NSView *weexView;
+#endif
 @property (nonatomic, strong) NSURL *sourceURL;
 
 @end

@@ -19,7 +19,6 @@
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
-#import <UIKit/UIKit.h>
 
 @interface WXInnerLayer : CAGradientLayer
 

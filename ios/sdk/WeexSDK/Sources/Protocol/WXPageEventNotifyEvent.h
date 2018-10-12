@@ -21,7 +21,9 @@
 
 @protocol WXPageEventNotifyEventProtocol <NSObject>
 
+#if TARGET_OS_IPHONE
 - (void)hitTest:(CGPoint)point withEvent:(UIEvent *)event withView:(UIView*)view;
+#endif
 
 - (void)notifyScrollEvent:(NSString*)instanceId from:(CGPoint)from to:(CGPoint)to;
 

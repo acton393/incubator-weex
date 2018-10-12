@@ -16,8 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#endif
 
 /**
  * The WXBaseViewController class provides the infrastructure for managing the weex view in your app. It is 
@@ -26,7 +29,11 @@
  * special bundle URL.
  */
 
+#if TARGET_OS_IPHONE
 @interface WXBaseViewController : UIViewController<UIGestureRecognizerDelegate>
+#elif TARGET_OS_MAC
+@interface WXBaseViewController : NSViewController<NSGestureRecognizerDelegate>
+#endif
 
 /**
  * @abstract initializes the viewcontroller with bundle url.

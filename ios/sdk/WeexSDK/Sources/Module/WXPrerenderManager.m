@@ -305,8 +305,11 @@ static NSString *const MSG_PRERENDER_SUCCESS = @"success";
         });
     }
 }
-
+#if TARGET_OS_IPHONE
 + (UIView *)viewFromUrl:(NSString *)url
+#elif TARGET_OS_MAC
++ (NSView *)viewFromUrl:(NSString *)url
+#endif
 {
     WXPrerenderManager *manager = [WXPrerenderManager sharedInstance];
     WXPrerenderTask *task  = [manager.prerenderTasks objectForKey:[WXPrerenderManager getTaskKeyFromUrl:url]];

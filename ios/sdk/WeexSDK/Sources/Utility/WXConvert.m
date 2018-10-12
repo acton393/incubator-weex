@@ -196,8 +196,10 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
 }
 
 #pragma mark Style
-
+#if TARGET_OS_IPHONE
 + (UIColor *)UIColor:(id)value
+#elif TARGET_OS_MAC
++ (NSColor *)NSColor:(id)value
 {
     // 1. check cache
     static NSCache *colorCache;
@@ -210,8 +212,11 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     if ([value isKindOfClass:[NSNull class]] || !value) {
         return nil;
     }
-    
+    #if TARGET_OS_IPHONE
     UIColor *color = [colorCache objectForKey:value];
+    #elif TARGET_OS_MAC
+    NSColor *color = [colorCache objectForKey:value];
+    #endif
     if (color) {
         return color;
     }
@@ -421,8 +426,11 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
         green   = ((colorValue & 0x00FF00) >> 8) / 255.0;
         blue    = (colorValue & 0x0000FF) / 255.0;
     }
-    
+#if TARGET_OS_IPHONE
     color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+#elif TARGET_OS_MAC
+    color = [NSColor colorWithRed:red green:green blue:blue alpha:alpha];
+#endif
     // 6. cache color
     if (color && value) {
         [colorCache setObject:color forKey:value];
@@ -430,14 +438,23 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     
     return color;
 }
+#endif
 
 + (CGColorRef)CGColor:(id)value
 {
+#if TARGET_OS_IPHONE
     UIColor *color = [self UIColor:value];
+#elif TARGET_OS_MAC
+    NSColor *color = [self NSColor:value];
+#endif
+    
     return [color CGColor];
 }
-
+#if TARGET_OS_IPHONE
 + (NSString *)HexWithColor:(UIColor *)color
+#elif TARGET_OS_MAC
++ (NSString *)HexWithColor:(NSColor *)color
+#endif
 {
     uint hex;
     CGFloat red, green, blue, alpha;
@@ -516,6 +533,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     return NSTextAlignmentNatural;
 }
 
+#if TARGET_OS_IPHONE
 + (UIReturnKeyType)UIReturnKeyType:(id)value
 {
     if([value isKindOfClass:[NSString class]]){
@@ -535,6 +553,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     }
     return UIReturnKeyDefault;
 }
+#endif
 
 + (WXTextStyle)WXTextStyle:(id)value
 {
@@ -594,7 +613,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
 }
 
 #pragma mark Image
-
+#if TARGET_OS_IPHONE
 + (UIViewContentMode)UIViewContentMode:(id)value
 {
     if([value isKindOfClass:[NSString class]]){
@@ -608,6 +627,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     }
     return UIViewContentModeScaleToFill;
 }
+#endif
 
 + (WXImageQuality)WXImageQuality:(id)value
 {
@@ -656,6 +676,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     return WXScrollDirectionVertical;
 }
 
+#if TARGET_OS_IPHONE
 + (UITableViewRowAnimation)UITableViewRowAnimation:(id)value
 {
     if ([value isKindOfClass:[NSString class]]) {
@@ -691,6 +712,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     
     return [timingFunctionMapping[value] unsignedIntegerValue];
 }
+#endif
 
 + (CAMediaTimingFunction *)CAMediaTimingFunction:(id)value
 {
@@ -815,7 +837,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     }
     return nil;
 }
-
+#if TARGET_OS_IPHONE
 + (UIAccessibilityTraits)WXUIAccessibilityTraits:(id)value
 {
     UIAccessibilityTraits accessibilityTrait = UIAccessibilityTraitNone;
@@ -863,6 +885,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     
     return accessibilityTrait;
 }
+#endif
 
 @end
 

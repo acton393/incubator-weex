@@ -94,8 +94,11 @@
         self.hasRecordFsRenderTimeByPosition = true;
         [targetComponent.weexInstance.apmInstance onStage:KEY_PAGE_STAGES_NEW_FSRENDER];
     }
-    
+#if TARGET_OS_IPHONE
     UIView *root = targetComponent.weexInstance.rootView;
+#elif TARGET_OS_MAC
+    NSView *root = targetComponent.weexInstance.rootView;
+#endif
     if (root && [root isKindOfClass:[WXRootView class]]) {
         WXRootView* wxRootView = (WXRootView *)root;
         if ([wxRootView isHasEvent]) {
@@ -138,8 +141,11 @@
     if (!isViewloaded) {
         return false;
     }
-    
+#if TARGET_OS_IPHONE
     UIView* curView = targetComponent.view;
+#elif TARGET_OS_MAC
+    NSView* curView = targetComponent.view;
+#endif
     while (curView != nil) {
         if (curView == targetComponent.weexInstance.rootView) {
             return true;
@@ -151,9 +157,9 @@
 
 - (bool) _isViewGroup:(WXComponent *)targetComponent
 {
-    UIView* targetView = targetComponent.view;
-    
     bool isViewGroup = true;
+#if TARGET_OS_IPHONE
+    UIView* targetView = targetComponent.view;
     if ([targetComponent isKindOfClass:WXTextComponent.class]
         || [targetView isKindOfClass:UILabel.class]
         || [targetView isKindOfClass:UITextView.class]
@@ -169,6 +175,24 @@
         
         isViewGroup =false;
     }
+#elif TARGET_OS_MAC
+    NSView* targetView = targetComponent.view;
+//    if ([targetComponent isKindOfClass:WXTextComponent.class]
+//        || [targetView isKindOfClass:NSLabel.class]
+//        || [targetView isKindOfClass:UITextView.class]
+//        || [targetView isKindOfClass:UIPickerView.class]
+//        || [targetView isKindOfClass:UIProgressView.class]
+//        || [targetView isKindOfClass:UIPickerView.class]
+//        || [targetView isKindOfClass:UIImageView.class]
+//        || [targetView isKindOfClass:UIButton.class]
+//        || [targetView isKindOfClass:UIDatePicker.class]
+//        || [targetView isKindOfClass:UITextField.class]
+//        || [targetView isKindOfClass:UISwitch.class]
+//        || [targetView isKindOfClass:UIActivityIndicatorView.class]) {
+//
+//        isViewGroup =false;
+//    }
+#endif
     return isViewGroup;
 }
 

@@ -42,7 +42,12 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  *
  * @param container The target controller.
  */
+
+#if TARGET_OS_IPHONE
 - (id)navigationControllerOfContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (id)navigationControllerOfContainer:(NSViewController *)container;
+#endif
 
 /**
  * @abstract Sets the navigation bar hidden.
@@ -54,8 +59,13 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  * @param container The navigation controller.
  *
  */
+#if TARGET_OS_IPHONE
 - (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
                  withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
+                 withContainer:(NSViewController *)container;
+#endif
 
 /**
  * @abstract Sets the background color of navigation bar.
@@ -65,8 +75,14 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  * @param container The target controller.
  *
  */
+#if TARGET_OS_IPHONE
 - (void)setNavigationBackgroundColor:(UIColor *)backgroundColor
                        withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)setNavigationBackgroundColor:(NSColor *)backgroundColor
+                       withContainer:(NSViewController *)container;
+#endif
+
 
 /**
  * @abstract Sets the item in navigation bar.
@@ -80,10 +96,19 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  * @param container The target controller.
  *
  */
+
+#if TARGET_OS_IPHONE
 - (void)setNavigationItemWithParam:(NSDictionary *)param
                           position:(WXNavigationItemPosition)position
                         completion:(WXNavigationResultBlock)block
                      withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)setNavigationItemWithParam:(NSDictionary *)param
+                          position:(WXNavigationItemPosition)position
+                        completion:(WXNavigationResultBlock)block
+                     withContainer:(NSViewController *)container;
+#endif
+
 
 /**
  * @abstract Clears the item in navigation bar.
@@ -97,10 +122,19 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  * @param container The target controller.
  *
  */
+
+#if TARGET_OS_IPHONE
 - (void)clearNavigationItemWithParam:(NSDictionary *)param
                             position:(WXNavigationItemPosition)position
                           completion:(WXNavigationResultBlock)block
                        withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)clearNavigationItemWithParam:(NSDictionary *)param
+                            position:(WXNavigationItemPosition)position
+                          completion:(WXNavigationResultBlock)block
+                       withContainer:(NSViewController *)container;
+#endif
+
 
 /**
  * @abstract Pushes a view controller onto the receiver’s stack.
@@ -112,9 +146,15 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  * @param container The target controller.
  *
  */
+#if TARGET_OS_IPHONE
 - (void)pushViewControllerWithParam:(NSDictionary *)param
                          completion:(WXNavigationResultBlock)block
                       withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)pushViewControllerWithParam:(NSDictionary *)param
+                         completion:(WXNavigationResultBlock)block
+                      withContainer:(NSViewController *)container;
+#endif
 
 /**
  * @abstract Pops the top view controller from the navigation stack.
@@ -126,9 +166,15 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  * @param container The target controller.
  *
  */
+#if TARGET_OS_IPHONE
 - (void)popViewControllerWithParam:(NSDictionary *)param
                         completion:(WXNavigationResultBlock)block
                      withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)popViewControllerWithParam:(NSDictionary *)param
+                        completion:(WXNavigationResultBlock)block
+                     withContainer:(NSViewController *)container;
+#endif
 
     
 @optional
@@ -145,9 +191,16 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
  * @param container The target controller.
  *
  */
+
+#if TARGET_OS_IPHONE
 - (void)open:(NSDictionary *)param success:(WXModuleCallback)success
-                                   failure:(WXModuleCallback)failure
-                             withContainer:(UIViewController *)container;
+     failure:(WXModuleCallback)failure
+withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)open:(NSDictionary *)param success:(WXModuleCallback)success
+     failure:(WXModuleCallback)failure
+withContainer:(NSViewController *)container;
+#endif
 
 
 /**
@@ -162,7 +215,14 @@ typedef void (^WXNavigationResultBlock)(NSString *code, NSDictionary * responseD
   * @param container The target controller.
   *
   */
+
+#if TARGET_OS_IPHONE
 - (void)close:(NSDictionary *)param success:(WXModuleCallback)success
-                                   failure:(WXModuleCallback)failure
-                             withContainer:(UIViewController *)container;
+      failure:(WXModuleCallback)failure
+withContainer:(UIViewController *)container;
+#elif TARGET_OS_MAC
+- (void)close:(NSDictionary *)param success:(WXModuleCallback)success
+      failure:(WXModuleCallback)failure
+withContainer:(NSViewController *)container;
+#endif
 @end

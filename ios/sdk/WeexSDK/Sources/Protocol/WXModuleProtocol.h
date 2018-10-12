@@ -16,8 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#endif
+#import <Foundation/Foundation.h>
 #import "WXDefine.h"
 #import "WXSDKInstance.h"
 

@@ -148,8 +148,11 @@
 {
     [self parseTransformOrigin:transformOriginCSS];
 }
-
+#if TARGET_OS_IPHONE
 - (CATransform3D)nativeTransformWithView:(UIView *)view
+#elif TARGET_OS_MAC
+- (CATransform3D)nativeTransformWithView:(NSView *)view
+#endif
 {
     if (_useNativeTransform) {
         return _nativeTransform;
@@ -171,8 +174,12 @@
     
     return nativeTransform3d;
 }
-
+#if TARGET_OS_IPHONE
 - (CATransform3D)nativeTransformWithoutRotateWithView:(UIView *)view
+#elif TARGET_OS_MAC
+- (CATransform3D)nativeTransformWithoutRotateWithView:(NSView *)view
+#endif
+
 {
     CATransform3D nativeTansform3D = CATransform3DIdentity;
     
@@ -193,15 +200,22 @@
     return nativeTansform3D;
 }
 
--(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
+#if TARGET_OS_IPHONE
+- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
+#elif TARGET_OS_MAC
+- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(NSView *)view
+#endif
+
 {
     CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x,
                                    view.bounds.size.height * anchorPoint.y);
     CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x,
                                    view.bounds.size.height * view.layer.anchorPoint.y);
-    
+
+#if TARGET_OS_IPHONE
     newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
     oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+#endif
     
     CGPoint position = view.layer.position;
     
@@ -215,8 +229,12 @@
     view.layer.anchorPoint = anchorPoint;
 }
 
-
+#if TARGET_OS_IPHONE
 - (void)applyTransformForView:(UIView *)view
+#elif TARGET_OS_MAC
+- (void)applyTransformForView:(NSView *)view
+#endif
+
 {
     if (!view || view.bounds.size.width <= 0 || view.bounds.size.height <= 0) {
         return;

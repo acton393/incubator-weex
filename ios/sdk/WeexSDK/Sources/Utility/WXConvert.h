@@ -16,8 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#endif
 #import <objc/runtime.h>
 #import "WXLog.h"
 #import "WXType.h"
@@ -55,15 +58,26 @@ typedef CGFloat WXPixelType;
 // WXPixelType that use flexCGFloat to convert
 + (WXPixelType)WXFlexPixelType:(id)value scaleFactor:(CGFloat)scaleFactor;
 
-
+#if TARGET_OS_IPHONE
 + (UIViewContentMode)UIViewContentMode:(id)value;
+#endif
 + (WXImageQuality)WXImageQuality:(id)value;
 + (WXImageSharp)WXImageSharp:(id)value;
+#if TARGET_OS_IPHONE
 + (UIAccessibilityTraits)WXUIAccessibilityTraits:(id)value;
+#endif
 
+#if TARGET_OS_IPHONE
 + (UIColor *)UIColor:(id)value;
+#elif TARGET_OS_MAC
++ (NSColor *)NSColor:(id)value;
+#endif
 + (CGColorRef)CGColor:(id)value;
+#if TARGET_OS_IPHONE
 + (NSString *)HexWithColor:(UIColor *)color;
+#elif TARGET_OS_MAC
++ (NSString *)HexWithColor:(NSColor *)color;
+#endif
 + (WXBorderStyle)WXBorderStyle:(id)value;
 typedef BOOL WXClipType;
 + (WXClipType)WXClipType:(id)value;
@@ -81,12 +95,15 @@ typedef BOOL WXClipType;
 + (CGFloat)WXTextWeight:(id)value;
 + (WXTextDecoration)WXTextDecoration:(id)value;
 + (NSTextAlignment)NSTextAlignment:(id)value;
+#if TARGET_OS_IPHONE
 + (UIReturnKeyType)UIReturnKeyType:(id)value;
+#endif
 
 + (WXScrollDirection)WXScrollDirection:(id)value;
+#if TARGET_OS_IPHONE
 + (UITableViewRowAnimation)UITableViewRowAnimation:(id)value;
-
 + (UIViewAnimationOptions)UIViewAnimationTimingFunction:(id)value;
+#endif
 + (CAMediaTimingFunction *)CAMediaTimingFunction:(id)value;
 
 + (WXVisibility)WXVisibility:(id)value;

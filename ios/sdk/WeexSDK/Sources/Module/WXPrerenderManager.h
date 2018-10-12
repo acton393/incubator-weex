@@ -82,7 +82,11 @@
  *  @abstract Returns prerender root view .
  *
  **/
+#if TARGET_OS_IPHONE
 + (UIView *)viewFromUrl:(NSString *)url;
+#elif TARGET_OS_MAC
++ (NSView *)viewFromUrl:(NSString *)url;
+#endif
 
 /**
  *  @abstract Returns prerender instance .

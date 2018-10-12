@@ -16,8 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#endif
 #import "WXComponent.h"
 #import "WXJSExceptionInfo.h"
 #import "WXResourceResponse.h"
@@ -32,13 +35,23 @@ extern NSString *const bundleUrlOptionKey;
 /**
  * The viewControler which the weex bundle is rendered in.
  **/
+#if TARGET_OS_IPHONE
 @property (nonatomic, weak) UIViewController *viewController;
+#elif TARGET_OS_MAC
+@property (nonatomic, weak) NSViewController *viewController;
+#endif
+
 
 /**
  * The Native root container used to bear the view rendered by weex file. 
  * The root view is controlled by WXSDKInstance, so you can only get it, but not change it.
  **/
+#if TARGET_OS_IPHONE
 @property (nonatomic, strong) UIView *rootView;
+#elif TARGET_OS_MAC
+@property (nonatomic, strong) NSView *rootView;
+#endif
+
 
 /**
  * Component can freeze the rootview frame through the variable isRootViewFrozen
@@ -113,28 +126,47 @@ typedef NS_ENUM(NSInteger, WXErrorCode) {//error.code
  *
  *  @return A block that takes a UIView argument, which is the root view
  **/
+#if TARGET_OS_IPHONE
 @property (nonatomic, copy) void (^onCreate)(UIView *);
+#elif TARGET_OS_MAC
+@property (nonatomic, copy) void (^onCreate)(NSView *);
+#endif
 
 /**
  *  The callback triggered when the root container's frame has changed.
  *
  *  @return A block that takes a UIView argument, which is the root view
  **/
+#if TARGET_OS_IPHONE
 @property (nonatomic, copy) void (^onLayoutChange)(UIView *);
+#elif TARGET_OS_MAC
+@property (nonatomic, copy) void (^onLayoutChange)(NSView *);
+#endif
+
 
 /**
  *  The callback triggered when the instance finishes rendering.
  *
  *  @return A block that takes a UIView argument, which is the root view
  **/
+#if TARGET_OS_IPHONE
 @property (nonatomic, copy) void (^renderFinish)(UIView *);
+#elif TARGET_OS_MAC
+@property (nonatomic, copy) void (^renderFinish)(NSView *);
+#endif
 
 /**
  *  The callback triggered when the instance finishes refreshing weex view.
  *
  *  @return A block that takes a UIView argument, which is the root view
  **/
+
+#if TARGET_OS_IPHONE
+
 @property (nonatomic, copy) void (^refreshFinish)(UIView *);
+#elif TARGET_OS_MAC
+@property (nonatomic, copy) void (^refreshFinish)(NSView *);
+#endif
 
 /**
  * bundleType is the DSL type
@@ -346,7 +378,12 @@ typedef NS_ENUM(NSInteger, WXErrorCode) {//error.code
 
 @property (nonatomic, strong) NSDictionary *properties DEPRECATED_MSG_ATTRIBUTE();
 @property (nonatomic, assign) NSTimeInterval networkTime DEPRECATED_MSG_ATTRIBUTE();
+#if TARGET_OS_IPHONE
 @property (nonatomic, copy) void (^updateFinish)(UIView *);
+#elif TARGET_OS_MAC
+@property (nonatomic, copy) void (^updateFinish)(NSView *);
+#endif
+
 
 @end
 

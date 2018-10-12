@@ -49,11 +49,17 @@ typedef id (^WXDataBindingBlock)(NSDictionary *data, BOOL *needUpdate);
     /**
      *  View
      */
+#if TARGET_OS_IPHONE
     UIColor *_backgroundColor;
+    UIView *_view;
+#elif TARGET_OS_MAC
+    NSColor *_backgroundColor;
+    NSView *_view;
+#endif
     NSString *_backgroundImage;
     NSString *_clipRadius;
     WXClipType _clipToBounds;
-    UIView *_view;
+
     CGFloat _opacity;
     WXVisibility  _visibility;
     WXBoxShadow *_originalBoxShadow;
@@ -85,10 +91,17 @@ typedef id (^WXDataBindingBlock)(NSDictionary *data, BOOL *needUpdate);
      */
     BOOL _appearEvent;
     BOOL _disappearEvent;
+#if TARGET_OS_IPHONE
     UITapGestureRecognizer *_tapGesture;
-    NSMutableArray *_swipeGestures;
     UILongPressGestureRecognizer *_longPressGesture;
     UIPanGestureRecognizer *_panGesture;
+#elif TARGET_OS_MAC
+    NSClickGestureRecognizer *_tapGesture;
+    NSPressGestureRecognizer *_longPressGesture;
+    NSPanGestureRecognizer *_panGesture;
+#endif
+    NSMutableArray *_swipeGestures;
+    
     
     BOOL _listenPanStart;
     BOOL _listenPanMove;
@@ -109,10 +122,17 @@ typedef id (^WXDataBindingBlock)(NSDictionary *data, BOOL *needUpdate);
     BOOL _isCompositingChild;
     WXThreadSafeCounter *_displayCounter;
     
+#if TARGET_OS_IPHONE
     UIColor *_borderTopColor;
     UIColor *_borderRightColor;
     UIColor *_borderLeftColor;
     UIColor *_borderBottomColor;
+#elif TARGET_OS_MAC
+    NSColor *_borderTopColor;
+    NSColor *_borderRightColor;
+    NSColor *_borderLeftColor;
+    NSColor *_borderBottomColor;
+#endif
     
     CGFloat _borderTopWidth;
     CGFloat _borderRightWidth;

@@ -16,8 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+#endif
 
 /**
  * The WXRootViewController class inherited from UINavigationController class which implements a specialized
@@ -26,8 +29,11 @@
  * viewcontroller. This navigation controller makes it possible to present your page efficiently and makes it
  * easier for the user to navigate that content.
  */
-
+#if TARGET_OS_IPHONE
 @interface WXRootViewController : UINavigationController
+#elif TARGET_OS_MAC
+@interface WXRootViewController : NSViewController
+#endif
 
 /**
  * @abstract initialize the RootViewController with bundle url.

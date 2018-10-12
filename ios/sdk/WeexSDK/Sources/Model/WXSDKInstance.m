@@ -186,7 +186,11 @@ typedef enum : NSUInteger {
 
 #pragma mark Public Mehtods
 
+#if TARGET_OS_IPHONE
 - (UIView *)rootView
+#elif TARGET_OS_MAC
+- (NSView *)rootView
+#endif
 {
     return _rootView;
 }
@@ -198,7 +202,11 @@ typedef enum : NSUInteger {
 #endif
     if (!CGRectEqualToRect(frame, _frame)) {
         _frame = frame;
+#if TARGET_OS_IPHONE
         CGFloat screenHeight =  [[UIScreen mainScreen] bounds].size.height;
+#elif TARGET_OS_MAC
+        CGFloat screenHeight =  [[NSScreen mainScreen] frame].size.height;
+#endif
         if (screenHeight>0) {
             CGFloat pageRatio = frame.size.height/screenHeight *100;
             pageRatio = pageRatio>100?100:pageRatio;
@@ -909,8 +917,14 @@ typedef enum : NSUInteger {
 - (void)addObservers
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moduleEventNotification:) name:WX_MODULE_EVENT_FIRE_NOTIFICATION object:nil];
+#if TARGET_OS_IPHONE
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+#elif TARGET_OS_MAC
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:NSApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:NSApplicationDidBecomeActiveNotification object:nil];
+#endif
+    
     [self addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
 }
 
