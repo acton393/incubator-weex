@@ -18,7 +18,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 @class WXSDKInstance;
 @class WXLength;
 

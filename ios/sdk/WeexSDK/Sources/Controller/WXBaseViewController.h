@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 
 /**
  * The WXBaseViewController class provides the infrastructure for managing the weex view in your app. It is 

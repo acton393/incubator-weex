@@ -18,7 +18,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 
 typedef NS_ENUM(NSUInteger, WXComponentType) {
     WXComponentTypeCommon = 0,

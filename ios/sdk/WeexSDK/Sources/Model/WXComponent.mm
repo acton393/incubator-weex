@@ -105,10 +105,11 @@ static BOOL bNeedRemoveEvents = YES;
         _accessibilityHintContent = nil;
         
         _async = NO;
-        
+#if !WEEX_MAC
         if (styles[kWXTransitionProperty]) {
             _transition = [[WXTransition alloc]initWithStyles:styles];
         }
+#endif
 
         //TODO set indicator style 
         if ([type isEqualToString:@"indicator"]) {
@@ -216,7 +217,7 @@ static BOOL bNeedRemoveEvents = YES;
     
     return component;
 }
-
+#if !WEEX_MAC
 - (UIAccessibilityTraits)_parseAccessibilityTraitsWithTraits:(UIAccessibilityTraits)trait roles:(NSString*)roleStr
 {
     UIAccessibilityTraits newTrait = trait;
@@ -226,6 +227,7 @@ static BOOL bNeedRemoveEvents = YES;
     
     return newTrait;
 }
+#endif
 
 - (void)dealloc
 {
@@ -237,6 +239,7 @@ static BOOL bNeedRemoveEvents = YES;
     if (_isTemplate && self.attributes[@"@templateId"]) {
         [[WXSDKManager bridgeMgr] callComponentHook:_weexInstance.instanceId componentId:self.attributes[@"@templateId"] type:@"lifecycle" hook:@"destroy" args:nil competion:nil];
     }
+#if !WEEX_MAC
     if (_tapGesture) {
         [_tapGesture removeTarget:nil action:NULL];
     }
@@ -253,13 +256,14 @@ static BOOL bNeedRemoveEvents = YES;
     if (_panGesture) {
         [_panGesture removeTarget:nil action:NULL];
     }
+#endif
     
     if (bNeedRemoveEvents) {
         if (WX_SYS_VERSION_LESS_THAN(@"9.0")) {
             [self _removeAllEvents];
         }
     }
-    
+#if !WEEX_MAC
     if (_bindingExpressions != nullptr) {
         for (WXJSExpression* expr : *_bindingExpressions) {
             if (expr != nullptr) {
@@ -268,6 +272,7 @@ static BOOL bNeedRemoveEvents = YES;
         }
         delete _bindingExpressions;
     }
+#endif
 
     pthread_mutex_destroy(&_propertyMutex);
     pthread_mutexattr_destroy(&_propertMutexAttr);
@@ -367,19 +372,32 @@ static BOOL bNeedRemoveEvents = YES;
         [self viewWillLoad];
         
         _view = [self loadView];
+#if WEEX_MAC
+        if ([WXView layerClass]) {
+            [_view setLayer:[([WXView layerClass]) layer]];
+            [_view setWantsLayer:YES];
+        }
+#endif
 #ifdef DEBUG
         WXLogDebug(@"flexLayout -> loadView:addr-(%p),componentRef-(%@)",_view,self.ref);
 #endif
         _layer = _view.layer;
         _view.frame = [self _fixIllegalFrame:_calculatedFrame];
         _view.hidden = _visibility == WXVisibilityShow ? NO : YES;
+#if !WEEX_MAC
         _view.clipsToBounds = _clipToBounds;
+#endif
         if (![self _needsDrawBorder]) {
             _layer.borderColor = _borderTopColor.CGColor;
             _layer.borderWidth = _borderTopWidth;
             [self _resetNativeBorderRadius];
             _layer.opacity = _opacity;
+#if WEEX_MAC
+            _view.layer.backgroundColor = _backgroundColor.CGColor;
+#else
             _view.backgroundColor = _backgroundColor;
+#endif
+            
         }
 
         if (_backgroundImage) {
@@ -398,31 +416,36 @@ static BOOL bNeedRemoveEvents = YES;
         _view.wx_ref = self.ref;
         _layer.wx_component = self;
         
+#if !WEEX_MAC
         if (_roles) {
             [_view setAccessibilityTraits:[self _parseAccessibilityTraitsWithTraits:self.view.accessibilityTraits roles:_roles]];
         }
+#endif
         
         if (_testId) {
             _view.accessibilityIdentifier = _testId;
         }
-        
+#if !WEEX_MAC
         if (_accessibilityHintContent) {
             [_view setAccessibilityHint:_accessibilityHintContent];
         }
+#endif
         
         if (_ariaLabel) {
             _view.accessibilityLabel = _ariaLabel;
         }
+#if !WEEX_MAC
         if (_accessible) {
             [_view setIsAccessibilityElement:[WXConvert BOOL:_accessible]];
         }
-        
+
         if (_ariaHidden) {
             [_view setAccessibilityElementsHidden:[WXConvert BOOL:_ariaHidden]];
         }
         if (_groupAccessibilityChildren) {
             [_view setShouldGroupAccessibilityChildren:[WXConvert BOOL:_groupAccessibilityChildren]];
         }
+#endif
         
         [self _initEvents:self.events];
         [self _initPseudoEvents:_isListenPseudoTouch];
@@ -658,6 +681,7 @@ static BOOL bNeedRemoveEvents = YES;
 
 #pragma mark Updating
 
+#if !WEEX_MAC
 - (BOOL)_isTransitionNone
 {
     return _transition == nil || _transition.transitionOptions == WXTransitionOptionsNone;
@@ -709,6 +733,7 @@ static BOOL bNeedRemoveEvents = YES;
     }
     return yesOrNo;
 }
+#endif
 
 - (void)_modifyStyles:(NSDictionary *)styles
 {
@@ -741,11 +766,13 @@ static BOOL bNeedRemoveEvents = YES;
 - (void)_updateStylesOnMainThread:(NSDictionary *)styles resetStyles:(NSMutableArray *)resetStyles
 {
     WXAssertMainThread();
+#if !WEEX_MAC
     if (![self _isTransitionOnMainThreadStyles:styles]) {
         [self _updateViewStyles:styles];
     } else {
         [self _transitionUpdateViewProperty:styles];
     }
+#endif
 #ifdef DEBUG
     NSDictionary *copySelfStyle = [NSDictionary dictionaryWithDictionary:self.styles];
     WXLogDebug(@"flexLayout -> ref:%@ style before : %@",self.ref,copySelfStyle);
@@ -778,7 +805,9 @@ static BOOL bNeedRemoveEvents = YES;
     [self _updateNavBarAttributes:attributes];
     
     [self updateAttributes:attributes];
+#if !WEEX_MAC
     [self _configWXComponentA11yWithAttributes:attributes];
+#endif
 }
 
 - (void)updateStyles:(NSDictionary *)styles
@@ -829,12 +858,17 @@ static BOOL bNeedRemoveEvents = YES;
             CAGradientLayer * gradientLayer = [WXUtility gradientLayerFromColors:@[startColor, endColor] locations:nil frame:strongSelf.view.bounds gradientType:(WXGradientType)[linearGradient[@"gradientType"] integerValue]];
             if (gradientLayer) {
                 _backgroundColor = [UIColor colorWithPatternImage:[strongSelf imageFromLayer:gradientLayer]];
+#if !WEEX_MAC
                 strongSelf.view.backgroundColor = _backgroundColor;
+#else
+                strongSelf.view.layer.backgroundColor = _backgroundColor.CGColor;
+#endif
             }
         }
     });
 }
 
+#if !WEEX_MAC
 - (void)_configWXComponentA11yWithAttributes:(NSDictionary *)attributes
 {
     WX_CHECK_COMPONENT_TYPE(self.componentType)
@@ -870,13 +904,21 @@ static BOOL bNeedRemoveEvents = YES;
     }
 
 }
+#endif
 
 - (UIImage *)imageFromLayer:(CALayer *)layer
 {
+#if !WEEX_MAC
     UIGraphicsBeginImageContextWithOptions(layer.frame.size, NO, 0);
     [layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+#else
+    [layer renderInContext:[NSGraphicsContext currentContext].CGContext];
+    CGImageRef imageRef = CGBitmapContextCreateImage([NSGraphicsContext currentContext].CGContext);
+    UIImage *outputImage = [[UIImage alloc] initWithCGImage:imageRef size:layer.frame.size];
+    
+#endif
     return outputImage;
 }
 

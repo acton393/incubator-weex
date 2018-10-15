@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if !WEEX_MAC
 #import "WXSimulatorShortcutManager.h"
 #import "WXUtility.h"
 #import <objc/message.h>
@@ -126,4 +126,5 @@
 
 @end
 
+#endif
 #endif

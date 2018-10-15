@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 
 @interface UIBezierPath (Weex)
 
@@ -27,4 +26,5 @@
                                   bottomLeft:(CGFloat)bottomLeftRadius
                                  bottomRight:(CGFloat)bottomRightRadius;
 
+- (CGPathRef)quartzPath;
 @end

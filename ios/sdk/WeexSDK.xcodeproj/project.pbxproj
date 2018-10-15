@@ -735,6 +735,377 @@
 		DC03ADBA1D508719003F76E7 /* WXTextAreaComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DC03ADB81D508719003F76E7 /* WXTextAreaComponent.h */; };
 		DC15A3DB2010BC93009C8977 /* weex-main-jsfm.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3D92010BC93009C8977 /* weex-main-jsfm.js */; };
 		DC15A3DC2010BC93009C8977 /* weex-rax-api.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3DA2010BC93009C8977 /* weex-rax-api.js */; };
+		DC1CC93521719F69000FF1F7 /* WeexSDK_MacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = DC1CC93321719F69000FF1F7 /* WeexSDK_MacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CC93921719FDB000FF1F7 /* string_util.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F3323B2141A4C500701BA0 /* string_util.h */; };
+		DC1CC93A21719FDB000FF1F7 /* LogDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B8F2125572F003960BD /* LogDefines.h */; };
+		DC1CC93B21719FDB000FF1F7 /* TimeUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B882125572F003960BD /* TimeUtils.h */; };
+		DC1CC93C21719FDB000FF1F7 /* CoreConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B9C2125572F003960BD /* CoreConstants.h */; };
+		DC1CC93D21719FDB000FF1F7 /* make_copyable.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B892125572F003960BD /* make_copyable.h */; };
+		DC1CC93E21719FDB000FF1F7 /* ViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B8A2125572F003960BD /* ViewUtils.h */; };
+		DC1CC93F21719FDB000FF1F7 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B8B2125572F003960BD /* common.h */; };
+		DC1CC94121719FDB000FF1F7 /* time_point.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B8D2125572F003960BD /* time_point.cc */; };
+		DC1CC94221719FDB000FF1F7 /* closure.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B8E2125572F003960BD /* closure.h */; };
+		DC1CC94321719FDB000FF1F7 /* time_unit.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B902125572F003960BD /* time_unit.h */; };
+		DC1CC94721719FDB000FF1F7 /* thread_impl_posix.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B922125572F003960BD /* thread_impl_posix.cc */; };
+		DC1CC94921719FDB000FF1F7 /* thread_impl_darwin.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B962125572F003960BD /* thread_impl_darwin.cc */; };
+		DC1CC94C21719FDB000FF1F7 /* message_loop.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66BA02125572F003960BD /* message_loop.h */; };
+		DC1CC94D21719FDB000FF1F7 /* message_loop.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66BA12125572F003960BD /* message_loop.cc */; };
+		DC1CC94E21719FDB000FF1F7 /* message_pump.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66BA42125572F003960BD /* message_pump.h */; };
+		DC1CC94F21719FDB000FF1F7 /* message_pump_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66BA52125572F003960BD /* message_pump_posix.h */; };
+		DC1CC95021719FDB000FF1F7 /* message_pump_posix.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B9E2125572F003960BD /* message_pump_posix.cc */; };
+		DC1CC95121719FDB000FF1F7 /* message_pump_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66BA62125572F003960BD /* message_pump_darwin.h */; };
+		DC1CC95221719FDB000FF1F7 /* message_pump_darwin.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66BA22125572F003960BD /* message_pump_darwin.cc */; };
+		DC1CC95321719FDB000FF1F7 /* vm_monitor.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C7132133A8BC00635B37 /* vm_monitor.h */; };
+		DC1CC95421719FDB000FF1F7 /* ast_builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6E32133A83C00635B37 /* ast_builder.cc */; };
+		DC1CC95521719FDB000FF1F7 /* ast_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6DB2133A83B00635B37 /* ast_builder.h */; };
+		DC1CC95621719FDB000FF1F7 /* class_json.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8A72C98213F8BAD0024E7BE /* class_json.cc */; };
+		DC1CC95721719FDB000FF1F7 /* js_common_function.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4547FD0C215392F900E79971 /* js_common_function.cc */; };
+		DC1CC95821719FDB000FF1F7 /* js_common_function.h in Headers */ = {isa = PBXBuildFile; fileRef = 4547FD0B215392F900E79971 /* js_common_function.h */; };
+		DC1CC95921719FDB000FF1F7 /* class_json.h in Headers */ = {isa = PBXBuildFile; fileRef = B8A72C96213F8BAD0024E7BE /* class_json.h */; };
+		DC1CC95A21719FDB000FF1F7 /* class_string.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8A72C99213F8BAD0024E7BE /* class_string.cc */; };
+		DC1CC95B21719FDB000FF1F7 /* class_string.h in Headers */ = {isa = PBXBuildFile; fileRef = B8A72C97213F8BAD0024E7BE /* class_string.h */; };
+		DC1CC95C21719FDB000FF1F7 /* class_array.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6DD2133A83B00635B37 /* class_array.cc */; };
+		DC1CC95D21719FDB000FF1F7 /* class_array.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6CF2133A83A00635B37 /* class_array.h */; };
+		DC1CC95E21719FDB000FF1F7 /* class_object.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4547FCFF2152048600E79971 /* class_object.cc */; };
+		DC1CC95F21719FDB000FF1F7 /* class_object.h in Headers */ = {isa = PBXBuildFile; fileRef = 4547FD002152048600E79971 /* class_object.h */; };
+		DC1CC96021719FDB000FF1F7 /* class_factory.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6D42133A83A00635B37 /* class_factory.cc */; };
+		DC1CC96121719FDB000FF1F7 /* class_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6D82133A83B00635B37 /* class_factory.h */; };
+		DC1CC96221719FDB000FF1F7 /* class.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6D72133A83B00635B37 /* class.cc */; };
+		DC1CC96321719FDB000FF1F7 /* class.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6D22133A83A00635B37 /* class.h */; };
+		DC1CC96421719FDB000FF1F7 /* common_error.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6CE2133A83A00635B37 /* common_error.h */; };
+		DC1CC96521719FDB000FF1F7 /* binary_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4532671F2142731000DAA620 /* binary_file.cc */; };
+		DC1CC96621719FDB000FF1F7 /* binary_file.h in Headers */ = {isa = PBXBuildFile; fileRef = 4532671E2142731000DAA620 /* binary_file.h */; };
+		DC1CC96721719FDB000FF1F7 /* rax_jsx_ast.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6D32133A83A00635B37 /* rax_jsx_ast.cc */; };
+		DC1CC96821719FDB000FF1F7 /* rax_jsx_ast.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6D12133A83A00635B37 /* rax_jsx_ast.h */; };
+		DC1CC96921719FDB000FF1F7 /* rax_parser_builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6D92133A83B00635B37 /* rax_parser_builder.cc */; };
+		DC1CC96A21719FDC000FF1F7 /* rax_parser_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6DA2133A83B00635B37 /* rax_parser_builder.h */; };
+		DC1CC96B21719FDC000FF1F7 /* rax_parser_context.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6D62133A83B00635B37 /* rax_parser_context.cc */; };
+		DC1CC96C21719FDC000FF1F7 /* rax_parser_context.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6DF2133A83B00635B37 /* rax_parser_context.h */; };
+		DC1CC96D21719FDC000FF1F7 /* rax_parser_scope.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6DE2133A83B00635B37 /* rax_parser_scope.cc */; };
+		DC1CC96E21719FDC000FF1F7 /* rax_parser_scope.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6DC2133A83B00635B37 /* rax_parser_scope.h */; };
+		DC1CC96F21719FDC000FF1F7 /* rax_parser_statistics.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6D52133A83A00635B37 /* rax_parser_statistics.cc */; };
+		DC1CC97021719FDC000FF1F7 /* rax_parser_statistics.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6E02133A83B00635B37 /* rax_parser_statistics.h */; };
+		DC1CC97121719FDC000FF1F7 /* rax_parser.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6E12133A83C00635B37 /* rax_parser.cc */; };
+		DC1CC97221719FDC000FF1F7 /* rax_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6E22133A83C00635B37 /* rax_parser.h */; };
+		DC1CC97321719FDC000FF1F7 /* rax_source_locator.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8F2C6D02133A83A00635B37 /* rax_source_locator.cc */; };
+		DC1CC97421719FDC000FF1F7 /* rax_source_locator.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F2C6CD2133A83900635B37 /* rax_source_locator.h */; };
+		DC1CC97521719FDC000FF1F7 /* string_table.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AEE2125572F003960BD /* string_table.cc */; };
+		DC1CC97621719FDC000FF1F7 /* table.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AEF2125572F003960BD /* table.cc */; };
+		DC1CC97721719FDC000FF1F7 /* code_generator.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66AF02125572F003960BD /* code_generator.h */; };
+		DC1CC97821719FDC000FF1F7 /* code_generator.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AF12125572F003960BD /* code_generator.cc */; };
+		DC1CC97921719FDC000FF1F7 /* ast_factory.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AF22125572F003960BD /* ast_factory.cc */; };
+		DC1CC97A21719FDC000FF1F7 /* parser.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66AF32125572F003960BD /* parser.h */; };
+		DC1CC97B21719FDC000FF1F7 /* parser.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AF42125572F003960BD /* parser.cc */; };
+		DC1CC97C21719FDC000FF1F7 /* vnode.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66AF62125572F003960BD /* vnode.h */; };
+		DC1CC97D21719FDC000FF1F7 /* vnode_exec_env.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AF72125572F003960BD /* vnode_exec_env.cc */; };
+		DC1CC97E21719FDC000FF1F7 /* vnode.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AF82125572F003960BD /* vnode.cc */; };
+		DC1CC97F21719FDC000FF1F7 /* vcomponent.cc in Sources */ = {isa = PBXBuildFile; fileRef = 453267132140E38900DAA620 /* vcomponent.cc */; };
+		DC1CC98021719FDC000FF1F7 /* vcomponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 453267122140E38900DAA620 /* vcomponent.h */; };
+		DC1CC98121719FDC000FF1F7 /* vnode_render_context.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AF92125572F003960BD /* vnode_render_context.cc */; };
+		DC1CC98221719FDC000FF1F7 /* vnode_exec_env.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66AFA2125572F003960BD /* vnode_exec_env.h */; };
+		DC1CC98321719FDC000FF1F7 /* vnode_render_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AFB2125572F003960BD /* vnode_render_manager.cc */; };
+		DC1CC98421719FDC000FF1F7 /* vnode_render_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66AFC2125572F003960BD /* vnode_render_manager.h */; };
+		DC1CC98521719FDC000FF1F7 /* vnode_render_context.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66AFD2125572F003960BD /* vnode_render_context.h */; };
+		DC1CC98621719FDC000FF1F7 /* tokenizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66AFE2125572F003960BD /* tokenizer.cc */; };
+		DC1CC98721719FDC000FF1F7 /* ast_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66AFF2125572F003960BD /* ast_factory.h */; };
+		DC1CC98821719FDC000FF1F7 /* ast.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B002125572F003960BD /* ast.cc */; };
+		DC1CC98921719FDC000FF1F7 /* statement.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B022125572F003960BD /* statement.h */; };
+		DC1CC98A21719FDC000FF1F7 /* tokenizer.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B032125572F003960BD /* tokenizer.h */; };
+		DC1CC98B21719FDC000FF1F7 /* statement.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B042125572F003960BD /* statement.cc */; };
+		DC1CC98C21719FDC000FF1F7 /* vm.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B052125572F003960BD /* vm.cc */; };
+		DC1CC98D21719FDC000FF1F7 /* string_table.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B062125572F003960BD /* string_table.h */; };
+		DC1CC98E21719FDC000FF1F7 /* ast.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B072125572F003960BD /* ast.h */; };
+		DC1CC98F21719FDC000FF1F7 /* scanner.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B0A2125572F003960BD /* scanner.h */; };
+		DC1CC99021719FDC000FF1F7 /* handle.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B0C2125572F003960BD /* handle.h */; };
+		DC1CC99121719FDC000FF1F7 /* exec_state.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B0D2125572F003960BD /* exec_state.h */; };
+		DC1CC99221719FDC000FF1F7 /* object.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B0E2125572F003960BD /* object.h */; };
+		DC1CC99321719FDC000FF1F7 /* table.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B0F2125572F003960BD /* table.h */; };
+		DC1CC99421719FDC000FF1F7 /* token.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B112125572F003960BD /* token.h */; };
+		DC1CC99521719FDC000FF1F7 /* vm.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B122125572F003960BD /* vm.h */; };
+		DC1CC99621719FDC000FF1F7 /* op_code.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B132125572F003960BD /* op_code.h */; };
+		DC1CC99721719FDC000FF1F7 /* ast_visitor.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B142125572F003960BD /* ast_visitor.h */; };
+		DC1CC99821719FDC000FF1F7 /* object.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B152125572F003960BD /* object.cc */; };
+		DC1CC99921719FDC000FF1F7 /* token.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B162125572F003960BD /* token.cc */; };
+		DC1CC99A21719FDC000FF1F7 /* exec_state.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B182125572F003960BD /* exec_state.cc */; };
+		DC1CC99B21719FDC000FF1F7 /* render_performance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B1A2125572F003960BD /* render_performance.cpp */; };
+		DC1CC99C21719FDC000FF1F7 /* render_performance.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B1B2125572F003960BD /* render_performance.h */; };
+		DC1CC99D21719FDC000FF1F7 /* constants_name.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B1D2125572F003960BD /* constants_name.h */; };
+		DC1CC99E21719FDC000FF1F7 /* constants_value.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B1E2125572F003960BD /* constants_value.h */; };
+		DC1CC99F21719FDC000FF1F7 /* css_value_getter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B1F2125572F003960BD /* css_value_getter.cpp */; };
+		DC1CC9A021719FDC000FF1F7 /* css_value_getter.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B202125572F003960BD /* css_value_getter.h */; };
+		DC1CC9A121719FDC000FF1F7 /* core_environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B222125572F003960BD /* core_environment.cpp */; };
+		DC1CC9A221719FDC000FF1F7 /* core_environment.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B232125572F003960BD /* core_environment.h */; };
+		DC1CC9A321719FDC000FF1F7 /* platform_bridge.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B252125572F003960BD /* platform_bridge.h */; };
+		DC1CC9A421719FDC000FF1F7 /* core_side_in_platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B272125572F003960BD /* core_side_in_platform.cpp */; };
+		DC1CC9A521719FDC000FF1F7 /* core_side_in_platform.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B282125572F003960BD /* core_side_in_platform.h */; };
+		DC1CC9A621719FDC000FF1F7 /* core_side_in_script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B2A2125572F003960BD /* core_side_in_script.cpp */; };
+		DC1CC9A721719FDC000FF1F7 /* core_side_in_script.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B2B2125572F003960BD /* core_side_in_script.h */; };
+		DC1CC9A821719FDC000FF1F7 /* wx_type_define.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B2C2125572F003960BD /* wx_type_define.h */; };
+		DC1CC9A921719FDC000FF1F7 /* script_bridge.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B2D2125572F003960BD /* script_bridge.h */; };
+		DC1CC9AA21719FDC000FF1F7 /* measure_func_adapter.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B2F2125572F003960BD /* measure_func_adapter.h */; };
+		DC1CC9AB21719FDC000FF1F7 /* style.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B302125572F003960BD /* style.h */; };
+		DC1CC9AC21719FDC000FF1F7 /* style.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B312125572F003960BD /* style.cpp */; };
+		DC1CC9AD21719FDC000FF1F7 /* layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B322125572F003960BD /* layout.cpp */; };
+		DC1CC9AE21719FDC000FF1F7 /* layout.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B342125572F003960BD /* layout.h */; };
+		DC1CC9AF21719FDC000FF1F7 /* flex_enum.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B352125572F003960BD /* flex_enum.h */; };
+		DC1CC9B021719FDC000FF1F7 /* render_page.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B382125572F003960BD /* render_page.cpp */; };
+		DC1CC9B121719FDC000FF1F7 /* render_page.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B392125572F003960BD /* render_page.h */; };
+		DC1CC9B221719FDC000FF1F7 /* render_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B3B2125572F003960BD /* render_manager.cpp */; };
+		DC1CC9B321719FDC000FF1F7 /* render_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B3C2125572F003960BD /* render_manager.h */; };
+		DC1CC9B421719FDC000FF1F7 /* render_action_trigger_vsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8394F3621468AF100CA1EFF /* render_action_trigger_vsync.cpp */; };
+		DC1CC9B521719FDC000FF1F7 /* render_action_trigger_vsync.h in Headers */ = {isa = PBXBuildFile; fileRef = B8394F3521468AF100CA1EFF /* render_action_trigger_vsync.h */; };
+		DC1CC9B621719FDC000FF1F7 /* render_action_render_success.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B3E2125572F003960BD /* render_action_render_success.h */; };
+		DC1CC9B721719FDC000FF1F7 /* render_action_appendtree_createfinish.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B3F2125572F003960BD /* render_action_appendtree_createfinish.h */; };
+		DC1CC9B821719FDC000FF1F7 /* render_action_update_attr.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B402125572F003960BD /* render_action_update_attr.h */; };
+		DC1CC9B921719FDC000FF1F7 /* render_action_move_element.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B412125572F003960BD /* render_action_move_element.h */; };
+		DC1CC9BA21719FDC000FF1F7 /* render_action_update_attr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B422125572F003960BD /* render_action_update_attr.cpp */; };
+		DC1CC9BB21719FDC000FF1F7 /* render_action_layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B432125572F003960BD /* render_action_layout.cpp */; };
+		DC1CC9BC21719FDC000FF1F7 /* render_action_update_style.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B442125572F003960BD /* render_action_update_style.h */; };
+		DC1CC9BD21719FDC000FF1F7 /* render_action_createfinish.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B452125572F003960BD /* render_action_createfinish.h */; };
+		DC1CC9BE21719FDC000FF1F7 /* render_action_update_style.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B462125572F003960BD /* render_action_update_style.cpp */; };
+		DC1CC9BF21719FDC000FF1F7 /* render_action_add_event.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B472125572F003960BD /* render_action_add_event.h */; };
+		DC1CC9C021719FDC000FF1F7 /* render_action_remove_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B482125572F003960BD /* render_action_remove_element.cpp */; };
+		DC1CC9C121719FDC000FF1F7 /* render_action_createbody.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B492125572F003960BD /* render_action_createbody.h */; };
+		DC1CC9C221719FDC000FF1F7 /* render_action_add_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B4A2125572F003960BD /* render_action_add_event.cpp */; };
+		DC1CC9C321719FDC000FF1F7 /* render_action_interface.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B4B2125572F003960BD /* render_action_interface.h */; };
+		DC1CC9C421719FDC000FF1F7 /* render_action_remove_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B4C2125572F003960BD /* render_action_remove_event.cpp */; };
+		DC1CC9C521719FDC000FF1F7 /* render_action_move_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B4D2125572F003960BD /* render_action_move_element.cpp */; };
+		DC1CC9C621719FDC000FF1F7 /* render_action_add_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B4E2125572F003960BD /* render_action_add_element.cpp */; };
+		DC1CC9C721719FDC000FF1F7 /* render_action_remove_event.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B4F2125572F003960BD /* render_action_remove_event.h */; };
+		DC1CC9C821719FDC000FF1F7 /* render_action_createbody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B502125572F003960BD /* render_action_createbody.cpp */; };
+		DC1CC9C921719FDC000FF1F7 /* render_action_createfinish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B512125572F003960BD /* render_action_createfinish.cpp */; };
+		DC1CC9CA21719FDC000FF1F7 /* render_action_layout.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B522125572F003960BD /* render_action_layout.h */; };
+		DC1CC9CB21719FDC000FF1F7 /* render_action_remove_element.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B532125572F003960BD /* render_action_remove_element.h */; };
+		DC1CC9CC21719FDC000FF1F7 /* render_action_add_element.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B542125572F003960BD /* render_action_add_element.h */; };
+		DC1CC9CD21719FDC000FF1F7 /* render_action_appendtree_createfinish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B552125572F003960BD /* render_action_appendtree_createfinish.cpp */; };
+		DC1CC9CE21719FDC000FF1F7 /* render_action_render_success.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B562125572F003960BD /* render_action_render_success.cpp */; };
+		DC1CC9CF21719FDC000FF1F7 /* render_cell.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B582125572F003960BD /* render_cell.h */; };
+		DC1CC9D021719FDC000FF1F7 /* render_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B592125572F003960BD /* render_text.cpp */; };
+		DC1CC9D121719FDC000FF1F7 /* render_mask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B5A2125572F003960BD /* render_mask.cpp */; };
+		DC1CC9D221719FDC000FF1F7 /* render_scroller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B5B2125572F003960BD /* render_scroller.cpp */; };
+		DC1CC9D321719FDC000FF1F7 /* render_mask.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B5C2125572F003960BD /* render_mask.h */; };
+		DC1CC9D421719FDC000FF1F7 /* render_scroller.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B5D2125572F003960BD /* render_scroller.h */; };
+		DC1CC9D521719FDC000FF1F7 /* render_text.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B5E2125572F003960BD /* render_text.h */; };
+		DC1CC9D621719FDC000FF1F7 /* render_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B5F2125572F003960BD /* render_object.cpp */; };
+		DC1CC9D721719FDC000FF1F7 /* render_appbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B602125572F003960BD /* render_appbar.cpp */; };
+		DC1CC9D821719FDC000FF1F7 /* render_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B612125572F003960BD /* render_list.cpp */; };
+		DC1CC9D921719FDC000FF1F7 /* render_object.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B622125572F003960BD /* render_object.h */; };
+		DC1CC9DA21719FDC000FF1F7 /* render_appbar.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B632125572F003960BD /* render_appbar.h */; };
+		DC1CC9DB21719FDC000FF1F7 /* render_list.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B642125572F003960BD /* render_list.h */; };
+		DC1CC9DC21719FDC000FF1F7 /* render_mask_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B662125572F003960BD /* render_mask_factory.h */; };
+		DC1CC9DD21719FDC000FF1F7 /* render_text_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B672125572F003960BD /* render_text_factory.h */; };
+		DC1CC9DE21719FDC000FF1F7 /* render_scroller_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B682125572F003960BD /* render_scroller_factory.h */; };
+		DC1CC9DF21719FDC000FF1F7 /* render_type.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B692125572F003960BD /* render_type.h */; };
+		DC1CC9E021719FDC000FF1F7 /* render_creator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B6A2125572F003960BD /* render_creator.cpp */; };
+		DC1CC9E121719FDC000FF1F7 /* render_appbar_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B6B2125572F003960BD /* render_appbar_factory.h */; };
+		DC1CC9E221719FDC000FF1F7 /* simple_render_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B6C2125572F003960BD /* simple_render_factory.h */; };
+		DC1CC9E321719FDC000FF1F7 /* render_object_interface.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B6D2125572F003960BD /* render_object_interface.h */; };
+		DC1CC9E421719FDC000FF1F7 /* render_list_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B6E2125572F003960BD /* render_list_factory.h */; };
+		DC1CC9E521719FDC000FF1F7 /* render_creator.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B6F2125572F003960BD /* render_creator.h */; };
+		DC1CC9E621719FDC000FF1F7 /* render_cell_factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B702125572F003960BD /* render_cell_factory.h */; };
+		DC1CC9E721719FDC000FF1F7 /* render_factory_interface.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B712125572F003960BD /* render_factory_interface.h */; };
+		DC1CC9E821719FDC000FF1F7 /* dom_wson.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B732125572F003960BD /* dom_wson.h */; };
+		DC1CC9E921719FDC000FF1F7 /* dom_wson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B742125572F003960BD /* dom_wson.cpp */; };
+		DC1CC9EA21719FDC000FF1F7 /* weex_core_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B772125572F003960BD /* weex_core_manager.h */; };
+		DC1CC9EB21719FDC000FF1F7 /* WeexApiHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B7E2125572F003960BD /* WeexApiHeader.h */; };
+		DC1CC9EC21719FDC000FF1F7 /* json11.hpp in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B7B2125572F003960BD /* json11.hpp */; };
+		DC1CC9ED21719FDC000FF1F7 /* json11.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B7C2125572F003960BD /* json11.cc */; };
+		DC1CC9EE21719FDC000FF1F7 /* wson.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B802125572F003960BD /* wson.h */; };
+		DC1CC9EF21719FDC000FF1F7 /* wson.c in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B822125572F003960BD /* wson.c */; };
+		DC1CC9F021719FDC000FF1F7 /* wson_util.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B832125572F003960BD /* wson_util.h */; };
+		DC1CC9F121719FDC000FF1F7 /* wson_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B842125572F003960BD /* wson_util.cpp */; };
+		DC1CC9F221719FDC000FF1F7 /* wson_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8D66B852125572F003960BD /* wson_parser.cpp */; };
+		DC1CC9F321719FDC000FF1F7 /* wson_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B862125572F003960BD /* wson_parser.h */; };
+		DC1CC9F921719FDC000FF1F7 /* WXApmForInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 17036A4C20FDE72F0029AE3D /* WXApmForInstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CC9FA21719FDC000FF1F7 /* WXApmForInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 1771795421412A5D006F39A9 /* WXApmForInstance.m */; };
+		DC1CC9FB21719FDC000FF1F7 /* WeexSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = DCA446261EFA5DAF00D0CFA8 /* WeexSDK.h */; };
+		DC1CC9FC21719FDC000FF1F7 /* WXComponent+Layout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 176BE43B209172330086B6AF /* WXComponent+Layout.mm */; };
+		DC1CC9FD21719FDC000FF1F7 /* WXComponent+Layout.h in Headers */ = {isa = PBXBuildFile; fileRef = 744BEA571D0520F300452B5D /* WXComponent+Layout.h */; };
+		DC1CC9FE21719FDC000FF1F7 /* WXWebSocketLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = C4F012841E150307003378D0 /* WXWebSocketLoader.h */; };
+		DC1CC9FF21719FDC000FF1F7 /* WXWebSocketLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F012851E150307003378D0 /* WXWebSocketLoader.m */; };
+		DC1CCA0021719FDC000FF1F7 /* WXResourceLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 742AD7381DF98C8B007DC46C /* WXResourceLoader.h */; };
+		DC1CCA0121719FDC000FF1F7 /* WXResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 742AD7391DF98C8B007DC46C /* WXResourceLoader.m */; };
+		DC1CCA0221719FDC000FF1F7 /* WXWebSocketHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = C4F012761E1502A6003378D0 /* WXWebSocketHandler.h */; };
+		DC1CCA0421719FDC000FF1F7 /* WXComponent+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 7408C48D1CFB345D000BCCD0 /* WXComponent+Events.m */; };
+		DC1CCA0521719FDC000FF1F7 /* WXComponent+BoxShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E375351E5FCBD3009B2D9C /* WXComponent+BoxShadow.m */; };
+		DC1CCA0621719FDC000FF1F7 /* WXComponent+BoxShadow.h in Headers */ = {isa = PBXBuildFile; fileRef = C4E375361E5FCBD3009B2D9C /* WXComponent+BoxShadow.h */; };
+		DC1CCA0721719FDC000FF1F7 /* WXInnerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8721F1E5DDEDA00E39BC1 /* WXInnerLayer.m */; };
+		DC1CCA0821719FDC000FF1F7 /* WXInnerLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C4D872201E5DDEDA00E39BC1 /* WXInnerLayer.h */; };
+		DC1CCA0921719FDC000FF1F7 /* WXDisplayQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 7461F88C1CFB373100F62D44 /* WXDisplayQueue.h */; };
+		DC1CCA0A21719FDC000FF1F7 /* WXDisplayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7461F88D1CFB373100F62D44 /* WXDisplayQueue.m */; };
+		DC1CCA0B21719FDC000FF1F7 /* WXLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 7461F88E1CFB373100F62D44 /* WXLayer.h */; };
+		DC1CCA0C21719FDC000FF1F7 /* WXLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7461F88F1CFB373100F62D44 /* WXLayer.m */; };
+		DC1CCA0D21719FDC000FF1F7 /* WXComponent+Display.h in Headers */ = {isa = PBXBuildFile; fileRef = 744BEA531D05178F00452B5D /* WXComponent+Display.h */; };
+		DC1CCA0E21719FDC000FF1F7 /* WXComponent+Display.m in Sources */ = {isa = PBXBuildFile; fileRef = 744BEA541D05178F00452B5D /* WXComponent+Display.m */; };
+		DC1CCA0F21719FDC000FF1F7 /* WXRoundedRect.h in Headers */ = {isa = PBXBuildFile; fileRef = 741DFE001DDD7D18009B020F /* WXRoundedRect.h */; };
+		DC1CCA1021719FDC000FF1F7 /* WXRoundedRect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 741DFE011DDD7D18009B020F /* WXRoundedRect.mm */; };
+		DC1CCA1121719FDC000FF1F7 /* UIBezierPath+Weex.h in Headers */ = {isa = PBXBuildFile; fileRef = 741DFE041DDD9B2F009B020F /* UIBezierPath+Weex.h */; };
+		DC1CCA1221719FDC000FF1F7 /* UIBezierPath+Weex.m in Sources */ = {isa = PBXBuildFile; fileRef = 741DFE051DDD9B2F009B020F /* UIBezierPath+Weex.m */; };
+		DC1CCA1321719FDC000FF1F7 /* WXDebugTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 74A4BA591CABBBD000195969 /* WXDebugTool.h */; };
+		DC1CCA1421719FDC000FF1F7 /* WXDebugTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A4BA5A1CABBBD000195969 /* WXDebugTool.m */; };
+		DC1CCA1521719FDC000FF1F7 /* WXComponent+PseudoClassManagement.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C30DE61E1B833D00786B6C /* WXComponent+PseudoClassManagement.m */; };
+		DC1CCA1621719FDC000FF1F7 /* WXComponent+PseudoClassManagement.h in Headers */ = {isa = PBXBuildFile; fileRef = C4C30DE71E1B833D00786B6C /* WXComponent+PseudoClassManagement.h */; };
+		DC1CCA1721719FDC000FF1F7 /* WXView.h in Headers */ = {isa = PBXBuildFile; fileRef = 745ED2D61C5F2C7E002DB5A8 /* WXView.h */; };
+		DC1CCA1821719FDC000FF1F7 /* WXView.m in Sources */ = {isa = PBXBuildFile; fileRef = 745ED2D71C5F2C7E002DB5A8 /* WXView.m */; };
+		DC1CCA1921719FDC000FF1F7 /* WXErrorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 591DD3301D23AD5800BE8709 /* WXErrorView.h */; };
+		DC1CCA1A21719FDC000FF1F7 /* WXErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 591DD32F1D23AD5800BE8709 /* WXErrorView.m */; };
+		DC1CCA1B21719FDC000FF1F7 /* WXComponent+ViewManagement.h in Headers */ = {isa = PBXBuildFile; fileRef = 747A787A1D1BAAC900DED9D0 /* WXComponent+ViewManagement.h */; };
+		DC1CCA1C21719FDC000FF1F7 /* WXComponent+ViewManagement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 747A787B1D1BAAC900DED9D0 /* WXComponent+ViewManagement.mm */; };
+		DC1CCA1D21719FDC000FF1F7 /* WXRootView.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B8BEFC1DC47B72004A6027 /* WXRootView.h */; };
+		DC1CCA1E21719FDC000FF1F7 /* WXRootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74B8BEFD1DC47B72004A6027 /* WXRootView.m */; };
+		DC1CCA212171A003000FF1F7 /* WXJSFrameworkLoadDefaultImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 33CE190C2153443000CF9670 /* WXJSFrameworkLoadDefaultImpl.h */; };
+		DC1CCA222171A003000FF1F7 /* WXJSFrameworkLoadDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 33CE190D2153443000CF9670 /* WXJSFrameworkLoadDefaultImpl.m */; };
+		DC1CCA232171A003000FF1F7 /* WXURLRewriteDefaultImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EF31AB1DE58BE200667A07 /* WXURLRewriteDefaultImpl.h */; };
+		DC1CCA242171A003000FF1F7 /* WXURLRewriteDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EF31AC1DE58BE200667A07 /* WXURLRewriteDefaultImpl.m */; };
+		DC1CCA252171A037000FF1F7 /* WXBoxShadow.h in Headers */ = {isa = PBXBuildFile; fileRef = C4D872231E5DDF7500E39BC1 /* WXBoxShadow.h */; };
+		DC1CCA262171A037000FF1F7 /* WXBoxShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D872241E5DDF7500E39BC1 /* WXBoxShadow.m */; };
+		DC1CCA272171A037000FF1F7 /* NSTimer+Weex.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D3CA481CFC3CE1008835DC /* NSTimer+Weex.h */; };
+		DC1CCA282171A037000FF1F7 /* NSTimer+Weex.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D3CA491CFC3CE1008835DC /* NSTimer+Weex.m */; };
+		DC1CCA292171A037000FF1F7 /* WXConvert.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D161491C02E3790010B15B /* WXConvert.h */; };
+		DC1CCA2A2171A037000FF1F7 /* WXConvert.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D1614A1C02E3790010B15B /* WXConvert.m */; };
+		DC1CCA2B2171A037000FF1F7 /* WXUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D1614D1C02E3880010B15B /* WXUtility.h */; };
+		DC1CCA2C2171A037000FF1F7 /* WXUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D1614E1C02E3880010B15B /* WXUtility.m */; };
+		DC1CCA2D2171A037000FF1F7 /* WXLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D161601C02ED790010B15B /* WXLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCA2E2171A037000FF1F7 /* WXLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D161611C02ED790010B15B /* WXLog.m */; };
+		DC1CCA302171A037000FF1F7 /* WXVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = B87B9E7B21539B3300B6DC61 /* WXVersion.h */; };
+		DC1CCA312171A037000FF1F7 /* WXVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = B87B9E7C21539B3300B6DC61 /* WXVersion.m */; };
+		DC1CCA322171A037000FF1F7 /* WXWeakObjectWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 742389991C3174EB00D748CA /* WXWeakObjectWrapper.h */; };
+		DC1CCA332171A037000FF1F7 /* WXWeakObjectWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423899A1C3174EB00D748CA /* WXWeakObjectWrapper.m */; };
+		DC1CCA342171A037000FF1F7 /* WXType.h in Headers */ = {isa = PBXBuildFile; fileRef = 7423899D1C32733800D748CA /* WXType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCA352171A037000FF1F7 /* NSArray+Weex.h in Headers */ = {isa = PBXBuildFile; fileRef = 7469869D1C4E2C000054A57E /* NSArray+Weex.h */; };
+		DC1CCA362171A037000FF1F7 /* NSArray+Weex.m in Sources */ = {isa = PBXBuildFile; fileRef = 7469869E1C4E2C000054A57E /* NSArray+Weex.m */; };
+		DC1CCA372171A037000FF1F7 /* WXThreadSafeCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 746319001C60AFC100EFEBD4 /* WXThreadSafeCounter.h */; };
+		DC1CCA382171A037000FF1F7 /* WXThreadSafeCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 746319011C60AFC100EFEBD4 /* WXThreadSafeCounter.m */; };
+		DC1CCA392171A037000FF1F7 /* WXSimulatorShortcutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 743933B21C7ED9AA00773BB7 /* WXSimulatorShortcutManager.h */; };
+		DC1CCA3A2171A037000FF1F7 /* WXSimulatorShortcutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 743933B31C7ED9AA00773BB7 /* WXSimulatorShortcutManager.m */; };
+		DC1CCA3B2171A037000FF1F7 /* WXAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = 74915F451C8EB02B00BEBCC0 /* WXAssert.h */; };
+		DC1CCA3C2171A037000FF1F7 /* WXAssert.m in Sources */ = {isa = PBXBuildFile; fileRef = 74915F461C8EB02B00BEBCC0 /* WXAssert.m */; };
+		DC1CCA3D2171A037000FF1F7 /* WXAppConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 74A4BA941CB365D100195969 /* WXAppConfiguration.h */; };
+		DC1CCA3E2171A037000FF1F7 /* WXAppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A4BA951CB365D100195969 /* WXAppConfiguration.m */; };
+		DC1CCA3F2171A037000FF1F7 /* WXThreadSafeMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 74A4BA981CB3BAA100195969 /* WXThreadSafeMutableDictionary.h */; };
+		DC1CCA402171A037000FF1F7 /* WXThreadSafeMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A4BA991CB3BAA100195969 /* WXThreadSafeMutableDictionary.m */; };
+		DC1CCA412171A037000FF1F7 /* WXThreadSafeMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 7461F8A61CFC33A800F62D44 /* WXThreadSafeMutableArray.h */; };
+		DC1CCA422171A037000FF1F7 /* WXThreadSafeMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 7461F8A71CFC33A800F62D44 /* WXThreadSafeMutableArray.m */; };
+		DC1CCA432171A037000FF1F7 /* NSObject+WXSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 74896F2E1D1AC79400D1D593 /* NSObject+WXSwizzle.h */; };
+		DC1CCA442171A037000FF1F7 /* NSObject+WXSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 74896F2F1D1AC79400D1D593 /* NSObject+WXSwizzle.m */; };
+		DC1CCA452171A037000FF1F7 /* WXLength.h in Headers */ = {isa = PBXBuildFile; fileRef = 747DF6801E31AEE4005C53A8 /* WXLength.h */; };
+		DC1CCA462171A037000FF1F7 /* WXLength.m in Sources */ = {isa = PBXBuildFile; fileRef = 747DF6811E31AEE4005C53A8 /* WXLength.m */; };
+		DC1CCA472171A037000FF1F7 /* WXDiffUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 744D61121E4AF23E00B624B3 /* WXDiffUtil.h */; };
+		DC1CCA482171A037000FF1F7 /* WXDiffUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 744D61131E4AF23E00B624B3 /* WXDiffUtil.m */; };
+		DC1CCA4A2171A037000FF1F7 /* WXSDKError.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B122242090AAB000387E33 /* WXSDKError.m */; };
+		DC1CCA4C2171A037000FF1F7 /* WXSDKEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D1611F1C02DDB40010B15B /* WXSDKEngine.m */; };
+		DC1CCA4E2171A037000FF1F7 /* WXBridgeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A919DA51E321F1F006EB6B5 /* WXBridgeMethod.m */; };
+		DC1CCA502171A037000FF1F7 /* WXModuleMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 74862F7C1E03A0F300B7A041 /* WXModuleMethod.m */; };
+		DC1CCA522171A037000FF1F7 /* WXComponentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 74862F801E03A24500B7A041 /* WXComponentMethod.m */; };
+		DC1CCA542171A037000FF1F7 /* WXCallJSMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D2051F1E091B8000128F44 /* WXCallJSMethod.m */; };
+		DC1CCA562171A037000FF1F7 /* WXCoreBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = B89543ED20EB18B4006EAD63 /* WXCoreBridge.mm */; };
+		DC1CCA572171A037000FF1F7 /* WXBridgeContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B863DF312107307F00EA887D /* WXBridgeContext.m */; };
+		DC1CCA5A2171A037000FF1F7 /* WXJSCoreBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = B89543EE20EB18B4006EAD63 /* WXJSCoreBridge.mm */; };
+		DC1CCA5C2171A037000FF1F7 /* WXPolyfillSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AD99831D5B0E59008F0336 /* WXPolyfillSet.m */; };
+		DC1CCA5E2171A037000FF1F7 /* JSValue+Weex.m in Sources */ = {isa = PBXBuildFile; fileRef = 74862F781E02B88D00B7A041 /* JSValue+Weex.m */; };
+		DC1CCA602171A037000FF1F7 /* JSContext+Weex.m in Sources */ = {isa = PBXBuildFile; fileRef = ED0534FF207F4DEB007B4568 /* JSContext+Weex.m */; };
+		DC1CCA622171A037000FF1F7 /* WXTracingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E97D321F1EF46D00ABC314 /* WXTracingManager.m */; };
+		DC1CCA632171A037000FF1F7 /* WXServiceFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 740451E81E14BB26004157CB /* WXServiceFactory.h */; };
+		DC1CCA652171A037000FF1F7 /* WXDisplayLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45326709213FC84900DAA620 /* WXDisplayLinkManager.m */; };
+		DC1CCA662171A037000FF1F7 /* WXServiceFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 740451E91E14BB26004157CB /* WXServiceFactory.m */; };
+		DC1CCA682171A037000FF1F7 /* WXInvocationConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF087601DCAE161005CD6EB /* WXInvocationConfig.m */; };
+		DC1CCA6C2171A037000FF1F7 /* WXSDKManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D161271C02DE1A0010B15B /* WXSDKManager.m */; };
+		DC1CCA6E2171A037000FF1F7 /* WXBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D161371C02DE940010B15B /* WXBridgeManager.m */; };
+		DC1CCA702171A037000FF1F7 /* WXModuleFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E659F01C0C3612008B8775 /* WXModuleFactory.m */; };
+		DC1CCA722171A037000FF1F7 /* WXHandlerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A4BA9D1CB3C0A100195969 /* WXHandlerFactory.m */; };
+		DC1CCA742171A037000FF1F7 /* WXComponentManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7410811E1CED585A001BC6E5 /* WXComponentManager.mm */; };
+		DC1CCA762171A037000FF1F7 /* WXComponentFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 741081221CED6756001BC6E5 /* WXComponentFactory.m */; };
+		DC1CCA782171A037000FF1F7 /* WXRuleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAB35FD1D658EB700C0EA70 /* WXRuleManager.m */; };
+		DC1CCA7A2171A037000FF1F7 /* WXExtendCallNativeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C47B78CD1F2998EE001D3B0C /* WXExtendCallNativeManager.m */; };
+		DC1CCA7C2171A037000FF1F7 /* WXAnalyzerCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 17C74F0A2072145100AB4CAB /* WXAnalyzerCenter.m */; };
+		DC1CCA7F2171A037000FF1F7 /* WXMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 749DC27A1D40827B009E1C91 /* WXMonitor.m */; };
+		DC1CCA812171A037000FF1F7 /* WXExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 841CD1021F9739890081196D /* WXExceptionUtils.m */; };
+		DC1CCA842171A037000FF1F7 /* WXSDKInstance_performance.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B1221F2090AA9300387E33 /* WXSDKInstance_performance.m */; };
+		DC1CCA892171A037000FF1F7 /* WXSDKInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D161231C02DDD10010B15B /* WXSDKInstance.m */; };
+		DC1CCA8B2171A037000FF1F7 /* WXJSExceptionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF343661E49CAEE00A2FB34 /* WXJSExceptionInfo.m */; };
+		DC1CCA8D2171A037000FF1F7 /* WXResourceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 742AD7261DF98C45007DC46C /* WXResourceRequest.m */; };
+		DC1CCA902171A037000FF1F7 /* WXResourceRequestHandlerDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 742AD7291DF98C45007DC46C /* WXResourceRequestHandlerDefaultImpl.m */; };
+		DC1CCA922171A037000FF1F7 /* WXResourceResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 742AD72B1DF98C45007DC46C /* WXResourceResponse.m */; };
+		DC1CCAA62171A069000FF1F7 /* WXSDKEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D1611E1C02DDB40010B15B /* WXSDKEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAA72171A075000FF1F7 /* WXSDKError.h in Headers */ = {isa = PBXBuildFile; fileRef = 17B122232090AAB000387E33 /* WXSDKError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAA82171A07F000FF1F7 /* WXBridgeMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A919DA41E321F1F006EB6B5 /* WXBridgeMethod.h */; };
+		DC1CCAA92171A083000FF1F7 /* WXModuleMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = 74862F7B1E03A0F300B7A041 /* WXModuleMethod.h */; };
+		DC1CCAAA2171A08A000FF1F7 /* WXComponentMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = 74862F7F1E03A24500B7A041 /* WXComponentMethod.h */; };
+		DC1CCAAB2171A08F000FF1F7 /* WXCallJSMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = 74D2051E1E091B8000128F44 /* WXCallJSMethod.h */; };
+		DC1CCAAC2171A092000FF1F7 /* WXCoreBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = B89543EF20EB18B4006EAD63 /* WXCoreBridge.h */; };
+		DC1CCAAD2171A09A000FF1F7 /* WXBridgeContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A582FA1CF5B17B0081FD3E /* WXBridgeContext.h */; };
+		DC1CCAAE2171A09D000FF1F7 /* WXJSCoreBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D1613A1C02DEA60010B15B /* WXJSCoreBridge.h */; };
+		DC1CCAAF2171A0A3000FF1F7 /* WXPolyfillSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 74AD99821D5B0E59008F0336 /* WXPolyfillSet.h */; };
+		DC1CCAB02171A0A7000FF1F7 /* JSValue+Weex.h in Headers */ = {isa = PBXBuildFile; fileRef = 74862F771E02B88D00B7A041 /* JSValue+Weex.h */; };
+		DC1CCAB12171A0AA000FF1F7 /* JSContext+Weex.h in Headers */ = {isa = PBXBuildFile; fileRef = ED0534FE207F4DEB007B4568 /* JSContext+Weex.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAB22171A0B5000FF1F7 /* WXTracingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C4E97D311F1EF46D00ABC314 /* WXTracingManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAB32171A0BD000FF1F7 /* WXDisplayLinkManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 45326708213FC84900DAA620 /* WXDisplayLinkManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAB42171A0C5000FF1F7 /* WXInvocationConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = DCF0875F1DCAE161005CD6EB /* WXInvocationConfig.h */; };
+		DC1CCAB52171A0D2000FF1F7 /* WXSDKManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D161261C02DE1A0010B15B /* WXSDKManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAB62171A0DC000FF1F7 /* WXBridgeManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D161361C02DE940010B15B /* WXBridgeManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAB72171A12A000FF1F7 /* WXModuleFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 77E659EF1C0C3612008B8775 /* WXModuleFactory.h */; };
+		DC1CCAB82171A12F000FF1F7 /* WXHandlerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 74A4BA9C1CB3C0A100195969 /* WXHandlerFactory.h */; };
+		DC1CCAB92171A134000FF1F7 /* WXComponentManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7410811D1CED585A001BC6E5 /* WXComponentManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCABA2171A13A000FF1F7 /* WXComponentFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 741081211CED6756001BC6E5 /* WXComponentFactory.h */; };
+		DC1CCABB2171A140000FF1F7 /* WXRuleManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DCAB35FC1D658EB700C0EA70 /* WXRuleManager.h */; };
+		DC1CCABC2171A14A000FF1F7 /* WXExtendCallNativeManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C47B78CC1F2998EE001D3B0C /* WXExtendCallNativeManager.h */; };
+		DC1CCABD2171A14F000FF1F7 /* WXAnalyzerCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 17C74F092072145000AB4CAB /* WXAnalyzerCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCABE2171A157000FF1F7 /* WXAnalyzerCenter+Transfer.h in Headers */ = {isa = PBXBuildFile; fileRef = 17C74F082072145000AB4CAB /* WXAnalyzerCenter+Transfer.h */; };
+		DC1CCABF2171A15B000FF1F7 /* WXMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 749DC2791D40827B009E1C91 /* WXMonitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAC02171A161000FF1F7 /* WXExceptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 841CD1041F97399C0081196D /* WXExceptionUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAC12171A16A000FF1F7 /* WXComponent_performance.h in Headers */ = {isa = PBXBuildFile; fileRef = 1746EA7220E9D253007E55BD /* WXComponent_performance.h */; };
+		DC1CCAC32171A170000FF1F7 /* WXSDKInstance_performance.h in Headers */ = {isa = PBXBuildFile; fileRef = 17B122202090AA9300387E33 /* WXSDKInstance_performance.h */; };
+		DC1CCAC42171A174000FF1F7 /* WXSDKInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D161221C02DDD10010B15B /* WXSDKInstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAC52171A182000FF1F7 /* WXSDKInstance_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B25161C44A6F9005D491E /* WXSDKInstance_private.h */; };
+		DC1CCAC62171A18A000FF1F7 /* WXJSExceptionInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = DCF343651E49CAEE00A2FB34 /* WXJSExceptionInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAC72171A191000FF1F7 /* WXResourceRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 742AD7251DF98C45007DC46C /* WXResourceRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAC82171A196000FF1F7 /* WXResourceRequestHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 742AD7271DF98C45007DC46C /* WXResourceRequestHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAC92171A19D000FF1F7 /* WXResourceRequestHandlerDefaultImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 742AD7281DF98C45007DC46C /* WXResourceRequestHandlerDefaultImpl.h */; };
+		DC1CCACA2171A1A1000FF1F7 /* WXResourceResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 742AD72A1DF98C45007DC46C /* WXResourceResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCACB2171A1AE000FF1F7 /* WXJSFrameworkLoadProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 33CE19122153444900CF9670 /* WXJSFrameworkLoadProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCACC2171A1B3000FF1F7 /* WXApmProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 17036A5220FDE7490029AE3D /* WXApmProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCACD2171A1B7000FF1F7 /* WXAnalyzerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 17C74F0E2072147A00AB4CAB /* WXAnalyzerProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCACE2171A1BB000FF1F7 /* WXNavigationProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A596171CB630E50012CD52 /* WXNavigationProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCACF2171A1BF000FF1F7 /* WXJSExceptionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCDFED001E68238F00C228D7 /* WXJSExceptionProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD02171A1C3000FF1F7 /* WXEventModuleProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 2AE5B7551CABA04E0082FDDB /* WXEventModuleProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD12171A1C8000FF1F7 /* WXTextComponentProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A4445BE1CA8FD56009E7C6D /* WXTextComponentProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD22171A1CE000FF1F7 /* WXModuleProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 775BEE701C1BD977008D1629 /* WXModuleProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD32171A1D2000FF1F7 /* WXBridgeProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D161421C02DEE40010B15B /* WXBridgeProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD42171A1D7000FF1F7 /* WXImgLoaderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 775BEE6C1C1BD8F4008D1629 /* WXImgLoaderProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD52171A1DB000FF1F7 /* WXScrollerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 74FD6E031C7C0E9600DBEB6D /* WXScrollerProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD62171A1DF000FF1F7 /* WXNetworkProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 74A4BA841CAD453400195969 /* WXNetworkProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD72171A1E4000FF1F7 /* WXAppMonitorProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A582D31CF481110081FD3E /* WXAppMonitorProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD82171A1E9000FF1F7 /* WXURLRewriteProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EF31A91DE58AE600667A07 /* WXURLRewriteProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAD92171A1EE000FF1F7 /* WXValidateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 042013AC1E66CD6A001FC79C /* WXValidateProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCADA2171A1F2000FF1F7 /* WXConfigCenterProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DC6836E51EBB12B200AD2D84 /* WXConfigCenterProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCADB2171A1F9000FF1F7 /* WXExtendCallNativeProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = C4424E591F24DA3D009F52E2 /* WXExtendCallNativeProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCADC2171A1FD000FF1F7 /* WXTracingProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = C42E8F991F39DF07001EBE9D /* WXTracingProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCADD2171A22A000FF1F7 /* WXDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 775BEE4D1C16F993008D1629 /* WXDefine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCADE217247EC000FF1F7 /* WXBaseViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A5962B1CB632050012CD52 /* WXBaseViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCADF217247F1000FF1F7 /* WXBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A5962C1CB632050012CD52 /* WXBaseViewController.m */; };
+		DC1CCAE021724951000FF1F7 /* time_point.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B8C2125572F003960BD /* time_point.h */; };
+		DC1CCAE221724A37000FF1F7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC1CCAE121724A36000FF1F7 /* AppKit.framework */; };
+		DC1CCAE321724ADF000FF1F7 /* thread_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B952125572F003960BD /* thread_impl.h */; };
+		DC1CCAE421724B14000FF1F7 /* thread_impl_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B9A2125572F003960BD /* thread_impl_posix.h */; };
+		DC1CCAE521724B19000FF1F7 /* thread_impl_darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B992125572F003960BD /* thread_impl_darwin.h */; };
+		DC1CCAE621724B1D000FF1F7 /* thread_local.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B932125572F003960BD /* thread_local.h */; };
+		DC1CCAE721724B20000FF1F7 /* waitable_event.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B982125572F003960BD /* waitable_event.h */; };
+		DC1CCAE821724B24000FF1F7 /* thread.h in Headers */ = {isa = PBXBuildFile; fileRef = B8D66B972125572F003960BD /* thread.h */; };
+		DC1CCAEB21724C20000FF1F7 /* weex-polyfill.js in Resources */ = {isa = PBXBuildFile; fileRef = DCD8D0F22073392A0002C420 /* weex-polyfill.js */; };
+		DC1CCAEC21724C20000FF1F7 /* weex-main-jsfm.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3D92010BC93009C8977 /* weex-main-jsfm.js */; };
+		DC1CCAED21724C20000FF1F7 /* weex-rax-api.js in Resources */ = {isa = PBXBuildFile; fileRef = DC15A3DA2010BC93009C8977 /* weex-rax-api.js */; };
+		DC1CCAEE21724C20000FF1F7 /* native-bundle-main.js in Resources */ = {isa = PBXBuildFile; fileRef = DCF0CD9D1EAF3A6B0062CA8F /* native-bundle-main.js */; };
+		DC1CCAF121724F0C000FF1F7 /* WXComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77D1612F1C02DE4E0010B15B /* WXComponent.mm */; };
+		DC1CCAF221724F0F000FF1F7 /* WXComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D1612E1C02DE4E0010B15B /* WXComponent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC1CCAF321724F1E000FF1F7 /* WXImageComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E65A101C155EA8008B8775 /* WXImageComponent.m */; };
+		DC1CCAF421724F20000FF1F7 /* WXImageComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 77E65A0F1C155EA8008B8775 /* WXImageComponent.h */; };
+		DC1CCAF521724F25000FF1F7 /* WXTextComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 77E65A131C155EB5008B8775 /* WXTextComponent.h */; };
+		DC1CCAF621724F27000FF1F7 /* WXTextComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77E65A141C155EB5008B8775 /* WXTextComponent.mm */; };
+		DC1CCAF7217251DB000FF1F7 /* WXComponent+Events.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408C48C1CFB345D000BCCD0 /* WXComponent+Events.h */; };
+		DC1CCAF821734388000FF1F7 /* WXTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = D317338A1C57257000BB7539 /* WXTransform.h */; };
+		DC1CCAF92173438A000FF1F7 /* WXTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = D317338B1C57257000BB7539 /* WXTransform.m */; };
+		DC1CCAFA217343A3000FF1F7 /* WXPrerenderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C43C03E51EC8ACA40044C7FF /* WXPrerenderManager.m */; };
+		DC1CCAFB217343A5000FF1F7 /* WXPrerenderManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C43C03E41EC8ACA40044C7FF /* WXPrerenderManager.h */; };
 		DC6836E61EBB12B200AD2D84 /* WXConfigCenterProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DC6836E51EBB12B200AD2D84 /* WXConfigCenterProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DC7764931F3C2CA300B5727E /* WXRecyclerDragController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7764911F3C2CA300B5727E /* WXRecyclerDragController.m */; };
 		DC7764941F3C2CA300B5727E /* WXRecyclerDragController.h in Headers */ = {isa = PBXBuildFile; fileRef = DC7764921F3C2CA300B5727E /* WXRecyclerDragController.h */; };
@@ -1528,6 +1899,10 @@
 		DC03ADB81D508719003F76E7 /* WXTextAreaComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXTextAreaComponent.h; sourceTree = "<group>"; };
 		DC15A3D92010BC93009C8977 /* weex-main-jsfm.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "weex-main-jsfm.js"; path = "../../../../pre-build/weex-main-jsfm.js"; sourceTree = "<group>"; };
 		DC15A3DA2010BC93009C8977 /* weex-rax-api.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "weex-rax-api.js"; path = "../../../../pre-build/weex-rax-api.js"; sourceTree = "<group>"; };
+		DC1CC93121719F69000FF1F7 /* WeexSDK_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeexSDK_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC1CC93321719F69000FF1F7 /* WeexSDK_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeexSDK_MacOS.h; sourceTree = "<group>"; };
+		DC1CC93421719F69000FF1F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC1CCAE121724A36000FF1F7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
 		DC6836E51EBB12B200AD2D84 /* WXConfigCenterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXConfigCenterProtocol.h; sourceTree = "<group>"; };
 		DC7764911F3C2CA300B5727E /* WXRecyclerDragController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WXRecyclerDragController.m; path = WeexSDK/Sources/Component/Recycler/WXRecyclerDragController.m; sourceTree = SOURCE_ROOT; };
 		DC7764921F3C2CA300B5727E /* WXRecyclerDragController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXRecyclerDragController.h; path = WeexSDK/Sources/Component/Recycler/WXRecyclerDragController.h; sourceTree = SOURCE_ROOT; };
@@ -1585,6 +1960,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC1CC92D21719F69000FF1F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC1CCAE221724A37000FF1F7 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1845,6 +2228,7 @@
 				2A42AF861C23B33E00818EA6 /* WeexSDK_MTL */,
 				74C8963E1D2AC2210043B82A /* WeexSDKTests */,
 				DCA445261EFA555400D0CFA8 /* WeexSDK-Dynamic */,
+				DC1CC93221719F69000FF1F7 /* WeexSDK MacOS */,
 				77D160FE1C02DBE70010B15B /* Products */,
 				A5818E244F9E235722E3B938 /* Frameworks */,
 			);
@@ -1857,6 +2241,7 @@
 				2A42AF851C23B33E00818EA6 /* libWeexSDK_MTL.a */,
 				74C8963D1D2AC2210043B82A /* WeexSDKTests.xctest */,
 				DCA445251EFA555400D0CFA8 /* WeexSDK.framework */,
+				DC1CC93121719F69000FF1F7 /* WeexSDK_MacOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2176,6 +2561,7 @@
 		A5818E244F9E235722E3B938 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DC1CCAE121724A36000FF1F7 /* AppKit.framework */,
 				DCA446231EFA5AFE00D0CFA8 /* UIKit.framework */,
 				74EF31BE1DE5ED5900667A07 /* libstdc++.tbd */,
 				DC9867431D826D1E000AF388 /* GLKit.framework */,
@@ -2607,6 +2993,15 @@
 			path = WebSocket;
 			sourceTree = "<group>";
 		};
+		DC1CC93221719F69000FF1F7 /* WeexSDK MacOS */ = {
+			isa = PBXGroup;
+			children = (
+				DC1CC93321719F69000FF1F7 /* WeexSDK_MacOS.h */,
+				DC1CC93421719F69000FF1F7 /* Info.plist */,
+			);
+			path = "WeexSDK MacOS";
+			sourceTree = "<group>";
+		};
 		DC9F46841D61AC9100A88239 /* module */ = {
 			isa = PBXGroup;
 			children = (
@@ -2908,6 +3303,230 @@
 				742AD73A1DF98C8B007DC46C /* WXResourceLoader.h in Headers */,
 				746319291C71B92600EFEBD4 /* WXModalUIModule.h in Headers */,
 				B8D66BFF2125572F003960BD /* constants_name.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC1CC92E21719F69000FF1F7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC1CCAD12171A1C8000FF1F7 /* WXTextComponentProtocol.h in Headers */,
+				DC1CCABD2171A14F000FF1F7 /* WXAnalyzerCenter.h in Headers */,
+				DC1CCAD72171A1E4000FF1F7 /* WXAppMonitorProtocol.h in Headers */,
+				DC1CCAAA2171A08A000FF1F7 /* WXComponentMethod.h in Headers */,
+				DC1CCAC12171A16A000FF1F7 /* WXComponent_performance.h in Headers */,
+				DC1CCAB82171A12F000FF1F7 /* WXHandlerFactory.h in Headers */,
+				DC1CCAB12171A0AA000FF1F7 /* JSContext+Weex.h in Headers */,
+				DC1CCAE321724ADF000FF1F7 /* thread_impl.h in Headers */,
+				DC1CCAE621724B1D000FF1F7 /* thread_local.h in Headers */,
+				DC1CCACC2171A1B3000FF1F7 /* WXApmProtocol.h in Headers */,
+				DC1CCAC42171A174000FF1F7 /* WXSDKInstance.h in Headers */,
+				DC1CCADA2171A1F2000FF1F7 /* WXConfigCenterProtocol.h in Headers */,
+				DC1CCACA2171A1A1000FF1F7 /* WXResourceResponse.h in Headers */,
+				DC1CCAD62171A1DF000FF1F7 /* WXNetworkProtocol.h in Headers */,
+				DC1CCACF2171A1BF000FF1F7 /* WXJSExceptionProtocol.h in Headers */,
+				DC1CCAAC2171A092000FF1F7 /* WXCoreBridge.h in Headers */,
+				DC1CCAF221724F0F000FF1F7 /* WXComponent.h in Headers */,
+				DC1CCAF421724F20000FF1F7 /* WXImageComponent.h in Headers */,
+				DC1CCAB32171A0BD000FF1F7 /* WXDisplayLinkManager.h in Headers */,
+				DC1CCADE217247EC000FF1F7 /* WXBaseViewController.h in Headers */,
+				DC1CCAA62171A069000FF1F7 /* WXSDKEngine.h in Headers */,
+				DC1CCAE521724B19000FF1F7 /* thread_impl_darwin.h in Headers */,
+				DC1CCAC72171A191000FF1F7 /* WXResourceRequest.h in Headers */,
+				DC1CCABF2171A15B000FF1F7 /* WXMonitor.h in Headers */,
+				DC1CCAE821724B24000FF1F7 /* thread.h in Headers */,
+				DC1CCAE421724B14000FF1F7 /* thread_impl_posix.h in Headers */,
+				DC1CCADD2171A22A000FF1F7 /* WXDefine.h in Headers */,
+				DC1CCAD82171A1E9000FF1F7 /* WXURLRewriteProtocol.h in Headers */,
+				DC1CCAF521724F25000FF1F7 /* WXTextComponent.h in Headers */,
+				DC1CCABC2171A14A000FF1F7 /* WXExtendCallNativeManager.h in Headers */,
+				DC1CCAC92171A19D000FF1F7 /* WXResourceRequestHandlerDefaultImpl.h in Headers */,
+				DC1CCAD52171A1DB000FF1F7 /* WXScrollerProtocol.h in Headers */,
+				DC1CCABA2171A13A000FF1F7 /* WXComponentFactory.h in Headers */,
+				DC1CCAA92171A083000FF1F7 /* WXModuleMethod.h in Headers */,
+				DC1CCAC52171A182000FF1F7 /* WXSDKInstance_private.h in Headers */,
+				DC1CCAAE2171A09D000FF1F7 /* WXJSCoreBridge.h in Headers */,
+				DC1CCACE2171A1BB000FF1F7 /* WXNavigationProtocol.h in Headers */,
+				DC1CCAAB2171A08F000FF1F7 /* WXCallJSMethod.h in Headers */,
+				DC1CCA1D21719FDC000FF1F7 /* WXRootView.h in Headers */,
+				DC1CCA1B21719FDC000FF1F7 /* WXComponent+ViewManagement.h in Headers */,
+				DC1CCA1921719FDC000FF1F7 /* WXErrorView.h in Headers */,
+				DC1CCA1721719FDC000FF1F7 /* WXView.h in Headers */,
+				DC1CCA1621719FDC000FF1F7 /* WXComponent+PseudoClassManagement.h in Headers */,
+				DC1CCA1321719FDC000FF1F7 /* WXDebugTool.h in Headers */,
+				DC1CCA1121719FDC000FF1F7 /* UIBezierPath+Weex.h in Headers */,
+				DC1CCA0F21719FDC000FF1F7 /* WXRoundedRect.h in Headers */,
+				DC1CCA0D21719FDC000FF1F7 /* WXComponent+Display.h in Headers */,
+				DC1CCA0B21719FDC000FF1F7 /* WXLayer.h in Headers */,
+				DC1CCA0921719FDC000FF1F7 /* WXDisplayQueue.h in Headers */,
+				DC1CCA0821719FDC000FF1F7 /* WXInnerLayer.h in Headers */,
+				DC1CCA0621719FDC000FF1F7 /* WXComponent+BoxShadow.h in Headers */,
+				DC1CCA0221719FDC000FF1F7 /* WXWebSocketHandler.h in Headers */,
+				DC1CCA0021719FDC000FF1F7 /* WXResourceLoader.h in Headers */,
+				DC1CC9FE21719FDC000FF1F7 /* WXWebSocketLoader.h in Headers */,
+				DC1CC9FD21719FDC000FF1F7 /* WXComponent+Layout.h in Headers */,
+				DC1CC9FB21719FDC000FF1F7 /* WeexSDK.h in Headers */,
+				DC1CC9F921719FDC000FF1F7 /* WXApmForInstance.h in Headers */,
+				DC1CC9F321719FDC000FF1F7 /* wson_parser.h in Headers */,
+				DC1CC9F021719FDC000FF1F7 /* wson_util.h in Headers */,
+				DC1CC9EE21719FDC000FF1F7 /* wson.h in Headers */,
+				DC1CC9EC21719FDC000FF1F7 /* json11.hpp in Headers */,
+				DC1CC9EB21719FDC000FF1F7 /* WeexApiHeader.h in Headers */,
+				DC1CC9EA21719FDC000FF1F7 /* weex_core_manager.h in Headers */,
+				DC1CC9E821719FDC000FF1F7 /* dom_wson.h in Headers */,
+				DC1CC9E721719FDC000FF1F7 /* render_factory_interface.h in Headers */,
+				DC1CC9E621719FDC000FF1F7 /* render_cell_factory.h in Headers */,
+				DC1CC9E521719FDC000FF1F7 /* render_creator.h in Headers */,
+				DC1CC9E421719FDC000FF1F7 /* render_list_factory.h in Headers */,
+				DC1CC9E321719FDC000FF1F7 /* render_object_interface.h in Headers */,
+				DC1CC9E221719FDC000FF1F7 /* simple_render_factory.h in Headers */,
+				DC1CC9E121719FDC000FF1F7 /* render_appbar_factory.h in Headers */,
+				DC1CC9DF21719FDC000FF1F7 /* render_type.h in Headers */,
+				DC1CC9DE21719FDC000FF1F7 /* render_scroller_factory.h in Headers */,
+				DC1CC9DD21719FDC000FF1F7 /* render_text_factory.h in Headers */,
+				DC1CC9DC21719FDC000FF1F7 /* render_mask_factory.h in Headers */,
+				DC1CC9DB21719FDC000FF1F7 /* render_list.h in Headers */,
+				DC1CC9DA21719FDC000FF1F7 /* render_appbar.h in Headers */,
+				DC1CC9D921719FDC000FF1F7 /* render_object.h in Headers */,
+				DC1CC9D521719FDC000FF1F7 /* render_text.h in Headers */,
+				DC1CC9D421719FDC000FF1F7 /* render_scroller.h in Headers */,
+				DC1CC9D321719FDC000FF1F7 /* render_mask.h in Headers */,
+				DC1CC9CF21719FDC000FF1F7 /* render_cell.h in Headers */,
+				DC1CC9CC21719FDC000FF1F7 /* render_action_add_element.h in Headers */,
+				DC1CC9CB21719FDC000FF1F7 /* render_action_remove_element.h in Headers */,
+				DC1CC9CA21719FDC000FF1F7 /* render_action_layout.h in Headers */,
+				DC1CC9C721719FDC000FF1F7 /* render_action_remove_event.h in Headers */,
+				DC1CC9C321719FDC000FF1F7 /* render_action_interface.h in Headers */,
+				DC1CC9C121719FDC000FF1F7 /* render_action_createbody.h in Headers */,
+				DC1CC9BF21719FDC000FF1F7 /* render_action_add_event.h in Headers */,
+				DC1CC9BD21719FDC000FF1F7 /* render_action_createfinish.h in Headers */,
+				DC1CC9BC21719FDC000FF1F7 /* render_action_update_style.h in Headers */,
+				DC1CC9B921719FDC000FF1F7 /* render_action_move_element.h in Headers */,
+				DC1CC9B821719FDC000FF1F7 /* render_action_update_attr.h in Headers */,
+				DC1CC9B721719FDC000FF1F7 /* render_action_appendtree_createfinish.h in Headers */,
+				DC1CC9B621719FDC000FF1F7 /* render_action_render_success.h in Headers */,
+				DC1CC9B521719FDC000FF1F7 /* render_action_trigger_vsync.h in Headers */,
+				DC1CC9B321719FDC000FF1F7 /* render_manager.h in Headers */,
+				DC1CC9B121719FDC000FF1F7 /* render_page.h in Headers */,
+				DC1CC9AF21719FDC000FF1F7 /* flex_enum.h in Headers */,
+				DC1CC9AE21719FDC000FF1F7 /* layout.h in Headers */,
+				DC1CC9AB21719FDC000FF1F7 /* style.h in Headers */,
+				DC1CC9AA21719FDC000FF1F7 /* measure_func_adapter.h in Headers */,
+				DC1CC9A921719FDC000FF1F7 /* script_bridge.h in Headers */,
+				DC1CC9A821719FDC000FF1F7 /* wx_type_define.h in Headers */,
+				DC1CC9A721719FDC000FF1F7 /* core_side_in_script.h in Headers */,
+				DC1CC9A521719FDC000FF1F7 /* core_side_in_platform.h in Headers */,
+				DC1CC9A321719FDC000FF1F7 /* platform_bridge.h in Headers */,
+				DC1CC9A221719FDC000FF1F7 /* core_environment.h in Headers */,
+				DC1CC9A021719FDC000FF1F7 /* css_value_getter.h in Headers */,
+				DC1CC99E21719FDC000FF1F7 /* constants_value.h in Headers */,
+				DC1CCAF821734388000FF1F7 /* WXTransform.h in Headers */,
+				DC1CC99D21719FDC000FF1F7 /* constants_name.h in Headers */,
+				DC1CC99C21719FDC000FF1F7 /* render_performance.h in Headers */,
+				DC1CC99721719FDC000FF1F7 /* ast_visitor.h in Headers */,
+				DC1CC99621719FDC000FF1F7 /* op_code.h in Headers */,
+				DC1CC99521719FDC000FF1F7 /* vm.h in Headers */,
+				DC1CC99421719FDC000FF1F7 /* token.h in Headers */,
+				DC1CC99321719FDC000FF1F7 /* table.h in Headers */,
+				DC1CC99221719FDC000FF1F7 /* object.h in Headers */,
+				DC1CC99121719FDC000FF1F7 /* exec_state.h in Headers */,
+				DC1CC99021719FDC000FF1F7 /* handle.h in Headers */,
+				DC1CC98F21719FDC000FF1F7 /* scanner.h in Headers */,
+				DC1CC98E21719FDC000FF1F7 /* ast.h in Headers */,
+				DC1CC98D21719FDC000FF1F7 /* string_table.h in Headers */,
+				DC1CC98A21719FDC000FF1F7 /* tokenizer.h in Headers */,
+				DC1CC98921719FDC000FF1F7 /* statement.h in Headers */,
+				DC1CC98521719FDC000FF1F7 /* vnode_render_context.h in Headers */,
+				DC1CC98421719FDC000FF1F7 /* vnode_render_manager.h in Headers */,
+				DC1CC98221719FDC000FF1F7 /* vnode_exec_env.h in Headers */,
+				DC1CC98021719FDC000FF1F7 /* vcomponent.h in Headers */,
+				DC1CC97C21719FDC000FF1F7 /* vnode.h in Headers */,
+				DC1CC97A21719FDC000FF1F7 /* parser.h in Headers */,
+				DC1CC97721719FDC000FF1F7 /* code_generator.h in Headers */,
+				DC1CC97421719FDC000FF1F7 /* rax_source_locator.h in Headers */,
+				DC1CC97221719FDC000FF1F7 /* rax_parser.h in Headers */,
+				DC1CC97021719FDC000FF1F7 /* rax_parser_statistics.h in Headers */,
+				DC1CC96E21719FDC000FF1F7 /* rax_parser_scope.h in Headers */,
+				DC1CC96C21719FDC000FF1F7 /* rax_parser_context.h in Headers */,
+				DC1CC96A21719FDC000FF1F7 /* rax_parser_builder.h in Headers */,
+				DC1CC96821719FDB000FF1F7 /* rax_jsx_ast.h in Headers */,
+				DC1CC96621719FDB000FF1F7 /* binary_file.h in Headers */,
+				DC1CC96421719FDB000FF1F7 /* common_error.h in Headers */,
+				DC1CC96321719FDB000FF1F7 /* class.h in Headers */,
+				DC1CC96121719FDB000FF1F7 /* class_factory.h in Headers */,
+				DC1CC95F21719FDB000FF1F7 /* class_object.h in Headers */,
+				DC1CC95D21719FDB000FF1F7 /* class_array.h in Headers */,
+				DC1CC95B21719FDB000FF1F7 /* class_string.h in Headers */,
+				DC1CC95921719FDB000FF1F7 /* class_json.h in Headers */,
+				DC1CC95821719FDB000FF1F7 /* js_common_function.h in Headers */,
+				DC1CC95521719FDB000FF1F7 /* ast_builder.h in Headers */,
+				DC1CC95321719FDB000FF1F7 /* vm_monitor.h in Headers */,
+				DC1CC95121719FDB000FF1F7 /* message_pump_darwin.h in Headers */,
+				DC1CC94F21719FDB000FF1F7 /* message_pump_posix.h in Headers */,
+				DC1CC94E21719FDB000FF1F7 /* message_pump.h in Headers */,
+				DC1CC94C21719FDB000FF1F7 /* message_loop.h in Headers */,
+				DC1CC94321719FDB000FF1F7 /* time_unit.h in Headers */,
+				DC1CC94221719FDB000FF1F7 /* closure.h in Headers */,
+				DC1CC93F21719FDB000FF1F7 /* common.h in Headers */,
+				DC1CC93E21719FDB000FF1F7 /* ViewUtils.h in Headers */,
+				DC1CC93D21719FDB000FF1F7 /* make_copyable.h in Headers */,
+				DC1CC93C21719FDB000FF1F7 /* CoreConstants.h in Headers */,
+				DC1CC93B21719FDB000FF1F7 /* TimeUtils.h in Headers */,
+				DC1CC93A21719FDB000FF1F7 /* LogDefines.h in Headers */,
+				DC1CC93921719FDB000FF1F7 /* string_util.h in Headers */,
+				DC1CCA232171A003000FF1F7 /* WXURLRewriteDefaultImpl.h in Headers */,
+				DC1CCA212171A003000FF1F7 /* WXJSFrameworkLoadDefaultImpl.h in Headers */,
+				DC1CCA632171A037000FF1F7 /* WXServiceFactory.h in Headers */,
+				DC1CCA472171A037000FF1F7 /* WXDiffUtil.h in Headers */,
+				DC1CCA452171A037000FF1F7 /* WXLength.h in Headers */,
+				DC1CCA432171A037000FF1F7 /* NSObject+WXSwizzle.h in Headers */,
+				DC1CCA412171A037000FF1F7 /* WXThreadSafeMutableArray.h in Headers */,
+				DC1CCA3F2171A037000FF1F7 /* WXThreadSafeMutableDictionary.h in Headers */,
+				DC1CCA3D2171A037000FF1F7 /* WXAppConfiguration.h in Headers */,
+				DC1CCA3B2171A037000FF1F7 /* WXAssert.h in Headers */,
+				DC1CCA392171A037000FF1F7 /* WXSimulatorShortcutManager.h in Headers */,
+				DC1CCA372171A037000FF1F7 /* WXThreadSafeCounter.h in Headers */,
+				DC1CCA352171A037000FF1F7 /* NSArray+Weex.h in Headers */,
+				DC1CCA342171A037000FF1F7 /* WXType.h in Headers */,
+				DC1CCA322171A037000FF1F7 /* WXWeakObjectWrapper.h in Headers */,
+				DC1CCA302171A037000FF1F7 /* WXVersion.h in Headers */,
+				DC1CCA2D2171A037000FF1F7 /* WXLog.h in Headers */,
+				DC1CCA2B2171A037000FF1F7 /* WXUtility.h in Headers */,
+				DC1CCA292171A037000FF1F7 /* WXConvert.h in Headers */,
+				DC1CCA272171A037000FF1F7 /* NSTimer+Weex.h in Headers */,
+				DC1CCA252171A037000FF1F7 /* WXBoxShadow.h in Headers */,
+				DC1CC98721719FDC000FF1F7 /* ast_factory.h in Headers */,
+				DC1CCAB72171A12A000FF1F7 /* WXModuleFactory.h in Headers */,
+				DC1CCADC2171A1FD000FF1F7 /* WXTracingProtocol.h in Headers */,
+				DC1CCAB62171A0DC000FF1F7 /* WXBridgeManager.h in Headers */,
+				DC1CCAAD2171A09A000FF1F7 /* WXBridgeContext.h in Headers */,
+				DC1CCABE2171A157000FF1F7 /* WXAnalyzerCenter+Transfer.h in Headers */,
+				DC1CCAB42171A0C5000FF1F7 /* WXInvocationConfig.h in Headers */,
+				DC1CCAF7217251DB000FF1F7 /* WXComponent+Events.h in Headers */,
+				DC1CCAD02171A1C3000FF1F7 /* WXEventModuleProtocol.h in Headers */,
+				DC1CCAAF2171A0A3000FF1F7 /* WXPolyfillSet.h in Headers */,
+				DC1CCAD32171A1D2000FF1F7 /* WXBridgeProtocol.h in Headers */,
+				DC1CC93521719F69000FF1F7 /* WeexSDK_MacOS.h in Headers */,
+				DC1CCAC82171A196000FF1F7 /* WXResourceRequestHandler.h in Headers */,
+				DC1CCAD42171A1D7000FF1F7 /* WXImgLoaderProtocol.h in Headers */,
+				DC1CCAA72171A075000FF1F7 /* WXSDKError.h in Headers */,
+				DC1CCAB52171A0D2000FF1F7 /* WXSDKManager.h in Headers */,
+				DC1CCABB2171A140000FF1F7 /* WXRuleManager.h in Headers */,
+				DC1CCAD92171A1EE000FF1F7 /* WXValidateProtocol.h in Headers */,
+				DC1CCAC32171A170000FF1F7 /* WXSDKInstance_performance.h in Headers */,
+				DC1CCAD22171A1CE000FF1F7 /* WXModuleProtocol.h in Headers */,
+				DC1CCAC02171A161000FF1F7 /* WXExceptionUtils.h in Headers */,
+				DC1CCACD2171A1B7000FF1F7 /* WXAnalyzerProtocol.h in Headers */,
+				DC1CCAB92171A134000FF1F7 /* WXComponentManager.h in Headers */,
+				DC1CCAB02171A0A7000FF1F7 /* JSValue+Weex.h in Headers */,
+				DC1CCAB22171A0B5000FF1F7 /* WXTracingManager.h in Headers */,
+				DC1CCADB2171A1F9000FF1F7 /* WXExtendCallNativeProtocol.h in Headers */,
+				DC1CCAE721724B20000FF1F7 /* waitable_event.h in Headers */,
+				DC1CCACB2171A1AE000FF1F7 /* WXJSFrameworkLoadProtocol.h in Headers */,
+				DC1CCAFB217343A5000FF1F7 /* WXPrerenderManager.h in Headers */,
+				DC1CCAC62171A18A000FF1F7 /* WXJSExceptionInfo.h in Headers */,
+				DC1CCAE021724951000FF1F7 /* time_point.h in Headers */,
+				DC1CCAA82171A07F000FF1F7 /* WXBridgeMethod.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3247,6 +3866,24 @@
 			productReference = 77D160FD1C02DBE70010B15B /* WeexSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		DC1CC93021719F69000FF1F7 /* WeexSDK MacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC1CC93821719F69000FF1F7 /* Build configuration list for PBXNativeTarget "WeexSDK MacOS" */;
+			buildPhases = (
+				DC1CC92C21719F69000FF1F7 /* Sources */,
+				DC1CC92D21719F69000FF1F7 /* Frameworks */,
+				DC1CC92E21719F69000FF1F7 /* Headers */,
+				DC1CC92F21719F69000FF1F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WeexSDK MacOS";
+			productName = "WeexSDK MacOS";
+			productReference = DC1CC93121719F69000FF1F7 /* WeexSDK_MacOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		DCA445241EFA555400D0CFA8 /* WeexSDK-Dynamic */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DCA4452C1EFA555400D0CFA8 /* Build configuration list for PBXNativeTarget "WeexSDK-Dynamic" */;
@@ -3287,6 +3924,10 @@
 					77D160FC1C02DBE70010B15B = {
 						CreatedOnToolsVersion = 7.1.1;
 					};
+					DC1CC93021719F69000FF1F7 = {
+						CreatedOnToolsVersion = 9.4.1;
+						ProvisioningStyle = Automatic;
+					};
 					DCA445241EFA555400D0CFA8 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = "Xing Zhang";
@@ -3310,6 +3951,7 @@
 				DCA445241EFA555400D0CFA8 /* WeexSDK-Dynamic */,
 				2A42AF841C23B33E00818EA6 /* WeexSDK_MTL */,
 				74C8963C1D2AC2210043B82A /* WeexSDKTests */,
+				DC1CC93021719F69000FF1F7 /* WeexSDK MacOS */,
 			);
 		};
 /* End PBXProject section */
@@ -3333,6 +3975,17 @@
 				DCD8D0F32073392A0002C420 /* weex-polyfill.js in Resources */,
 				DC15A3DB2010BC93009C8977 /* weex-main-jsfm.js in Resources */,
 				59AC02511D2A7E6E00355112 /* wx_load_error@3x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC1CC92F21719F69000FF1F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC1CCAEB21724C20000FF1F7 /* weex-polyfill.js in Resources */,
+				DC1CCAEC21724C20000FF1F7 /* weex-main-jsfm.js in Resources */,
+				DC1CCAED21724C20000FF1F7 /* weex-rax-api.js in Resources */,
+				DC1CCAEE21724C20000FF1F7 /* native-bundle-main.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3638,6 +4291,162 @@
 				745B2D691E5A8E1E0092D38A /* WXMultiColumnLayout.m in Sources */,
 				77D161391C02DE940010B15B /* WXBridgeManager.m in Sources */,
 				74BF19F91F5139BB00AEE3D7 /* WXJSASTParser.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC1CC92C21719F69000FF1F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC1CCA262171A037000FF1F7 /* WXBoxShadow.m in Sources */,
+				DC1CCA282171A037000FF1F7 /* NSTimer+Weex.m in Sources */,
+				DC1CCA2A2171A037000FF1F7 /* WXConvert.m in Sources */,
+				DC1CCA2C2171A037000FF1F7 /* WXUtility.m in Sources */,
+				DC1CCA2E2171A037000FF1F7 /* WXLog.m in Sources */,
+				DC1CCA312171A037000FF1F7 /* WXVersion.m in Sources */,
+				DC1CCA332171A037000FF1F7 /* WXWeakObjectWrapper.m in Sources */,
+				DC1CCA362171A037000FF1F7 /* NSArray+Weex.m in Sources */,
+				DC1CCA382171A037000FF1F7 /* WXThreadSafeCounter.m in Sources */,
+				DC1CCA3A2171A037000FF1F7 /* WXSimulatorShortcutManager.m in Sources */,
+				DC1CCA3C2171A037000FF1F7 /* WXAssert.m in Sources */,
+				DC1CCA3E2171A037000FF1F7 /* WXAppConfiguration.m in Sources */,
+				DC1CCA402171A037000FF1F7 /* WXThreadSafeMutableDictionary.m in Sources */,
+				DC1CCA422171A037000FF1F7 /* WXThreadSafeMutableArray.m in Sources */,
+				DC1CCA442171A037000FF1F7 /* NSObject+WXSwizzle.m in Sources */,
+				DC1CCA462171A037000FF1F7 /* WXLength.m in Sources */,
+				DC1CCA482171A037000FF1F7 /* WXDiffUtil.m in Sources */,
+				DC1CCA4A2171A037000FF1F7 /* WXSDKError.m in Sources */,
+				DC1CCA4C2171A037000FF1F7 /* WXSDKEngine.m in Sources */,
+				DC1CCA4E2171A037000FF1F7 /* WXBridgeMethod.m in Sources */,
+				DC1CCA502171A037000FF1F7 /* WXModuleMethod.m in Sources */,
+				DC1CCA522171A037000FF1F7 /* WXComponentMethod.m in Sources */,
+				DC1CCA542171A037000FF1F7 /* WXCallJSMethod.m in Sources */,
+				DC1CCAF92173438A000FF1F7 /* WXTransform.m in Sources */,
+				DC1CCA562171A037000FF1F7 /* WXCoreBridge.mm in Sources */,
+				DC1CCA572171A037000FF1F7 /* WXBridgeContext.m in Sources */,
+				DC1CCA5A2171A037000FF1F7 /* WXJSCoreBridge.mm in Sources */,
+				DC1CCA5C2171A037000FF1F7 /* WXPolyfillSet.m in Sources */,
+				DC1CCAFA217343A3000FF1F7 /* WXPrerenderManager.m in Sources */,
+				DC1CCA5E2171A037000FF1F7 /* JSValue+Weex.m in Sources */,
+				DC1CCA602171A037000FF1F7 /* JSContext+Weex.m in Sources */,
+				DC1CCA622171A037000FF1F7 /* WXTracingManager.m in Sources */,
+				DC1CCA652171A037000FF1F7 /* WXDisplayLinkManager.m in Sources */,
+				DC1CCA662171A037000FF1F7 /* WXServiceFactory.m in Sources */,
+				DC1CCA682171A037000FF1F7 /* WXInvocationConfig.m in Sources */,
+				DC1CCA6C2171A037000FF1F7 /* WXSDKManager.m in Sources */,
+				DC1CCA6E2171A037000FF1F7 /* WXBridgeManager.m in Sources */,
+				DC1CCA702171A037000FF1F7 /* WXModuleFactory.m in Sources */,
+				DC1CCA722171A037000FF1F7 /* WXHandlerFactory.m in Sources */,
+				DC1CCA742171A037000FF1F7 /* WXComponentManager.mm in Sources */,
+				DC1CCA762171A037000FF1F7 /* WXComponentFactory.m in Sources */,
+				DC1CCA782171A037000FF1F7 /* WXRuleManager.m in Sources */,
+				DC1CCA7A2171A037000FF1F7 /* WXExtendCallNativeManager.m in Sources */,
+				DC1CCA7C2171A037000FF1F7 /* WXAnalyzerCenter.m in Sources */,
+				DC1CCA7F2171A037000FF1F7 /* WXMonitor.m in Sources */,
+				DC1CCA812171A037000FF1F7 /* WXExceptionUtils.m in Sources */,
+				DC1CCA842171A037000FF1F7 /* WXSDKInstance_performance.m in Sources */,
+				DC1CCA892171A037000FF1F7 /* WXSDKInstance.m in Sources */,
+				DC1CCA8B2171A037000FF1F7 /* WXJSExceptionInfo.m in Sources */,
+				DC1CCA8D2171A037000FF1F7 /* WXResourceRequest.m in Sources */,
+				DC1CCA902171A037000FF1F7 /* WXResourceRequestHandlerDefaultImpl.m in Sources */,
+				DC1CCA922171A037000FF1F7 /* WXResourceResponse.m in Sources */,
+				DC1CCA222171A003000FF1F7 /* WXJSFrameworkLoadDefaultImpl.m in Sources */,
+				DC1CCA242171A003000FF1F7 /* WXURLRewriteDefaultImpl.m in Sources */,
+				DC1CC94121719FDB000FF1F7 /* time_point.cc in Sources */,
+				DC1CC94721719FDB000FF1F7 /* thread_impl_posix.cc in Sources */,
+				DC1CC94921719FDB000FF1F7 /* thread_impl_darwin.cc in Sources */,
+				DC1CC94D21719FDB000FF1F7 /* message_loop.cc in Sources */,
+				DC1CC95021719FDB000FF1F7 /* message_pump_posix.cc in Sources */,
+				DC1CC95221719FDB000FF1F7 /* message_pump_darwin.cc in Sources */,
+				DC1CC95421719FDB000FF1F7 /* ast_builder.cc in Sources */,
+				DC1CC95621719FDB000FF1F7 /* class_json.cc in Sources */,
+				DC1CC95721719FDB000FF1F7 /* js_common_function.cc in Sources */,
+				DC1CC95A21719FDB000FF1F7 /* class_string.cc in Sources */,
+				DC1CC95C21719FDB000FF1F7 /* class_array.cc in Sources */,
+				DC1CC95E21719FDB000FF1F7 /* class_object.cc in Sources */,
+				DC1CC96021719FDB000FF1F7 /* class_factory.cc in Sources */,
+				DC1CC96221719FDB000FF1F7 /* class.cc in Sources */,
+				DC1CC96521719FDB000FF1F7 /* binary_file.cc in Sources */,
+				DC1CC96721719FDB000FF1F7 /* rax_jsx_ast.cc in Sources */,
+				DC1CC96921719FDB000FF1F7 /* rax_parser_builder.cc in Sources */,
+				DC1CC96B21719FDC000FF1F7 /* rax_parser_context.cc in Sources */,
+				DC1CC96D21719FDC000FF1F7 /* rax_parser_scope.cc in Sources */,
+				DC1CC96F21719FDC000FF1F7 /* rax_parser_statistics.cc in Sources */,
+				DC1CC97121719FDC000FF1F7 /* rax_parser.cc in Sources */,
+				DC1CC97321719FDC000FF1F7 /* rax_source_locator.cc in Sources */,
+				DC1CC97521719FDC000FF1F7 /* string_table.cc in Sources */,
+				DC1CC97621719FDC000FF1F7 /* table.cc in Sources */,
+				DC1CC97821719FDC000FF1F7 /* code_generator.cc in Sources */,
+				DC1CC97921719FDC000FF1F7 /* ast_factory.cc in Sources */,
+				DC1CCADF217247F1000FF1F7 /* WXBaseViewController.m in Sources */,
+				DC1CC97B21719FDC000FF1F7 /* parser.cc in Sources */,
+				DC1CCAF121724F0C000FF1F7 /* WXComponent.mm in Sources */,
+				DC1CC97D21719FDC000FF1F7 /* vnode_exec_env.cc in Sources */,
+				DC1CC97E21719FDC000FF1F7 /* vnode.cc in Sources */,
+				DC1CC97F21719FDC000FF1F7 /* vcomponent.cc in Sources */,
+				DC1CC98121719FDC000FF1F7 /* vnode_render_context.cc in Sources */,
+				DC1CC98321719FDC000FF1F7 /* vnode_render_manager.cc in Sources */,
+				DC1CC98621719FDC000FF1F7 /* tokenizer.cc in Sources */,
+				DC1CC98821719FDC000FF1F7 /* ast.cc in Sources */,
+				DC1CC98B21719FDC000FF1F7 /* statement.cc in Sources */,
+				DC1CC98C21719FDC000FF1F7 /* vm.cc in Sources */,
+				DC1CCAF621724F27000FF1F7 /* WXTextComponent.mm in Sources */,
+				DC1CC99821719FDC000FF1F7 /* object.cc in Sources */,
+				DC1CC99921719FDC000FF1F7 /* token.cc in Sources */,
+				DC1CC99A21719FDC000FF1F7 /* exec_state.cc in Sources */,
+				DC1CC99B21719FDC000FF1F7 /* render_performance.cpp in Sources */,
+				DC1CC99F21719FDC000FF1F7 /* css_value_getter.cpp in Sources */,
+				DC1CC9A121719FDC000FF1F7 /* core_environment.cpp in Sources */,
+				DC1CC9A421719FDC000FF1F7 /* core_side_in_platform.cpp in Sources */,
+				DC1CC9A621719FDC000FF1F7 /* core_side_in_script.cpp in Sources */,
+				DC1CC9AC21719FDC000FF1F7 /* style.cpp in Sources */,
+				DC1CC9AD21719FDC000FF1F7 /* layout.cpp in Sources */,
+				DC1CC9B021719FDC000FF1F7 /* render_page.cpp in Sources */,
+				DC1CC9B221719FDC000FF1F7 /* render_manager.cpp in Sources */,
+				DC1CC9B421719FDC000FF1F7 /* render_action_trigger_vsync.cpp in Sources */,
+				DC1CC9BA21719FDC000FF1F7 /* render_action_update_attr.cpp in Sources */,
+				DC1CC9BB21719FDC000FF1F7 /* render_action_layout.cpp in Sources */,
+				DC1CC9BE21719FDC000FF1F7 /* render_action_update_style.cpp in Sources */,
+				DC1CC9C021719FDC000FF1F7 /* render_action_remove_element.cpp in Sources */,
+				DC1CC9C221719FDC000FF1F7 /* render_action_add_event.cpp in Sources */,
+				DC1CC9C421719FDC000FF1F7 /* render_action_remove_event.cpp in Sources */,
+				DC1CC9C521719FDC000FF1F7 /* render_action_move_element.cpp in Sources */,
+				DC1CC9C621719FDC000FF1F7 /* render_action_add_element.cpp in Sources */,
+				DC1CC9C821719FDC000FF1F7 /* render_action_createbody.cpp in Sources */,
+				DC1CC9C921719FDC000FF1F7 /* render_action_createfinish.cpp in Sources */,
+				DC1CC9CD21719FDC000FF1F7 /* render_action_appendtree_createfinish.cpp in Sources */,
+				DC1CC9CE21719FDC000FF1F7 /* render_action_render_success.cpp in Sources */,
+				DC1CC9D021719FDC000FF1F7 /* render_text.cpp in Sources */,
+				DC1CC9D121719FDC000FF1F7 /* render_mask.cpp in Sources */,
+				DC1CC9D221719FDC000FF1F7 /* render_scroller.cpp in Sources */,
+				DC1CC9D621719FDC000FF1F7 /* render_object.cpp in Sources */,
+				DC1CC9D721719FDC000FF1F7 /* render_appbar.cpp in Sources */,
+				DC1CC9D821719FDC000FF1F7 /* render_list.cpp in Sources */,
+				DC1CC9E021719FDC000FF1F7 /* render_creator.cpp in Sources */,
+				DC1CC9E921719FDC000FF1F7 /* dom_wson.cpp in Sources */,
+				DC1CC9ED21719FDC000FF1F7 /* json11.cc in Sources */,
+				DC1CC9EF21719FDC000FF1F7 /* wson.c in Sources */,
+				DC1CC9F121719FDC000FF1F7 /* wson_util.cpp in Sources */,
+				DC1CC9F221719FDC000FF1F7 /* wson_parser.cpp in Sources */,
+				DC1CCAF321724F1E000FF1F7 /* WXImageComponent.m in Sources */,
+				DC1CC9FA21719FDC000FF1F7 /* WXApmForInstance.m in Sources */,
+				DC1CC9FC21719FDC000FF1F7 /* WXComponent+Layout.mm in Sources */,
+				DC1CC9FF21719FDC000FF1F7 /* WXWebSocketLoader.m in Sources */,
+				DC1CCA0121719FDC000FF1F7 /* WXResourceLoader.m in Sources */,
+				DC1CCA0421719FDC000FF1F7 /* WXComponent+Events.m in Sources */,
+				DC1CCA0521719FDC000FF1F7 /* WXComponent+BoxShadow.m in Sources */,
+				DC1CCA0721719FDC000FF1F7 /* WXInnerLayer.m in Sources */,
+				DC1CCA0A21719FDC000FF1F7 /* WXDisplayQueue.m in Sources */,
+				DC1CCA0C21719FDC000FF1F7 /* WXLayer.m in Sources */,
+				DC1CCA0E21719FDC000FF1F7 /* WXComponent+Display.m in Sources */,
+				DC1CCA1021719FDC000FF1F7 /* WXRoundedRect.mm in Sources */,
+				DC1CCA1221719FDC000FF1F7 /* UIBezierPath+Weex.m in Sources */,
+				DC1CCA1421719FDC000FF1F7 /* WXDebugTool.m in Sources */,
+				DC1CCA1521719FDC000FF1F7 /* WXComponent+PseudoClassManagement.m in Sources */,
+				DC1CCA1821719FDC000FF1F7 /* WXView.m in Sources */,
+				DC1CCA1A21719FDC000FF1F7 /* WXErrorView.m in Sources */,
+				DC1CCA1C21719FDC000FF1F7 /* WXComponent+ViewManagement.mm in Sources */,
+				DC1CCA1E21719FDC000FF1F7 /* WXRootView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4165,6 +4974,82 @@
 			};
 			name = Release;
 		};
+		DC1CC93621719F69000FF1F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+					"OS_IOS=1",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../weex_core/Source",
+					"$(PROJECT_DIR)/../../weex_core/Source/core/layout",
+				);
+				INFOPLIST_FILE = "WeexSDK MacOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.apache.weex.WeexSDK-MacOS";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		DC1CC93721719F69000FF1F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = OS_IOS;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../weex_core/Source",
+					"$(PROJECT_DIR)/../../weex_core/Source/core/layout",
+				);
+				INFOPLIST_FILE = "WeexSDK MacOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.apache.weex.WeexSDK-MacOS";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		DCA4452A1EFA555400D0CFA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4292,6 +5177,15 @@
 			buildConfigurations = (
 				77D161121C02DBE70010B15B /* Debug */,
 				77D161131C02DBE70010B15B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DC1CC93821719F69000FF1F7 /* Build configuration list for PBXNativeTarget "WeexSDK MacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC1CC93621719F69000FF1F7 /* Debug */,
+				DC1CC93721719F69000FF1F7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

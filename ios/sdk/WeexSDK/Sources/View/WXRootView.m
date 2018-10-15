@@ -19,7 +19,9 @@
 
 #import "WXRootView.h"
 #import "WXSDKInstance.h"
+#if !WEEX_MAC
 #import "WXPageEventNotifyEvent.h"
+#endif
 #import "WXSDKEngine.h"
 
 @interface WXRootView()
@@ -44,6 +46,7 @@
     }
 }
 
+#if !WEEX_MAC
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     _mHasEvent = TRUE;
@@ -53,6 +56,7 @@
     }
     return [super hitTest:point withEvent:event];
 }
+#endif
 
 - (BOOL)isHasEvent
 {

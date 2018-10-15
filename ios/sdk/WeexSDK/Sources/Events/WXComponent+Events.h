@@ -20,6 +20,20 @@
 #import "WXComponent.h"
 #import <objc/runtime.h>
 
+@interface WXTouchGestureRecognizer : UIGestureRecognizer
+
+@property (nonatomic, assign) BOOL listenTouchStart;
+@property (nonatomic, assign) BOOL listenTouchMove;
+@property (nonatomic, assign) BOOL listenTouchEnd;
+@property (nonatomic, assign) BOOL listenTouchCancel;
+@property (nonatomic, assign) BOOL listenPseudoTouch;
+
+- (instancetype)initWithComponent:(WXComponent *)component NS_DESIGNATED_INITIALIZER;
+
+@end
+
 @interface WXComponent (Events) <UIGestureRecognizerDelegate>
+#if !WEEX_MAC
 - (BOOL)gestureShouldStopPropagation:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
+#endif
 @end

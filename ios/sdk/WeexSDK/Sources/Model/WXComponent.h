@@ -22,8 +22,9 @@
  *  ndef: use yoga
  **/
 
-
+#import "WXDefine.h"
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 #import "WXType.h"
 
 @class WXSDKInstance;

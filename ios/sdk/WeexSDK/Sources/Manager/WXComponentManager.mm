@@ -20,7 +20,9 @@
 #import "WXComponentManager.h"
 #import "WXComponent.h"
 #import "WXComponent_internal.h"
+#if !WEEX_MAC
 #import "WXComponent+DataBinding.h"
+#endif
 #import "WXComponentFactory.h"
 #import "WXDefine.h"
 #import "NSArray+Weex.h"
@@ -518,10 +520,11 @@ static NSThread *WXComponentThread;
     if (!attributesOrStyles) {
         return nil;
     }
-    
+
     NSMutableDictionary *newAttributesOrStyles = [attributesOrStyles mutableCopy];
     NSMutableDictionary *bindingAttributesOrStyles = [NSMutableDictionary dictionary];
     
+#if !WEEX_MAC
     [attributesOrStyles enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull attributeOrStyleName, id  _Nonnull attributeOrStyle, BOOL * _Nonnull stop) {
         if ([WXBindingMatchIdentify isEqualToString:attributeOrStyleName] // match
             ||  [WXBindingRepeatIdentify isEqualToString:attributeOrStyleName] // repeat
@@ -547,6 +550,7 @@ static NSThread *WXComponentThread;
     }];
     
     *attributesOrStylesPoint = newAttributesOrStyles;
+#endif
     
     return bindingAttributesOrStyles;
 }
@@ -1052,7 +1056,9 @@ static NSThread *WXComponentThread;
 }
 
 - (void)handleDisplayLink {
-    [self _handleDisplayLink];
+    WXPerformBlockOnComponentThread(^{
+        [self _handleDisplayLink];
+    });
 }
 
 @synthesize suspend=_suspend;

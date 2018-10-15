@@ -18,6 +18,7 @@
  */
 
 #include "base/thread/thread_impl_darwin.h"
+#include <iostream>
 
 namespace weex {
 namespace base {

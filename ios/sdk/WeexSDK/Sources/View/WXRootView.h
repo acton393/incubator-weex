@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 
 @class WXSDKInstance;
 @interface WXRootView : UIView

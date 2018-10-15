@@ -22,6 +22,28 @@
 #import "WXLayer.h"
 #import "WXComponent_internal.h"
 
+@implementation UIView(Weex)
+#if WEEX_MAC
+- (void)insertSubview:(NSView *)view atIndex:(NSInteger)index
+{
+    if (index < 0) {
+        WXLog(@"index for %zd is not correct", index);
+        return;
+    }
+    if ((0 == [[self subviews] count] && 0 == index)|| (index >= [[self subviews] count])) {
+        [self addSubview:view];
+    } else {
+        NSInteger targetIndex = index;
+    
+        UIView * relativeView = [self.subviews objectAtIndex:index + 1];
+        [self addSubview:view positioned:NSWindowBelow relativeTo:relativeView];
+    }
+    
+    
+}
+#endif
+@end
+
 @implementation WXView
 
 + (Class)layerClass
@@ -29,6 +51,18 @@
     return [WXLayer class];
 }
 
+#if WEEX_MAC
+- (BOOL)isFlipped
+{
+    return YES;
+}
+
+- (BOOL)wantsDefaultClipping {
+    return self.wx_component->_clipToBounds;
+}
+
+#endif
+#if !WEEX_MAC
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     /**
@@ -69,5 +103,7 @@
     }
     return [super accessibilityPerformMagicTap];
 }
+
+#endif
 
 @end

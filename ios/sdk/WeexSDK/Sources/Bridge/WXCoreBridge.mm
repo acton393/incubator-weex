@@ -802,12 +802,14 @@ static WeexCore::ScriptBridge* jsBridge = nullptr;
         env->SetPlatform(OS_iOS);
         env->AddOption("scale", "1");
         
-        CGSize screenSize = [UIScreen mainScreen].bounds.size;
+        CGSize screenSize = [WXUtility portraitScreenSize];
         env->SetDeviceWidth(std::to_string(screenSize.width));
         env->SetDeviceHeight(std::to_string(screenSize.height));
         env->AddOption("screen_width_pixels", std::to_string(screenSize.width));
         env->AddOption("screen_height_pixels", std::to_string(screenSize.height));
+#if !WEEX_MAC
         env->AddOption("status_bar_height", std::to_string([[UIApplication sharedApplication] statusBarFrame].size.height));
+#endif
         
         platformBridge = new WeexCore::PlatformBridge();
         platformBridge->set_platform_side(new WeexCore::IOSSide());

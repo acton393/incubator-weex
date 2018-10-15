@@ -18,10 +18,11 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-
+#import "WXDefine.h"
+#if !WEEX_MAC
 @interface WXSimulatorShortcutManager : NSObject
 
 + (void)registerSimulatorShortcutWithKey:(NSString *)key modifierFlags:(UIKeyModifierFlags)flags action:(dispatch_block_t)action;
 
 @end
+#endif

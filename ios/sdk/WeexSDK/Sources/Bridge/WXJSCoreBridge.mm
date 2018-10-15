@@ -65,9 +65,13 @@
     if(self){
 
         _jsContext = [[JSContext alloc] init];
+#if !WEEX_MAC
         if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
             _jsContext.name = @"Weex Context";
         }
+#else
+        _jsContext.name = @"Weex Context";
+#endif
         _timers = [NSMutableArray new];
         _callbacks = [NSMutableDictionary new];
         _intervalTimerId = 0;

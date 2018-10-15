@@ -40,8 +40,10 @@
 @property (nonatomic, strong) NSString *scope;
 @property (nonatomic, assign) BOOL isRecycle;
 @property (nonatomic, assign) BOOL isLayoutComplete;
+#if !WEEX_MAC
 @property (nonatomic, assign) UITableViewRowAnimation insertAnimation;
 @property (nonatomic, assign) UITableViewRowAnimation deleteAnimation;
+#endif
 @property (nonatomic, assign) BOOL keepScrollPosition;
 @property (nonatomic, weak) id<WXCellRenderDelegate> delegate;
 @property (nonatomic, strong) NSString *zIndex;

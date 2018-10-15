@@ -19,7 +19,7 @@
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 
 @interface WXInnerLayer : CAGradientLayer
 

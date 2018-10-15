@@ -200,8 +200,8 @@
     CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x,
                                    view.bounds.size.height * view.layer.anchorPoint.y);
     
-    newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
-    oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+    newPoint = CGPointApplyAffineTransform(newPoint, view.layer.affineTransform);
+    oldPoint = CGPointApplyAffineTransform(oldPoint, view.layer.affineTransform);
     
     CGPoint position = view.layer.position;
     

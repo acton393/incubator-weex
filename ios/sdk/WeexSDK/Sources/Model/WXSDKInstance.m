@@ -50,7 +50,9 @@
 #import "WXBridgeContext.h"
 #import "WXJSCoreBridge.h"
 #import "WXSDKInstance_performance.h"
+#if !WEEX_MAC
 #import "WXPageEventNotifyEvent.h"
+#endif
 #import "WXCoreBridge.h"
 
 NSString *const bundleUrlOptionKey = @"bundleUrl";
@@ -199,7 +201,11 @@ typedef enum : NSUInteger {
 #endif
     if (!CGRectEqualToRect(frame, _frame)) {
         _frame = frame;
+#if !WEEX_MAC
         CGFloat screenHeight =  [[UIScreen mainScreen] bounds].size.height;
+#else
+        CGFloat screenHeight =  [[NSScreen mainScreen] frame].size.height;
+#endif
         if (screenHeight>0) {
             CGFloat pageRatio = frame.size.height/screenHeight *100;
             self.apmInstance.wxPageRatio = pageRatio>100?100:pageRatio;
@@ -307,11 +313,12 @@ typedef enum : NSUInteger {
             [jsExceptionHandler onRuntimeCheckException:runtimeCheckException];
         }
     }
-
+#if !WEEX_MAC
     id<WXPageEventNotifyEventProtocol> pageEvent = [WXSDKEngine handlerForProtocol:@protocol(WXPageEventNotifyEventProtocol)];
     if ([pageEvent respondsToSelector:@selector(pageStart:)]) {
         [pageEvent pageStart:self.instanceId];
     }
+#endif
 
     WX_MONITOR_INSTANCE_PERF_START(WXPTFirstScreenRender, self);
     WX_MONITOR_INSTANCE_PERF_START(WXPTAllRender, self);
@@ -392,11 +399,12 @@ typedef enum : NSUInteger {
     if (!self.userInfo[@"jsMainBundleStringContentLength"]) {
         self.userInfo[@"jsMainBundleStringContentMd5"] = [WXUtility md5:mainBundleString];
     }
-    
+#if !WEEX_MAC
     id<WXPageEventNotifyEventProtocol> pageEvent = [WXSDKEngine handlerForProtocol:@protocol(WXPageEventNotifyEventProtocol)];
     if ([pageEvent respondsToSelector:@selector(pageStart:)]) {
         [pageEvent pageStart:self.instanceId];
     }
+#endif
 
     WX_MONITOR_INSTANCE_PERF_START(WXPTFirstScreenRender, self);
     WX_MONITOR_INSTANCE_PERF_START(WXPTAllRender, self);
@@ -651,11 +659,12 @@ typedef enum : NSUInteger {
         WXLogError(@"Fail to find instance！");
         return;
     }
-    
+#if !WEEX_MAC
     id<WXPageEventNotifyEventProtocol> pageEvent = [WXSDKEngine handlerForProtocol:@protocol(WXPageEventNotifyEventProtocol)];
     if ([pageEvent respondsToSelector:@selector(pageDestroy:)]) {
         [pageEvent pageDestroy:self.instanceId];
     }
+#endif
     [[NSNotificationCenter defaultCenter] postNotificationName:WX_INSTANCE_WILL_DESTROY_NOTIFICATION object:nil userInfo:@{@"instanceId":self.instanceId}];
     
     [WXTracingManager destroyTraincgTaskWithInstance:self.instanceId];

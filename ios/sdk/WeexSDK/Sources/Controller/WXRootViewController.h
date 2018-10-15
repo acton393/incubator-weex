@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 
 /**
  * The WXRootViewController class inherited from UINavigationController class which implements a specialized

@@ -17,7 +17,6 @@
  * under the License.
  */
 
-#import <UIKit/UIKit.h>
 #import "WXDefine.h"
 #import "WXSDKInstance.h"
 

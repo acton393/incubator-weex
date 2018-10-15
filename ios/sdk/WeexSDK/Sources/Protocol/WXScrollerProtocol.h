@@ -66,14 +66,17 @@
 - (void)setContentInset:(UIEdgeInsets)contentInset;
 
 - (void)resetLoadmore;
-
+#if !WEEX_MAC
 - (void)addScrollDelegate:(id<UIScrollViewDelegate>)delegate;
 - (void)removeScrollDelegate:(id<UIScrollViewDelegate>)delegate;
+#endif
 
 - (WXScrollDirection)scrollDirection;
 
 @optional
 - (NSString*)refreshType;
+#if !WEEX_MAC
 - (BOOL)requestGestureShouldStopPropagation:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
+#endif
 @end
 

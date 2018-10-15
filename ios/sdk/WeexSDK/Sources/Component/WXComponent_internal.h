@@ -21,10 +21,15 @@
 #import "WXComponent.h"
 #import "WXConvert.h"
 #import "WXTransform.h"
+#import "WXView.h"
+#if !WEEX_MAC
 #import "WXTransition.h"
+#endif
 
 #ifdef __cplusplus
+#if !WEEX_MAC
 #import "WXJSASTParser.h"
+#endif
 #include <vector>
 #endif // __cplusplus
 
@@ -43,9 +48,10 @@ typedef id (^WXDataBindingBlock)(NSDictionary *data, BOOL *needUpdate);
     NSString *_type;
     NSMutableArray *_subcomponents;
     
+#if !WEEX_MAC
     //Transition
     WXTransition *_transition;
-    
+#endif
     /**
      *  View
      */
@@ -53,7 +59,7 @@ typedef id (^WXDataBindingBlock)(NSDictionary *data, BOOL *needUpdate);
     NSString *_backgroundImage;
     NSString *_clipRadius;
     WXClipType _clipToBounds;
-    UIView *_view;
+    WXView *_view;
     CGFloat _opacity;
     WXVisibility  _visibility;
     WXBoxShadow *_originalBoxShadow;
@@ -157,7 +163,9 @@ typedef id (^WXDataBindingBlock)(NSDictionary *data, BOOL *needUpdate);
     NSMutableDictionary<NSString *, WXDataBindingBlock> *_bindingStyles;
     NSMutableDictionary<NSString *, WXDataBindingBlock> *_bindingEvents;
 #ifdef __cplusplus
+#if !WEEX_MAC
     std::vector<WXJSExpression *> *_bindingExpressions;
+#endif
 #endif // __cplusplus
     
     NSMutableDictionary<NSString *, NSArray *> *_eventParameters;

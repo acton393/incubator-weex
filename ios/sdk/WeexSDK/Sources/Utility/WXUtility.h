@@ -18,7 +18,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "WXDefine.h"
 #import "WXType.h"
 #import "WXLog.h"
@@ -203,6 +202,10 @@ _Nonnull SEL WXSwizzledSelectorForSelector(_Nonnull SEL selector);
  */
 + (BOOL)isBlankString:(NSString * _Nullable)string ;
 
+#if WEEX_MAC
++ (NSImage *)imageRotated:(float)degrees size:(NSSize)size;
+#endif
+
 
 /**
  check a point is valid or not. A zero point is also valid
@@ -381,6 +384,8 @@ CGFloat WXCeilPixelValue(CGFloat value);
  */
 + (NSUInteger)getSubStringNumber:(NSString *_Nullable)string subString:(NSString *_Nullable)subString;
 
++ (CGRect)deviceScreenRect;
+
 /**
  *  @abstract Returns a resized pixel which is calculated according to the WXScreenResizeRadio.
  *
@@ -459,11 +464,13 @@ BOOL WXFloatGreaterThanWithPrecision(CGFloat a,CGFloat b,double precision);
 };
 #endif
 
+#if !WEEX_MAC
 /**
  *  @abstract convert returnKeyType to type string .
  *
  */
 + (NSString *_Nullable)returnKeyType:(UIReturnKeyType)type;
+#endif
 
 /**
  *  @abstract custorm monitor info

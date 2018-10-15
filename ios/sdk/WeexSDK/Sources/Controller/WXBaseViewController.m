@@ -18,7 +18,9 @@
  */
 
 #import "WXBaseViewController.h"
+#if !WEEX_MAC
 #import "WXRootViewController.h"
+#endif
 #import "WXSDKInstance.h"
 #import "WXSDKInstance_private.h"
 #import "WXSDKEngine.h"
@@ -47,13 +49,16 @@
 {
     if ((self = [super init])) {
         self.sourceURL = sourceURL;
+#if !WEEX_MAC
         self.hidesBottomBarWhenPushed = YES;
+#endif
         
         [self _addObservers];
     }
     return self;
 }
 
+#if !WEEX_MAC
 /**
  *  After setting the navbar hidden status , this function will be called automatically. In this function, we
  *  set the height of mainView equal to screen height, because there is something wrong with the layout of
@@ -67,10 +72,11 @@
     if ([self.navigationController isKindOfClass:[WXRootViewController class]]) {
         CGRect frame = self.view.frame;
         frame.origin.y = 0;
-        frame.size.height = [UIScreen mainScreen].bounds.size.height;
+        frame.size.height = [WXUtility deviceScreenRect].size.height;
         self.view.frame = frame;
     }    
 }
+#endif
 
 /**
  *  We assume that the initial state of viewController's navigtionBar is hidden.  By setting the attribute of
@@ -79,34 +85,59 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+#if !WEEX_MAC
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
+#else
+    self.view.layer.backgroundColor = [UIColor whiteColor].CGColor;
+#endif
+    
     [self _renderWithURL:_sourceURL];
+#if !WEEX_MAC
     if ([self.navigationController isKindOfClass:[WXRootViewController class]]) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
+#endif
 
 }
 
+#if !WEEX_MAC
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self _updateInstanceState:WeexInstanceAppear];
     
 }
+#else
+- (void)viewDidAppear
+{
+    [super viewDidAppear];
+    [self _updateInstanceState:WeexInstanceAppear];
+}
+#endif
 
+#if !WEEX_MAC
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     [self _updateInstanceState:WeexInstanceDisappear];
 }
+#else
+- (void)viewDidDisappear
+{
+    [super viewDidDisappear];
+    [self _updateInstanceState:WeexInstanceDisappear];
+}
+#endif
 
+#if !WEEX_MAC
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     [self _updateInstanceState:WeexInstanceMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#endif
 
 - (void)refreshWeex
 {
@@ -116,7 +147,9 @@
 
 - (void)addEdgePop
 {
+#if !WEEX_MAC
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
+#endif
 }
 
 - (void)_renderWithURL:(NSURL *)sourceURL
@@ -193,8 +226,13 @@
 
 - (void)_addObservers
 {
-    for (NSString *name in @[UIApplicationDidBecomeActiveNotification,
-                             UIApplicationDidEnterBackgroundNotification]) {
+#if WEEX_MAC
+    NSArray * notifications = @[UIApplicationDidBecomeActiveNotification];
+#else
+    NSArray * notifications = @[UIApplicationDidBecomeActiveNotification,
+                                UIApplicationDidEnterBackgroundNotification];
+#endif
+    for (NSString *name in notifications) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(_appStateDidChange:)
                                                      name:name

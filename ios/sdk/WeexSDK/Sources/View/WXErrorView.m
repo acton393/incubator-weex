@@ -32,7 +32,9 @@
 		if (file == nil) {
 			file = [[NSBundle mainBundle] pathForResource:@"wx_load_error@3x" ofType:@"png"];
 		}
+#if !WEEX_MAC
         imageView.image = [UIImage imageWithContentsOfFile:file];
+#endif
         [self addSubview:imageView];
         
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];

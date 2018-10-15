@@ -18,12 +18,20 @@
  */
 
 #import "WXDisplayLinkManager.h"
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 #import "WXAssert.h"
+#if WEEX_MAC
+#import <CoreVideo/CVDisplayLink.h>
+#endif
 
 @implementation WXDisplayLinkManager
 {
+#if WEEX_MAC
+    CVDisplayLinkRef _displayLink;
+#else
     CADisplayLink *_displayLink;
+#endif
+    
     NSMutableArray<id<WXDisplayLinkClient>>* _displayArray;
 }
 
@@ -70,22 +78,46 @@
 - (void)_startDisplayLink
 {    
     if (!_displayLink) {
+#if !WEEX_MAC
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(_handleDisplayLink)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+#else
+        CGDirectDisplayID displayId = CGMainDisplayID();
+        CVDisplayLinkCreateWithCGDisplay(displayId, &_displayLink);
+        CVDisplayLinkSetOutputCallback(_displayLink, CVDisplayLinkRenderCallback, (__bridge void * _Nullable)(self));
+        CVDisplayLinkStart(_displayLink);
+#endif
     }
 }
+#if WEEX_MAC
+static CVReturn CVDisplayLinkRenderCallback(CVDisplayLinkRef CV_NONNULL displayLink,
+                                                  const CVTimeStamp * CV_NONNULL inNow,
+                                                  const CVTimeStamp * CV_NONNULL inOutputTime,
+                                                  CVOptionFlags flagsIn,
+                                                  CVOptionFlags * CV_NONNULL flagsOut,
+                                                  void * CV_NULLABLE displayLinkContext) {
+    [(__bridge WXDisplayLinkManager*)displayLinkContext _handleDisplayLink];
+    return kCVReturnSuccess;
+    
+}
+#endif
 
 - (void)_stopDisplayLink
 {
     if (_displayLink) {
+#if WEEX_MAC
+        CVDisplayLinkStop(_displayLink);
+        CVDisplayLinkRelease(_displayLink);
+#else
         [_displayLink invalidate];
+#endif
         _displayLink = nil;
     }
 }
 
 - (void)_handleDisplayLink
 {
-    for (id<WXDisplayLinkClient> client in _displayArray) {
+    for (id<WXDisplayLinkClient> client in [_displayArray copy]) {
         if (!client.suspend) {
             [client handleDisplayLink];
         }

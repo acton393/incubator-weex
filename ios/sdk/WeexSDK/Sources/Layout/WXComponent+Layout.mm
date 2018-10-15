@@ -26,7 +26,9 @@
 #import "WXLog.h"
 #import "WXMonitor.h"
 #import "WXSDKInstance_performance.h"
+#if !WEEX_MAC
 #import "WXCellComponent.h"
+#endif
 #import "WXCoreBridge.h"
 
 bool flexIsUndefined(float value) {
@@ -105,10 +107,9 @@ bool flexIsUndefined(float value) {
 - (void)_frameDidCalculated:(BOOL)isChanged
 {
     WXAssertComponentThread();
-    if (isChanged && [self isKindOfClass:[WXCellComponent class]]) {
-        CGFloat mainScreenWidth = [[UIScreen mainScreen] bounds].size.width;
-        CGFloat mainScreenHeight = [[UIScreen mainScreen] bounds].size.height;
-        if (mainScreenHeight/2 < _calculatedFrame.size.height && mainScreenWidth/2 < _calculatedFrame.size.width) {
+    if (isChanged && [self isKindOfClass:NSClassFromString(@"WXCellComponent")]) {
+        CGRect mainScreenRect = [WXUtility deviceScreenRect];
+        if (mainScreenRect.size.height/2 < _calculatedFrame.size.height && mainScreenRect.size.width/2 < _calculatedFrame.size.width) {
             [self weexInstance].performance.cellExceedNum++;
             [self.weexInstance.apmInstance updateFSDiffStats:KEY_PAGE_STATS_CELL_EXCEED_NUM withDiffValue:1];
         }
@@ -380,7 +381,7 @@ bool flexIsUndefined(float value) {
     }
     
     if (isnan(thisValue) || thisValue == 0.0f) {
-        thisValue = [UIScreen mainScreen].bounds.size.width;
+        thisValue = [WXUtility deviceScreenRect].size.width;
     }
     
     return thisValue;

@@ -30,7 +30,6 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <sys/utsname.h>
-#import <UIKit/UIScreen.h>
 #import <Security/Security.h>
 #import <CommonCrypto/CommonCrypto.h>
 #import <CoreText/CoreText.h>
@@ -38,6 +37,10 @@
 #import "WXConfigCenterProtocol.h"
 #import "WXTextComponent.h"
 #import "WXAssert.h"
+#import "WXDefine.h"
+#if WEEX_MAC
+#import <sys/sysctl.h>
+#endif
 
 #define KEY_PASSWORD  @"com.taobao.Weex.123456"
 #define KEY_USERNAME_PASSWORD  @"com.taobao.Weex.weex123456"
@@ -111,7 +114,12 @@ CGFloat WXScreenScale(void)
     static CGFloat _scale;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+#if WEEX_MAC
+        _scale = [NSScreen mainScreen].backingScaleFactor;
+        
+#else
         _scale = [UIScreen mainScreen].scale;
+#endif
     });
     return _scale;
 }
@@ -195,10 +203,90 @@ CGFloat WXFloorPixelValue(CGFloat value)
     block();
 }
 
++ (NSString*)platform
+{
+#if WEEX_MAC
+    return @"macOS";
+#else
+    return @"iOS";
+#endif
+}
+
+#if WEEX_MAC
++ (NSImage *)imageRotated:(float)degrees size:(NSSize)size
+{
+    
+    degrees = fmod(degrees, 360.);
+    if (0 == degrees) {
+        return self;
+    }
+    NSSize maxSize;
+    if (90. == degrees || 270. == degrees || -90. == degrees || -270. == degrees) {
+        maxSize = NSMakeSize(size.height, size.width);
+    } else if (180. == degrees || -180. == degrees) {
+        maxSize = size;
+    } else {
+        maxSize = NSMakeSize(20+MAX(size.width, size.height), 20+MAX(size.width, size.height));
+    }
+    NSAffineTransform *rot = [NSAffineTransform transform];
+    [rot rotateByDegrees:degrees];
+    NSAffineTransform *center = [NSAffineTransform transform];
+    [center translateXBy:maxSize.width / 2. yBy:maxSize.height / 2.];
+    [rot appendTransform:center];
+    NSImage *image = [[NSImage alloc] initWithSize:maxSize];
+    [image lockFocus];
+    [rot concat];
+    NSRect rect = NSMakeRect(0, 0, size.width, size.height);
+    NSPoint corner = NSMakePoint(-size.width / 2., -size.height / 2.);
+    [image drawAtPoint:corner fromRect:rect operation:NSCompositeCopy fraction:1.0];
+    [image unlockFocus];
+    return image;
+}
+
+#endif
+
++ (NSString*)systemVersion
+{
+#if WEEX_MAC
+    return [[NSProcessInfo processInfo] operatingSystemVersionString]?:@"";
+#else
+    return [[UIDevice currentDevice] systemVersion] ?: @"";
+#endif
+}
+
++ (CGRect)deviceScreenRect
+{
+#if WEEX_MAC
+    return [NSScreen mainScreen].frame;
+#else
+    return [UIScreen mainScreen].bounds;
+#endif
+}
+
++ (NSString*)deviceModel
+{
+#if WEEX_MAC
+    size_t len = 0;
+    NSString *machine = @"";
+    sysctlbyname("hw.model", NULL, &len, NULL, 0);
+    if (len) {
+        char *model = malloc(len*sizeof(char));
+        sysctlbyname("hw.model", model, &len, NULL, 0);
+        printf("%s\n", model);
+        free(model);
+        machine = [NSString stringWithFormat:@"%s",model];
+    }
+    return machine;
+#else
+    return [[UIDevice currentDevice] model]?:@"";
+#endif
+}
+
 + (NSDictionary *)getEnvironment
 {
-    NSString *platform = @"iOS";
-    NSString *sysVersion = [[UIDevice currentDevice] systemVersion] ?: @"";
+    
+    NSString *platform = [WXUtility platform];
+    NSString *sysVersion = [WXUtility systemVersion];
     NSString *weexVersion = WX_SDK_VERSION;
     NSString *machine = [self deviceName] ? : @"";
     NSString *appVersion = [WXAppConfiguration appVersion] ? : @"";
@@ -206,7 +294,7 @@ CGFloat WXFloorPixelValue(CGFloat value)
     
     CGFloat deviceWidth = [self portraitScreenSize].width;
     CGFloat deviceHeight = [self portraitScreenSize].height;
-    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGFloat scale = WXScreenScale();
     
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{
                                     @"platform":platform,
@@ -221,7 +309,7 @@ CGFloat WXFloorPixelValue(CGFloat value)
                                     @"scale":@(scale),
                                     @"logLevel":[WXLog logLevelString] ?: @"error"
                                 }];
-    
+#if !WEEX_MAC
     if ([[[UIDevice currentDevice] systemVersion] integerValue] >= 11) {
         id configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
         if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
@@ -234,6 +322,7 @@ CGFloat WXFloorPixelValue(CGFloat value)
             }
         }
     }
+#endif
     
     if ([WXSDKEngine customEnvironment]) {
         [data addEntriesFromDictionary:[WXSDKEngine customEnvironment]];
@@ -261,7 +350,7 @@ CGFloat WXFloorPixelValue(CGFloat value)
 + (NSString *)userAgent
 {
     // Device UA
-    NSString *deviceUA = [NSString stringWithFormat:@"%@(iOS/%@)", [self deviceName]?:@"UNKNOWN", [[UIDevice currentDevice] systemVersion]]?:@"0.0.0";
+    NSString *deviceUA = [NSString stringWithFormat:@"%@(%@/%@)", [self deviceName]?:@"UNKNOWN",[WXUtility platform], [WXUtility systemVersion]?:@"0.0.0"];
     
     // App UA
     NSString *appUA = [NSString stringWithFormat:@"%@(%@/%@)", [WXAppConfiguration appGroup]?:@"WeexGroup", [WXAppConfiguration appName]?:@"WeexApp", [WXAppConfiguration appVersion]?:@"0.0.0"];
@@ -273,9 +362,15 @@ CGFloat WXFloorPixelValue(CGFloat value)
     NSString *externalUA = [WXAppConfiguration externalUserAgent] ? [NSString stringWithFormat:@" %@", [WXAppConfiguration externalUserAgent]] : @"";
     
     // Screen Size
+#if WEEX_MAC
+      CGFloat w = [[NSScreen mainScreen] frame].size.width;
+      CGFloat h = [[NSScreen mainScreen] frame].size.height;
+    
+#else
     CGFloat w = [[UIScreen mainScreen] bounds].size.width;
     CGFloat h = [[UIScreen mainScreen] bounds].size.height;
-    CGFloat s = [[UIScreen mainScreen] scale];
+#endif
+    CGFloat s = WXScreenScale();
     NSString * screenUA = [NSString stringWithFormat:@"%dx%d", (int)(s * w), (int)(s * h)];
     
     // New UA
@@ -704,10 +799,11 @@ CGFloat WXFloorPixelValue(CGFloat value)
     dispatch_once(&onceToken, ^{
         cache = [NSCache new];
         cache.totalCostLimit = 5 * 1024 * 1024;
-        
+#if !WEEX_MAC
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:nil usingBlock:^(__unused NSNotification *note) {
             [cache removeAllObjects];
         }];
+#endif
     });
     return cache;
 }
@@ -722,21 +818,28 @@ CGFloat WXFloorPixelValue(CGFloat value)
 
 + (NSString *)registeredDeviceName
 {
-    NSString *machine = [[UIDevice currentDevice] model];
-    NSString *systemVer = [[UIDevice currentDevice] systemVersion] ? : @"";
+    NSString *machine = [WXUtility deviceModel];
+    NSString *systemVer = [WXUtility systemVersion];
     NSString *model = [NSString stringWithFormat:@"%@:%@",machine,systemVer];
     return model;
 }
 
 + (CGSize)portraitScreenSize
 {
+#if !WEEX_MAC
     if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
         return [UIScreen mainScreen].bounds.size;
     }
+#endif
     static CGSize portraitScreenSize;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+#if WEEX_MAC
+        CGSize screenSize = [NSScreen mainScreen].frame.size;
+#else
         CGSize screenSize = [UIScreen mainScreen].bounds.size;
+#endif
+        
         portraitScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height),
                                         MAX(screenSize.width, screenSize.height));
     });
@@ -746,9 +849,11 @@ CGFloat WXFloorPixelValue(CGFloat value)
 
 + (CGFloat)defaultPixelScaleFactor
 {
+#if !WEEX_MAC
     if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
         return [self portraitScreenSize].width / WXDefaultScreenWidth;
     }
+#endif
     static CGFloat defaultScaleFactor;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -931,7 +1036,7 @@ BOOL WXFloatGreaterThan(CGFloat a, CGFloat b) {
 BOOL WXFloatGreaterThanWithPrecision(CGFloat a, CGFloat b ,double precision){
     return a-b > precision;
 }
-
+#if !WEEX_MAC
 + (NSString *_Nullable)returnKeyType:(UIReturnKeyType)type
 {
     NSString *typeStr = @"default";
@@ -960,6 +1065,7 @@ BOOL WXFloatGreaterThanWithPrecision(CGFloat a, CGFloat b ,double precision){
     }
     return typeStr;
 }
+#endif
 
 + (void)customMonitorInfo:(WXSDKInstance *_Nullable)instance key:(NSString * _Nonnull)key value:(id _Nonnull)value
 {

@@ -46,7 +46,7 @@
     self.view.layer.shadowOffset = _originalBoxShadow.shadowOffset;
     self.view.layer.shadowRadius = _originalBoxShadow.shadowRadius;
     self.view.layer.shadowOpacity = _originalBoxShadow.shadowOpacity;
-    self.view.layer.shadowPath = shadowPath.CGPath;
+    self.view.layer.shadowPath = shadowPath.quartzPath;
     
     
     if (_lastBoxShadow.isInset) {
@@ -102,7 +102,7 @@
         self.view.layer.shadowOffset = boxShadow.shadowOffset;
         self.view.layer.shadowRadius = boxShadow.shadowRadius;
         self.view.layer.shadowOpacity = boxShadow.shadowOpacity;
-        self.view.layer.shadowPath = shadowPath.CGPath;
+        self.view.layer.shadowPath = shadowPath.quartzPath;
     }
 }
 

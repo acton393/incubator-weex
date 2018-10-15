@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if !WEEX_MAC
 #import <Foundation/Foundation.h>
 
 @protocol WXDatePickerManagerDelegate <NSObject>
@@ -33,3 +33,4 @@
 -(void)updateDatePicker:(NSDictionary *)attributes;
 
 @end
+#endif

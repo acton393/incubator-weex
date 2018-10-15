@@ -27,10 +27,12 @@
 #import "WXSDKManager.h"
 #import "WXSDKInstance_private.h"
 #import "WXDefine.h"
+#if !WEEX_MAC
 #import "WXRecycleListComponent.h"
 #import "WXRecycleListDataManager.h"
-#import <objc/runtime.h>
 #import <UIKit/UIGestureRecognizerSubclass.h>
+#endif
+#import <objc/runtime.h>
 #import "WXComponent+PseudoClassManagement.h"
 #import "WXCoreBridge.h"
 
@@ -84,18 +86,6 @@
 {
     objc_setAssociatedObject(self, @selector(wx_identifier), wx_identifier, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-@end
-
-@interface WXTouchGestureRecognizer : UIGestureRecognizer
-
-@property (nonatomic, assign) BOOL listenTouchStart;
-@property (nonatomic, assign) BOOL listenTouchMove;
-@property (nonatomic, assign) BOOL listenTouchEnd;
-@property (nonatomic, assign) BOOL listenTouchCancel;
-@property (nonatomic, assign) BOOL listenPseudoTouch;
-
-- (instancetype)initWithComponent:(WXComponent *)component NS_DESIGNATED_INITIALIZER;
-
 @end
 
 @interface WXEventManager :NSObject
@@ -153,6 +143,7 @@
     if (params) {
         [dict addEntriesFromDictionary:params];
     }
+#if !WEEX_MAC
     WXRecycleListComponent *recyleListComponent  = (WXRecycleListComponent*)[self getRecycleListComponent];
     if (recyleListComponent) {
         NSIndexPath *indexPath = [((UICollectionView*)recyleListComponent.view) indexPathForItemAtPoint:[self.view.superview
@@ -163,6 +154,7 @@
             dict[@"componentId"] = virtualComponentId;
         }
     }
+#endif
     
     NSArray *handlerArguments = [self _paramsForEvent:eventName];
     NSString *ref = _templateComponent ? _templateComponent.ref  : self.ref;
@@ -408,6 +400,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
                 [self.view removeGestureRecognizer:_tapGesture];
             }
         }
+#if !WEEX_MAC
         @try {
             [_tapGesture removeTarget:self action:@selector(onClick:)];
         }@catch(NSException *exception) {
@@ -416,6 +409,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
             
         }
         _tapGesture = nil;
+#endif
     }
 }
 
@@ -443,7 +437,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     if (_swipeGestures) {
         return;
     }
-    
+#if !WEEX_MAC
     _swipeGestures = [NSMutableArray arrayWithCapacity:4];
     
     // It's a little weird because the UISwipeGestureRecognizer.direction property is an options-style bit mask, but each recognizer can only handle one direction
@@ -475,10 +469,12 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     leftSwipeRecognizer.delegate = self;
     [_swipeGestures addObject:leftSwipeRecognizer];
     [self.view addGestureRecognizer:leftSwipeRecognizer];
+#endif
 }
 
 - (void)removeSwipeEvent
 {
+#if !WEEX_MAC
     if (_swipeGestures == nil) {
         return;
     }
@@ -498,9 +494,11 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     }@finally {
         
     }
+#endif
     _swipeGestures = nil;
 }
 
+#if !WEEX_MAC
 - (void)onSwipe:(UISwipeGestureRecognizer *)gesture
 {
     if (![self isViewLoaded]) {
@@ -533,6 +531,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     NSDictionary *resultTouch = [self touchResultWithScreenLocation:screenLocation pageLocation:pageLoacation identifier:gesture.wx_identifier];
     [self fireEvent:@"swipe" params:@{@"direction":directionString, @"changedTouches":resultTouch ? @[resultTouch] : @[]}];
 }
+#endif
 
 #pragma mark - Long Press
 
@@ -554,6 +553,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
                 [self.view removeGestureRecognizer:_longPressGesture];
             }
         }
+#if !WEEX_MAC
         @try {
             [_longPressGesture removeTarget:self action:@selector(onLongPress:)];
         }@catch(NSException * exception) {
@@ -561,6 +561,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
         }@finally {
             
         }
+#endif
         _longPressGesture = nil;
     }
 }
@@ -714,6 +715,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
         }
         
         _panGesture.delegate = nil;
+#if !WEEX_MAC
         @try {
             [_panGesture removeTarget:self action:@selector(onPan:)];
         }@catch(NSException * exception) {
@@ -721,6 +723,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
         }@finally {
             
         }
+#endif
         _panGesture = nil;
     }
 }
@@ -804,7 +807,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
         if (_listenStopPropagation)
         {
             NSString *ref = _templateComponent ? _templateComponent.ref : self.ref;
-            CGPoint screenLocation = [touch locationInView:touch.window];
+            CGPoint screenLocation = [touch locationInView:self.view];
             CGPoint pageLocation = [touch locationInView:self.weexInstance.rootView];
             NSDictionary *resultTouch = [self touchResultWithScreenLocation:screenLocation pageLocation:pageLocation identifier:touch.wx_identifier];
             NSString *touchState;
@@ -849,10 +852,12 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     if ([gestureRecognizer isKindOfClass:[WXTouchGestureRecognizer class]]) {
         return YES;
     }
+#if !WEEX_MAC
     // swipe and scroll
     if ([gestureRecognizer isKindOfClass:[UISwipeGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:NSClassFromString(panGestureRecog)]) {
         return YES;
     }
+#endif
     // onclick and textviewInput
     if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass: NSClassFromString(textTap)]) {
         return YES;
@@ -876,6 +881,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     return resultTouch;
 }
 
+#if !WEEX_MAC
 // find virtual component's root component
 - (WXComponent*)getRecycleListComponent
 {
@@ -887,6 +893,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     }
     return [self.supercomponent getRecycleListComponent];
 }
+#endif
 
 @end
 
@@ -910,13 +917,14 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
         _listenTouchEnd = NO;
         _listenTouchMove = NO;
         _listenTouchCancel = NO;
-        
+#if !WEEX_MAC
         self.cancelsTouchesInView = NO;
+#endif
     }
     
     return self;
 }
-
+#if !WEEX_MAC
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
@@ -965,20 +973,25 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
         [self recoveryPseudoStyles:_component.styles];
     }
 }
+#endif
 
 - (void)fireTouchEvent:(NSString *)eventName withTouches:(NSSet<UITouch *> *)touches
 {
     NSMutableArray *resultTouches = [NSMutableArray new];
     
     for (UITouch *touch in touches) {
+#if !WEEX_MAC
         CGPoint screenLocation = [touch locationInView:touch.window];
+#else
+        CGPoint screenLocation = [touch locationInView:self.view];
+#endif
         CGPoint pageLocation = [touch locationInView:_component.weexInstance.rootView];
         if (!touch.wx_identifier) {
             touch.wx_identifier = @(_touchIdentifier++);
         }
         NSDictionary *resultTouch = [_component touchResultWithScreenLocation:screenLocation pageLocation:pageLocation identifier:touch.wx_identifier];
         NSMutableDictionary * mutableResultTouch = [resultTouch mutableCopy];
-        
+#if !WEEX_MAC
         if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
             float value = touch.force*60;
             float maxValue = touch.maximumPossibleForce*60;
@@ -989,6 +1002,7 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
                 [mutableResultTouch setObject:[NSNumber numberWithFloat:0.0] forKey:@"force"];
             }
         }
+#endif
         
         [resultTouches addObject:mutableResultTouch];
     }

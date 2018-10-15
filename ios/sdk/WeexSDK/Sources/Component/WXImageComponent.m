@@ -47,6 +47,11 @@
     return [WXLayer class];
 }
 
+- (BOOL)wantsDefaultClipping
+{
+    return self.wx_component->_clipToBounds;
+}
+
 @end
 
 static dispatch_queue_t WXImageUpdateQueue;
@@ -60,7 +65,9 @@ static dispatch_queue_t WXImageUpdateQueue;
 
 @property (atomic, strong) NSString *placeholdSrc;
 @property (nonatomic, assign) CGFloat blurRadius;
+#if !WEEX_MAC
 @property (nonatomic, assign) UIViewContentMode resizeMode;
+#endif
 @property (nonatomic, assign) WXImageQuality imageQuality;
 @property (nonatomic, assign) WXImageSharp imageSharp;
 @property (nonatomic, strong) UIImage *image;
@@ -97,13 +104,13 @@ WX_EXPORT_METHOD(@selector(save:))
             WXLogWarning(@"image src is nil");
         }
         [self configPlaceHolder:attributes];
-        
+#if !WEEX_MAC
         NSString *resizeMode = attributes[@"resize"];
         if (!resizeMode) {
             resizeMode = styles[@"resizeMode"];
         }
         _resizeMode = [WXConvert UIViewContentMode:resizeMode];
-        
+#endif
         _imageQuality = WXImageQualityNone;
         if (styles[@"quality"]) {
             _imageQuality = [WXConvert WXImageQuality:styles[@"quality"]];
@@ -195,6 +202,7 @@ WX_EXPORT_METHOD(@selector(save:))
         }
         return;
     }
+#if !WEEX_MAC
     UIImageView * imageView = (UIImageView*)self.view;
     if (!resultCallback) {
         // there is no need to callback any result;
@@ -202,6 +210,7 @@ WX_EXPORT_METHOD(@selector(save:))
     }else {
         UIImageWriteToSavedPhotosAlbum(imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), (void*)CFBridgingRetain(resultCallback));
     }
+#endif
 }
 
 // the callback for PhotoAlbum.
@@ -273,23 +282,26 @@ WX_EXPORT_METHOD(@selector(save:))
     }
     
     [self configPlaceHolder:attributes];
-    
+#if !WEEX_MAC
     if (attributes[@"resize"]) {
         _resizeMode = [WXConvert UIViewContentMode:attributes[@"resize"]];
         self.view.contentMode = _resizeMode;
     }
+#endif
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+#if !WEEX_MAC
     UIImageView *imageView = (UIImageView *)self.view;
     imageView.contentMode = _resizeMode;
     imageView.userInteractionEnabled = YES;
     imageView.clipsToBounds = YES;
     imageView.exclusiveTouch = YES;
     imageView.isAccessibilityElement = YES;
-    
+#endif
     [self _clipsToBounds];
     
     [self updateImage];
@@ -431,8 +443,13 @@ WX_EXPORT_METHOD(@selector(save:))
                 sizeDict[@"naturalWidth"] = @0;
                 sizeDict[@"naturalHeight"] = @0;
                 if (!error) {
+#if !WEEX_MAC
                     sizeDict[@"naturalWidth"] = @(image.size.width * image.scale);
                     sizeDict[@"naturalHeight"] = @(image.size.height * image.scale);
+#else
+                    sizeDict[@"naturalWidth"] = @(image.size.width);
+                    sizeDict[@"naturalHeight"] = @(image.size.height);
+#endif
                 } else {
                     [sizeDict setObject:[error description]?:@"" forKey:@"errorDesc"];
                 }
@@ -442,8 +459,12 @@ WX_EXPORT_METHOD(@selector(save:))
             //check view/img size
             if (!error && image && imageView && ![curUrl isEqualToString:self.preUrl]) {
                 self.preUrl = curUrl;
-                CGFloat screenScale = [[UIScreen mainScreen] scale];
+                CGFloat screenScale = WXScreenScale();
+#if !WEEX_MAC
                 double imageSize = image.size.width*image.scale  * image.size.height*image.scale;
+#else
+                double imageSize = image.size.width*image.size.height;
+#endif
                 double viewSize = imageView.frame.size.height *screenScale*  imageView.frame.size.width * screenScale;
                 CGFloat sizeRatio = imageSize/viewSize;
                 
@@ -452,8 +473,11 @@ WX_EXPORT_METHOD(@selector(save:))
                     self.weexInstance.performance.imgWrongSizeNum++;
                     [self.weexInstance.apmInstance updateDiffStats:KEY_PAGE_STATS_WRONG_IMG_SIZE_COUNT withDiffValue:1];
                 }
-                    
+#if !WEEX_MAC
                 if (image.size.width* image.scale > 720 && image.size.height * image.scale> 1080) {
+#else
+                    if (image.size.width > 720 && image.size.height> 1080) {
+#endif
                     [self.weexInstance.apmInstance updateDiffStats:KEY_PAGE_STATS_LARGE_IMG_COUNT withDiffValue:1];
                 }
             }
@@ -552,8 +576,13 @@ WX_EXPORT_METHOD(@selector(save:))
                 sizeDict[@"naturalWidth"] = @0;
                 sizeDict[@"naturalHeight"] = @0;
                 if (!error) {
+#if !WEEX_MAC
                     sizeDict[@"naturalWidth"] = @(image.size.width * image.scale);
                     sizeDict[@"naturalHeight"] = @(image.size.height * image.scale);
+#else
+                    sizeDict[@"naturalWidth"] = @(image.size.width);
+                    sizeDict[@"naturalHeight"] = @(image.size.height);
+#endif
                 } else {
                     [sizeDict setObject:[error description]?:@"" forKey:@"errorDesc"];
                 }
@@ -630,7 +659,7 @@ WX_EXPORT_METHOD(@selector(save:))
     UIBezierPath *bezierPath = [UIBezierPath wx_bezierPathWithRoundedRect:self.view.bounds topLeft:topLeft topRight:topRight bottomLeft:bottomLeft bottomRight:bottomRight];
     
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.path = bezierPath.CGPath;
+    shapeLayer.path = bezierPath.quartzPath;
     self.layer.mask = shapeLayer;
     self.layer.cornerRadius = 0;
 }

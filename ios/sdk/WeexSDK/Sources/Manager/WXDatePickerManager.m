@@ -16,10 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+#if !WEEX_MAC
 #import "WXDatePickerManager.h"
-#import <UIKit/UIDatePicker.h>
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 #import "WXConvert.h"
 #import "WXUtility.h"
 
@@ -223,3 +222,4 @@
 }
 
 @end
+#endif

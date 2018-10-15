@@ -17,8 +17,16 @@
  * under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
+
+@interface UIView(Weex)
+#if WEEX_MAC
+- (void)insertSubview:(UIView *)view atIndex:(NSInteger)index;
+#endif
+@end
 
 @interface WXView : UIView
-
+#if WEEX_MAC
++ (Class)layerClass;
+#endif
 @end

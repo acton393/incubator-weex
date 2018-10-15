@@ -80,8 +80,11 @@
         WXLogDebug(@"No need to draw border for %@, because width or height is zero", self.ref);
         return nil;
     }
-    
+#if !WEEX_MAC
     CGContextRef context = UIGraphicsGetCurrentContext();
+#else
+    CGContextRef context = [NSGraphicsContext currentContext].CGContext;
+#endif
     [self _drawBorderWithContext:context size:size];
 
     return nil;
@@ -100,14 +103,28 @@
         if (isCancelled()) {
             return nil;
         }
-        
+#if !WEEX_MAC
         UIGraphicsBeginImageContextWithOptions(bounds.size, [self _bitmapOpaqueWithSize:bounds.size] , 0.0);
+#else
+        [NSGraphicsContext saveGraphicsState];
+        NSBitmapImageRep* bitmapImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:bounds.size.width pixelsHigh:bounds.size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:0];
+        [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithCGContext:[NSGraphicsContext graphicsContextWithBitmapImageRep:bitmapImageRep].CGContext flipped:YES]];
+#endif
         UIImage *image = [self drawRect:bounds];
         if (!image) {
+#if !WEEX_MAC
             image = UIGraphicsGetImageFromCurrentImageContext();
+#else
+            image = [[UIImage alloc] initWithSize:bounds.size];
+            [image addRepresentation:bitmapImageRep];
+#endif
         }
+#if !WEEX_MAC
         UIGraphicsEndImageContext();
-        
+#else
+        [NSGraphicsContext restoreGraphicsState];
+        [image setFlipped:YES];
+#endif
         return image;
     };
     
@@ -180,8 +197,12 @@
                     }
                     return;
                 }
-                
+#if !WEEX_MAC
                 layer.contents = (id)(image.CGImage);
+#else
+                NSRect imageRect = CGRectMake(0, 0, image.size.width, image.size.height);
+                layer.contents = (__bridge id _Nullable)([image CGImageForProposedRect:&imageRect context:nil hints:nil]);
+#endif
                 
                 if (completionBlock) {
                     completionBlock(layer, YES);
@@ -194,7 +215,12 @@
             return NO;
         });
         
-        _layer.contents = (id)image.CGImage;
+#if !WEEX_MAC
+        layer.contents = (id)(image.CGImage);
+#else
+        NSRect imageRect = CGRectMake(0, 0, image.size.width, image.size.height);
+        layer.contents = (__bridge id _Nullable)([image CGImageForProposedRect:&imageRect context:nil hints:nil]);
+#endif
         
         if (completionBlock) {
             completionBlock(layer, YES);
@@ -211,8 +237,12 @@
 
 - (CGContextRef)beginDrawContext:(CGRect)bounds
 {
+#if !WEEX_MAC
     UIGraphicsBeginImageContextWithOptions(bounds.size, [self _bitmapOpaqueWithSize:bounds.size], 0.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
+#else
+    CGContextRef context = [NSGraphicsContext currentContext].CGContext;
+#endif
     
 //    float scaleFactor = [[UIScreen mainScreen] scale];
 //    CGColorSpaceRef	colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -231,8 +261,12 @@
 
 - (UIImage *)endDrawContext:(CGContextRef)context
 {
+#if !WEEX_MAC
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+#else
+    UIImage * image = [[UIImage alloc] initWithCGImage:CGBitmapContextCreateImage(context) size:NSZeroSize];
+#endif
     
 //    CGImageRef imageRef= CGBitmapContextCreateImage(context);
 //    UIImage *image = [[UIImage alloc] initWithCGImage:imageRef];
@@ -250,8 +284,11 @@
         NSMutableArray *displayBlocks = [NSMutableArray array];
         
         CGContextRef context = [self beginDrawContext:bounds];
-        
+#if !WEEX_MAC
         UIGraphicsPushContext(context);
+#else
+        [NSGraphicsContext saveGraphicsState];
+#endif
         
         [self _collectCompositingDisplayBlocks:displayBlocks context:context isCancelled:isCancelled];
         
@@ -262,8 +299,11 @@
             }
             block();
         }
-        
+#if !WEEX_MAC
         UIGraphicsPopContext();
+#else
+        [NSGraphicsContext restoreGraphicsState];
+#endif
         
         UIImage *image = [self endDrawContext:context];
         return image;
@@ -562,9 +602,11 @@ do {\
             [self _resetNativeBorderRadius];
             _layer.borderWidth = _borderTopWidth;
             _layer.borderColor = _borderTopColor.CGColor;
+#if !WEEX_MAC
             if ((_transition.transitionOptions & WXTransitionOptionsBackgroundColor) != WXTransitionOptionsBackgroundColor ) {
                 _layer.backgroundColor = _backgroundColor.CGColor;
             }
+#endif
         }
     }
 }
@@ -583,7 +625,7 @@ do {\
     if ([self hasBorderRadiusMaskLayer]) {
         UIBezierPath *bezierPath = [UIBezierPath wx_bezierPathWithRoundedRect:rect topLeft:_borderTopLeftRadius topRight:_borderTopRightRadius bottomLeft:_borderBottomLeftRadius bottomRight:_borderBottomRightRadius];
         CAShapeLayer *maskLayer = [CAShapeLayer layer];
-        maskLayer.path = bezierPath.CGPath;
+        maskLayer.path = bezierPath.quartzPath;
         return maskLayer;
     }
     return nil;

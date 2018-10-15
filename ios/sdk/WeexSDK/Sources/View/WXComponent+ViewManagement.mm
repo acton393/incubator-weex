@@ -227,7 +227,9 @@ do {\
     
     if (styles[@"overflow"]) {
         _clipToBounds = [WXConvert WXClipType:styles[@"overflow"]];
+#if !WEEX_MAC
         _view.clipsToBounds = _clipToBounds;
+#endif
     }
     
     if (styles[@"position"]) {

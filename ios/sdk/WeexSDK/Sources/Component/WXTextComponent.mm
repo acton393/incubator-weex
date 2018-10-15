@@ -38,13 +38,22 @@
 
 @implementation WXTextView
 
+#if WEEX_MAC
+- (BOOL)isOpaque
+{
+    return NO;
+}
+#endif
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if ((self = [super initWithFrame:frame])) {
+#if !WEEX_MAC
         self.accessibilityTraits |= UIAccessibilityTraitStaticText;
         
         self.opaque = NO;
         self.contentMode = UIViewContentModeRedraw;
+#endif
         self.textStorage = [NSTextStorage new];
     }
     return self;
@@ -55,10 +64,12 @@
     return [WXLayer class];
 }
 
+#if !WEEX_MAC
 - (void)copy:(id)sender
 {
     [[UIPasteboard generalPasteboard] setString:((WXTextComponent*)self.wx_component).text];
 }
+#endif
 
 - (void)setTextStorage:(NSTextStorage *)textStorage
 {
@@ -73,6 +84,7 @@
     return YES;
 }
 
+#if !WEEX_MAC
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
     if (action == @selector(copy:)) {
@@ -80,6 +92,7 @@
     }
     return [super canPerformAction:action withSender:sender];
 }
+#endif
 
 - (NSString *)description
 {
@@ -340,7 +353,9 @@ do {\
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(displayMenuController:)];
         [self.view addGestureRecognizer:longPress];
     }
+#if !WEEX_MAC
     self.view.isAccessibilityElement = YES;
+#endif
     
     [self setNeedsDisplay];
 }
@@ -348,11 +363,13 @@ do {\
 - (void)displayMenuController:(id)sender
 {
     if ([self.view becomeFirstResponder] && ((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
+#if !WEEX_MAC
         UIMenuController *theMenu = [UIMenuController sharedMenuController];
         CGSize size = [self ctAttributedString].size;
         CGRect selectionRect = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, size.width, size.height);
         [theMenu setTargetRect:selectionRect inView:self.view.superview];
         [theMenu setMenuVisible:YES animated:YES];
+#endif
     }
 }
 
@@ -368,7 +385,11 @@ do {\
 
 - (UIImage *)drawRect:(CGRect)rect;
 {
+#if !WEEX_MAC
     CGContextRef context = UIGraphicsGetCurrentContext();
+#else
+    CGContextRef context = [NSGraphicsContext currentContext].CGContext;
+#endif
     if (_isCompositingChild) {
         [self drawTextWithContext:context bounds:rect padding:_padding view:nil];
     } else {
@@ -561,6 +582,7 @@ do {\
         [attributedString addAttribute:NSKernAttributeName value:@(_letterSpacing) range:(NSRange){0, attributedString.length}];
     }
     
+#if !WEEX_MAC
     if ([self adjustLineHeight]) {
         if (_lineHeight > font.lineHeight) {
             [attributedString addAttribute:NSBaselineOffsetAttributeName
@@ -568,6 +590,7 @@ do {\
                                      range:(NSRange){0, attributedString.length}];
         }
     }
+#endif
     
     return attributedString;
 }
@@ -626,6 +649,7 @@ do {\
                                  value:paragraphStyle
                                  range:(NSRange){0, attributedString.length}];
     }
+#if !WEEX_MAC
     if ([self adjustLineHeight]) {
         if (_lineHeight > font.lineHeight) {
             [attributedString addAttribute:NSBaselineOffsetAttributeName
@@ -633,6 +657,7 @@ do {\
                                      range:(NSRange){0, attributedString.length}];
         }
     }
+#endif
 
     return attributedString;
 }
@@ -745,24 +770,21 @@ do {\
             [self _resetNativeBorderRadius];
         });
     }
+    CGRect textFrame = [self UIEdgeInsetsInsetRect:bounds insets:padding];
     if (![self useCoreText]) {
         NSLayoutManager *layoutManager = _textStorage.layoutManagers.firstObject;
         NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
-        
-        CGRect textFrame = UIEdgeInsetsInsetRect(bounds, padding);
         NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
         
         [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:textFrame.origin];
         [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:textFrame.origin];
     } else {
-        CGRect textFrame = UIEdgeInsetsInsetRect(bounds, padding);
         // sufficient height for text to draw, or frame lines will be empty
         textFrame.size.height = bounds.size.height * 2;
         CGContextSaveGState(context);
         //flip the coordinate system
-        CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-        CGContextTranslateCTM(context, 0, textFrame.size.height);
         CGContextScaleCTM(context, 1.0, -1.0);
+        CGContextTranslateCTM(context, 0, -textFrame.size.height);
         
         NSAttributedString * attributedStringCopy = [self ctAttributedString];
         if (!attributedStringCopy) {
@@ -1116,6 +1138,15 @@ NS_INLINE NSRange WXNSRangeFromCFRange(CFRange range) {
         [self setNeedsRepaint];
         [self setNeedsLayout];
     }
+}
+
+- (CGRect)UIEdgeInsetsInsetRect:(CGRect)rect insets:(UIEdgeInsets) insets
+{
+    rect.origin.x    += insets.left;
+    rect.origin.y    += insets.top;
+    rect.size.width  -= (insets.left + insets.right);
+    rect.size.height -= (insets.top  + insets.bottom);
+    return rect;
 }
 
 @end

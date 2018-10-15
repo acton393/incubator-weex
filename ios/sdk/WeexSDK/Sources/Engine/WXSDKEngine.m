@@ -26,7 +26,6 @@
 
 #import "WXAppConfiguration.h"
 #import "WXResourceRequestHandlerDefaultImpl.h"
-#import "WXNavigationDefaultImpl.h"
 #import "WXURLRewriteDefaultImpl.h"
 #import "WXJSFrameworkLoadDefaultImpl.h"
 
@@ -174,7 +173,9 @@
 + (void)_registerDefaultHandlers
 {
     [self registerHandler:[WXResourceRequestHandlerDefaultImpl new] withProtocol:@protocol(WXResourceRequestHandler)];
-    [self registerHandler:[WXNavigationDefaultImpl new] withProtocol:@protocol(WXNavigationProtocol)];
+    if (NSClassFromString(@"WXNavigationDefaultImpl") && NSProtocolFromString(@"WXNavigationProtocol")) {
+        [self registerHandler:[NSClassFromString(@"WXNavigationDefaultImpl") new] withProtocol:NSProtocolFromString(@"WXNavigationProtocol")];
+    }
     [self registerHandler:[WXURLRewriteDefaultImpl new] withProtocol:@protocol(WXURLRewriteProtocol)];
     [self registerHandler:[WXJSFrameworkLoadDefaultImpl new] withProtocol:@protocol(WXJSFrameworkLoadProtocol)];
 }

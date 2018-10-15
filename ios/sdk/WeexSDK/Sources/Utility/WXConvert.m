@@ -23,6 +23,7 @@
 #import "WXLength.h"
 #import "WXAssert.h"
 #import "WXSDKEngine.h"
+#import "WXDefine.h"
 
 @implementation WXConvert
 
@@ -128,6 +129,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     });
     if ([directionArray containsObject:value]) {
         __block UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
+#if !WEEX_MAC
 #if __IPHONE_11_0
         if (@available(iOS 11.0, *)) {
             WXSDKInstance * topInstance = [WXSDKEngine topInstance];
@@ -138,6 +140,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
         } else {
             // Fallback on earlier versions
         }
+#endif
 #endif
         NSUInteger key = [directionArray indexOfObject:value];
         CGFloat retValue = 0;
@@ -441,11 +444,15 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
 {
     uint hex;
     CGFloat red, green, blue, alpha;
+#if !WEEX_MAC
     if (![color getRed:&red green:&green blue:&blue alpha:&alpha]) {
         [color getWhite:&red alpha:&alpha];
         green = red;
         blue = red;
     }
+#else
+    [color getRed:&red green:&green blue:&blue alpha:&alpha];
+#endif
     red = roundf(red * 255.f);
     green = roundf(green * 255.f);
     blue = roundf(blue * 255.f);
@@ -515,7 +522,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     }
     return NSTextAlignmentNatural;
 }
-
+#if !WEEX_MAC
 + (UIReturnKeyType)UIReturnKeyType:(id)value
 {
     if([value isKindOfClass:[NSString class]]){
@@ -535,6 +542,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     }
     return UIReturnKeyDefault;
 }
+#endif
 
 + (WXTextStyle)WXTextStyle:(id)value
 {
@@ -595,7 +603,9 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
 
 #pragma mark Image
 
+#if !WEEX_MAC
 + (UIViewContentMode)UIViewContentMode:(id)value
+
 {
     if([value isKindOfClass:[NSString class]]){
         NSString *string = (NSString *)value;
@@ -608,6 +618,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     }
     return UIViewContentModeScaleToFill;
 }
+#endif
 
 + (WXImageQuality)WXImageQuality:(id)value
 {
@@ -656,6 +667,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     return WXScrollDirectionVertical;
 }
 
+#if !WEEX_MAC
 + (UITableViewRowAnimation)UITableViewRowAnimation:(id)value
 {
     if ([value isKindOfClass:[NSString class]]) {
@@ -691,6 +703,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     
     return [timingFunctionMapping[value] unsignedIntegerValue];
 }
+#endif
 
 + (CAMediaTimingFunction *)CAMediaTimingFunction:(id)value
 {
@@ -815,7 +828,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     }
     return nil;
 }
-
+#if !WEEX_MAC
 + (UIAccessibilityTraits)WXUIAccessibilityTraits:(id)value
 {
     UIAccessibilityTraits accessibilityTrait = UIAccessibilityTraitNone;
@@ -863,6 +876,7 @@ WX_NUMBER_CONVERT(NSUInteger, unsignedIntegerValue)
     
     return accessibilityTrait;
 }
+#endif
 
 @end
 

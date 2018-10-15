@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "WXDefine.h"
 #import <objc/runtime.h>
 #import "WXLog.h"
 #import "WXType.h"
@@ -55,11 +55,14 @@ typedef CGFloat WXPixelType;
 // WXPixelType that use flexCGFloat to convert
 + (WXPixelType)WXFlexPixelType:(id)value scaleFactor:(CGFloat)scaleFactor;
 
-
+#if !WEEX_MAC
 + (UIViewContentMode)UIViewContentMode:(id)value;
+#endif
 + (WXImageQuality)WXImageQuality:(id)value;
 + (WXImageSharp)WXImageSharp:(id)value;
+#if !WEEX_MAC
 + (UIAccessibilityTraits)WXUIAccessibilityTraits:(id)value;
+#endif
 
 + (UIColor *)UIColor:(id)value;
 + (CGColorRef)CGColor:(id)value;
@@ -81,12 +84,16 @@ typedef BOOL WXClipType;
 + (CGFloat)WXTextWeight:(id)value;
 + (WXTextDecoration)WXTextDecoration:(id)value;
 + (NSTextAlignment)NSTextAlignment:(id)value;
+#if !WEEX_MAC
 + (UIReturnKeyType)UIReturnKeyType:(id)value;
+#endif
 
 + (WXScrollDirection)WXScrollDirection:(id)value;
+#if !WEEX_MAC
 + (UITableViewRowAnimation)UITableViewRowAnimation:(id)value;
 
 + (UIViewAnimationOptions)UIViewAnimationTimingFunction:(id)value;
+#endif
 + (CAMediaTimingFunction *)CAMediaTimingFunction:(id)value;
 
 + (WXVisibility)WXVisibility:(id)value;

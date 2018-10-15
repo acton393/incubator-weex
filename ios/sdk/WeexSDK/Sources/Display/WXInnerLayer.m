@@ -18,6 +18,7 @@
  */
 
 #import "WXInnerLayer.h"
+#import "UIBezierPath+Weex.h"
 
 @implementation WXInnerLayer
 
@@ -54,12 +55,16 @@
     CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
     
+#if !WEEX_MAC
     UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:radius];
-    CGContextAddPath(context, bezierPath.CGPath);
+#else
+    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+#endif
+    CGContextAddPath(context, bezierPath.quartzPath);
     CGContextClip(context);
     CGMutablePathRef outer = CGPathCreateMutable();
     CGPathAddRect(outer, NULL, CGRectInset(rect, -1*rect.size.width, -1*rect.size.height));
-    CGPathAddPath(outer, NULL, bezierPath.CGPath);
+    CGPathAddPath(outer, NULL, bezierPath.quartzPath);
     CGPathCloseSubpath(outer);
     CGFloat *oldComponents = (CGFloat *)CGColorGetComponents(self.boxShadowColor.CGColor);
     CGFloat newComponents[4];

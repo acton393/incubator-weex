@@ -24,5 +24,6 @@
 
 const std::string OS_Android = "android";
 const std::string OS_iOS = "iOS";
+const std::string OS_macOS = "macOS";
 
 #endif //WEEXV8_CONSTANTSNAME_H

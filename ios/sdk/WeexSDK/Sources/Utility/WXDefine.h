@@ -28,6 +28,69 @@
 #define WX_EXTERN extern __attribute__((visibility("default")))
 #endif
 
+#if !TARGET_OS_IPHONE && !TARGET_OS_IOS && !TARGET_OS_TV && !TARGET_OS_WATCH
+#define WEEX_MAC 1
+#else
+#define WEEX_MAC 0
+#endif
+
+#if WEEX_MAC
+#import <AppKit/AppKit.h>
+
+#define UIColor                                         NSColor
+#define UIView                                          NSView
+#define UIImage                                         NSImage
+#define UIFont                                          NSFont
+#define UIViewController                                NSViewController
+#define UIImageView                                     NSImageView
+#define UIScrollView                                    NSScrollView
+#define UITouch                                         NSTouch
+
+#define UIEdgeInsets                                    NSEdgeInsets
+#define UIEdgeInsetsZero                                NSEdgeInsetsZero
+
+#define UIFontDescriptor                                NSFontDescriptor
+#define UIFontDescriptorSymbolicTraits                  NSFontDescriptorSymbolicTraits
+#define UIFontDescriptorTraitItalic                     NSFontDescriptorTraitItalic
+#define UIFontDescriptorTraitBold                       NSFontDescriptorTraitBold
+#define UIFontWeightBold                                NSFontWeightBold
+#define UIFontWeightRegular                             NSFontWeightRegular
+#define UIFontWeightUltraLight                          NSFontWeightUltraLight
+#define UIFontWeightThin                                NSFontWeightThin
+#define UIFontWeightLight                               NSFontWeightLight
+#define UIFontWeightMedium                              NSFontWeightMedium
+#define UIFontWeightSemibold                            NSFontWeightSemibold
+#define UIFontWeightHeavy                               NSFontWeightHeavy
+#define UIFontWeightBlack                               NSFontWeightBlack
+
+#define UIGestureRecognizer                             NSGestureRecognizer
+#define UIGestureRecognizerDelegate                     NSGestureRecognizerDelegate
+#define UITapGestureRecognizer                          NSClickGestureRecognizer
+#define UIPanGestureRecognizer                          NSPanGestureRecognizer
+#define UILongPressGestureRecognizer                    NSPressGestureRecognizer
+
+#define UIGestureRecognizerStateBegan                   NSGestureRecognizerStateBegan
+#define UIGestureRecognizerStateEnded                   NSGestureRecognizerStateEnded
+#define UIGestureRecognizerStateChanged                 NSGestureRecognizerStateChanged
+#define UIGestureRecognizerStateCancelled               NSGestureRecognizerStateCancelled
+
+#define UITouchPhaseBegan                               NSTouchPhaseBegan
+#define UITouchPhaseMoved                               NSTouchPhaseMoved
+
+#define NSStringFromCGRect                              NSStringFromRect
+#define NSStringFromCGSize                              NSStringFromSize
+#define NSStringFromCGPoint                             NSStringFromPoint
+#define UIEdgeInsetsEqualToEdgeInsets                   NSEdgeInsetsEqual
+
+#define UIBezierPath                                    NSBezierPath
+
+
+#define UIApplicationWillResignActiveNotification       NSApplicationWillResignActiveNotification
+#define UIApplicationDidBecomeActiveNotification        NSApplicationDidBecomeActiveNotification
+#else
+#import <UIKit/UIKit.h>
+#endif
+
 /*
  * Concatenate preprocessor tokens a and b without expanding macro definitions
  * (however, if invoked from a macro, macro arguments are expanded).
@@ -130,7 +193,11 @@ parts = [parts subarrayWithRange:(NSRange){0, parts.count - 1}];\
  *  @return YES if greater than or equal to the system verison, otherwise, NO.
  *
  */
+#if !WEEX_MAC
 #define WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#else
+#define WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(v) 0
+#endif
 
 /**
  *  @abstract Compared with system version of current device
@@ -138,7 +205,11 @@ parts = [parts subarrayWithRange:(NSRange){0, parts.count - 1}];\
  *  @return YES if greater than the system verison, otherwise, NO.
  *
  */
+#if !WEEX_MAC
 #define WX_SYS_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#else
+#define WX_SYS_VERSION_GREATER_THAN(v) 0
+#endif
 
 /**
  *  @abstract Compared with system version of current device
@@ -146,7 +217,11 @@ parts = [parts subarrayWithRange:(NSRange){0, parts.count - 1}];\
  *  @return YES if equal to the system verison, otherwise, NO.
  *
  */
+#if !WEEX_MAC
 #define WX_SYS_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#else
+#define WX_SYS_VERSION_EQUAL_TO(v) 0
+#endif
 
 /**
  *  @abstract Compared with system version of current device
@@ -154,7 +229,11 @@ parts = [parts subarrayWithRange:(NSRange){0, parts.count - 1}];\
  *  @return YES if less than the system verison, otherwise, NO.
  *
  */
+#if !WEEX_MAC
 #define WX_SYS_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#else
+#define WX_SYS_VERSION_LESS_THAN(v) 0
+#endif
 
 /**
  *  @abstract Compared with system version of current device
@@ -162,7 +241,11 @@ parts = [parts subarrayWithRange:(NSRange){0, parts.count - 1}];\
  *  @return YES if less than or equal to the system verison, otherwise, NO.
  *
  */
+#if !WEEX_MAC
 #define WX_SYS_LESS_THAN_OR_EQUAL_TO(v)             ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+#else
+#define WX_SYS_LESS_THAN_OR_EQUAL_TO(v) 0
+#endif
 
 /**
  *  @abstract Estimate component's type. If the type isn't equal to WXComponentTypeCommon, then return.

@@ -24,7 +24,9 @@
 #import "WXLog.h"
 #import "WXComponent_performance.h"
 #import "WXTextComponent.h"
+#if !WEEX_MAC
 #import "WXCellComponent.h"
+#endif
 #import "WXImageComponent.h"
 #import "WXUtility.h"
 
@@ -154,6 +156,7 @@
     UIView* targetView = targetComponent.view;
     
     bool isViewGroup = true;
+#if !WEEX_MAC
     if ([targetComponent isKindOfClass:WXTextComponent.class]
         || [targetView isKindOfClass:UILabel.class]
         || [targetView isKindOfClass:UITextView.class]
@@ -169,6 +172,7 @@
         
         isViewGroup =false;
     }
+#endif
     return isViewGroup;
 }
 
