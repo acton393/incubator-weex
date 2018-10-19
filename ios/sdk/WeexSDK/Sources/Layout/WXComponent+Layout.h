@@ -35,11 +35,11 @@ extern "C" {
 
 @interface WXComponent ()
 {
-    @package
+    @public
 #ifdef __cplusplus
     WeexCore::WXCoreLayoutNode *_flexCssNode;
 #endif // __cplusplus
-
+    @package
     CGRect _calculatedFrame;
     CGPoint _absolutePosition;
     WXPositionType _positionType;

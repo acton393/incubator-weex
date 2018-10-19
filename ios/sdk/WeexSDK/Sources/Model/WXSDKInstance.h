@@ -24,6 +24,7 @@
 #import "WXResourceRequest.h"
 #import "WXBridgeProtocol.h"
 #import "WXApmForInstance.h"
+#import "WXComponentManager.h"
 
 extern NSString *const bundleUrlOptionKey;
 
@@ -153,6 +154,12 @@ typedef NS_ENUM(NSInteger, WXErrorCode) {//error.code
  *  Which decide whether to use data render,default value is false
  */
 @property (nonatomic, assign, readonly) BOOL dataRender;
+
+
+/**
+ component  manager for an instance
+ */
+@property (nonatomic, readonly, strong) WXComponentManager *componentManager;
 
 /**
  *  The callback triggered when the instance fails to render.
