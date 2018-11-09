@@ -8,6 +8,7 @@
 
 #import "WXOutLineListComponent.h"
 #import "WXDefine.h"
+#import "WXComponent+Layout.h"
 
 @interface WXOutLineListComponent()<NSOutlineViewDelegate, NSOutlineViewDataSource>
 @end
@@ -17,7 +18,6 @@
 - (instancetype)initWithRef:(NSString *)ref type:(NSString *)type styles:(NSDictionary *)styles attributes:(NSDictionary *)attributes events:(NSArray *)events weexInstance:(WXSDKInstance *)weexInstance
 {
     if (self = [super initWithRef:ref type:type styles:styles attributes:attributes events:events weexInstance:weexInstance]) {
-        
         // customization
     }
     return self;
