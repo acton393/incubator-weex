@@ -6,8 +6,10 @@
 //  Copyright © 2018年 taobao. All rights reserved.
 //
 
+#if WEEX_MAC
 #import <WeexSDK/WeexSDK.h>
 
 @interface WXOutLineListComponent : WXComponent
 
 @end
+#endif
