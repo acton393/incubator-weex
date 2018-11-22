@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
                    
   s.osx.deployment_target = '10.10'
   s.source =  { :path => '.' }
-  s.source_files = 'ios/sdk/WeexSDK/Sources/{Performance,Layout,Events,Display,Loader,Debug,View,Handler,Utility,Engine,Bridge,Manager,Monitor,Model,Network,Protocol}/*.{h,m,mm,c,cpp,cc}','ios/sdk/WeexSDK/Sources/Controller/WXBaseViewController.{h,mm,m}','ios/sdk/WeexSDK/Sources/Component/{WXTextComponent,WXComponent,WXImageComponent,WXComponent_internal,WXTransform}.{h,mm,m}','ios/sdk/WeexSDK/Sources/Module/WXPrerenderManager.{h,mm,m}','ios/sdk/WeexSDK/Sources/WebSocket/**/*.{h,mm,m}'
+  s.source_files = 'ios/sdk/WeexSDK/Sources/{Performance,Layout,Events,Display,Loader,Debug,View,Handler,Utility,Engine,Bridge,Manager,Monitor,Model,Network,Protocol}/*.{h,m,mm,c,cpp,cc}','ios/sdk/WeexSDK/Sources/Controller/WXBaseViewController.{h,mm,m}','ios/sdk/WeexSDK/Sources/Component/{WXTextComponent,WXComponent,WXImageComponent,WXComponent_internal,WXTransform,mac/*}.{h,mm,m}','ios/sdk/WeexSDK/Sources/Module/WXPrerenderManager.{h,mm,m}','ios/sdk/WeexSDK/Sources/WebSocket/**/*.{h,mm,m}'
   s.exclude_files = "ios/sdk/WeexSDK/Sources/Handler/WXNavigationDefaultImpl.{h,mm,m}","ios/sdk/WeexSDK/Sources/Manager/WXDatePickerManager.{h,mm,m}"
   s.resources = 'pre-build/*.js','ios/sdk/WeexSDK/Resources/wx_load_error@3x.png'
 

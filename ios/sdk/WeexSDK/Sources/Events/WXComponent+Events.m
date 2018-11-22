@@ -420,8 +420,13 @@ if ([removeEventName isEqualToString:@#eventName1]||[removeEventName isEqualToSt
     if (![self isViewLoaded]) {
         return;
     }
+#if !WEEX_MAC
     if (!CGRectEqualToRect(self.view.frame, CGRectZero)) {
         CGRect frame = [self.view.superview convertRect:self.view.frame toView:self.view.window];
+#else
+    if (!CGRectEqualToRect(NSRectToCGRect(self.view.frame), CGRectZero)) {
+        CGRect frame = NSRectToCGRect([self.view.superview convertRect:self.view.frame toView:self.view.window.contentView]);
+#endif
         position[@"x"] = @(frame.origin.x/scaleFactor);
         position[@"y"] = @(frame.origin.y/scaleFactor);
         position[@"width"] = @(frame.size.width/scaleFactor);

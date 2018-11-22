@@ -137,9 +137,13 @@ bool flexIsUndefined(float value) {
                 // So layer's transform must be reset to CATransform3DIdentity before setFrame, otherwise frame will be incorrect
                 strongSelf.layer.transform = CATransform3DIdentity;
             }
-            
+#if !WEEX_MAC
             if (!CGRectEqualToRect(strongSelf.view.frame,strongSelf.calculatedFrame)) {
                 strongSelf.view.frame = strongSelf.calculatedFrame;
+#else
+                if (!CGRectEqualToRect(NSRectToCGRect(strongSelf.view.frame),strongSelf.calculatedFrame)) {
+                    strongSelf.view.frame = NSRectFromCGRect(strongSelf.calculatedFrame);
+#endif
                 strongSelf->_absolutePosition = CGPointMake(NAN, NAN);
                 [strongSelf configBoxShadow:strongSelf->_boxShadow];
             } else {
