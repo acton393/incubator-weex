@@ -136,8 +136,6 @@
         return cellView;
     }
     
-    cellView.frame = (CGRect){.origin = cellView.frame.origin,.size =cellComponent.calculatedFrame.size};
-    
     [cellView addSubview:cellComponent.view];
     [cellView setAccessibilityIdentifier:cellComponent.view.accessibilityIdentifier];
     
@@ -148,6 +146,12 @@
 - (void)tableView:(NSTableView *)tableView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
+{
+    WXCellComponent *cell = [self cellForIndexPath:[NSIndexPath indexPathWithIndex:row] withComponents:self.cellComponentsCompleted];
+    return cell.calculatedFrame.size.height;
 }
 
 - (void)tableView:(NSTableView *)tableView didRemoveRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
