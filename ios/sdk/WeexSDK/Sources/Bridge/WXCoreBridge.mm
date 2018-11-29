@@ -799,7 +799,11 @@ static WeexCore::ScriptBridge* jsBridge = nullptr;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         WeexCore::WXCoreEnvironment* env = WeexCore::WXCoreEnvironment::getInstance();
+#if !WEEX_MAC
         env->SetPlatform(OS_iOS);
+#else
+        env->SetPlatform(OS_macOS);
+#endif
         env->AddOption("scale", "1");
         
         CGSize screenSize = [WXUtility portraitScreenSize];

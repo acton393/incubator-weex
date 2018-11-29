@@ -45,11 +45,14 @@
 #import "WXSDKInstance_performance.h"
 #import "WXComponent_performance.h"
 #import "WXCoreBridge.h"
+#import "constants_value.h"
 
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 #pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
 static BOOL bInited = NO;
 static BOOL bNeedRemoveEvents = YES;
+
+const CGFloat WXDefaultScreenWidth = WeexCore::kDefaultViewPortWidth;
 
 @interface WXComponent () <UIGestureRecognizerDelegate>
 

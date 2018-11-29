@@ -58,7 +58,11 @@ namespace WeexCore {
   constexpr int HORIZONTAL_VALUE = 0;
   constexpr int VERTICAL_VALUE = 1;
 
-  constexpr float kDefaultViewPortWidth = 750.0f;
+//#if WEEX_DESKTOP
+//    constexpr float kDefaultViewPortWidth = 3000.0f;
+//#else
+    constexpr float kDefaultViewPortWidth = 750.0f;
+//#endif
   constexpr bool kDefaultRoundOffDeviation = true;
 }
 #endif //WEEXV8_CONSTANTSVALUE_H

@@ -28,7 +28,9 @@
 #import "WXRuleManager.h"
 #import "WXSDKInstance.h"
 #import "WXTracingManager.h"
+#if !WEEX_MAC
 #import "WXRecycleListComponent.h"
+#endif
 #import "WXCoreBridge.h"
 #import <objc/message.h>
 
@@ -54,7 +56,9 @@ WX_EXPORT_METHOD(@selector(updateStyle:styles:))
 WX_EXPORT_METHOD(@selector(updateAttrs:attrs:))
 WX_EXPORT_METHOD(@selector(addRule:rule:))
 WX_EXPORT_METHOD(@selector(getComponentRect:callback:))
+#if !WEEX_MAC
 WX_EXPORT_METHOD(@selector(updateComponentData:componentData:callback:))
+#endif
 
 - (void)performBlockOnComponentManager:(void(^)(WXComponentManager *))block
 {
@@ -244,7 +248,7 @@ WX_EXPORT_METHOD(@selector(updateComponentData:componentData:callback:))
         }
     }];
 }
-
+#if !WEEX_MAC
 - (void)updateComponentData:(NSString*)componentDataId componentData:(NSDictionary*)componentData callback:(NSString*)callbackId
 {
     NSString *recycleListComponentRef = [[componentDataId componentsSeparatedByString:@"@"] objectAtIndex:0];
@@ -257,6 +261,7 @@ WX_EXPORT_METHOD(@selector(updateComponentData:componentData:callback:))
         ((void*(*)(id,SEL,NSString*,NSDictionary*,NSString*))objc_msgSend)(recycleListComponent, selector, componentDataId, componentData,callbackId);
     }];
 }
+#endif
 
 - (void)destroyInstance
 {

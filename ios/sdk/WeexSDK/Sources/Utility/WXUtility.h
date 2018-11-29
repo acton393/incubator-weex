@@ -24,7 +24,7 @@
 #import "WXSDKInstance.h"
 
 // The default screen width which helps us to calculate the real size or scale in different devices.
-static const CGFloat WXDefaultScreenWidth = 750.0;
+FOUNDATION_EXTERN const CGFloat WXDefaultScreenWidth;
 
 #define WX_ENUMBER_CASE(_invoke, idx, code, obj, _type, op, _flist) \
 case code:{\

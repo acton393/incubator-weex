@@ -94,13 +94,13 @@ void WXSwizzleInstanceMethod(Class className, SEL original, SEL replaced)
     }
 }
 
-void WXSwizzleInstanceMethodWithBlock(Class class, SEL original, id block, SEL replaced)
+void WXSwizzleInstanceMethodWithBlock(Class targetClass, SEL original, id block, SEL replaced)
 {
-    Method originalMethod = class_getInstanceMethod(class, original);
+    Method originalMethod = class_getInstanceMethod(targetClass, original);
     IMP implementation = imp_implementationWithBlock(block);
     
-    class_addMethod(class, replaced, implementation, method_getTypeEncoding(originalMethod));
-    Method newMethod = class_getInstanceMethod(class, replaced);
+    class_addMethod(targetClass, replaced, implementation, method_getTypeEncoding(originalMethod));
+    Method newMethod = class_getInstanceMethod(targetClass, replaced);
     method_exchangeImplementations(originalMethod, newMethod);
 }
 
@@ -270,7 +270,7 @@ CGFloat WXFloorPixelValue(CGFloat value)
     NSString *machine = @"";
     sysctlbyname("hw.model", NULL, &len, NULL, 0);
     if (len) {
-        char *model = malloc(len*sizeof(char));
+        char *model = (char*)malloc(len*sizeof(char));
         sysctlbyname("hw.model", model, &len, NULL, 0);
         printf("%s\n", model);
         free(model);
@@ -1203,18 +1203,18 @@ CGFloat WXPixelResize(CGFloat value)
 
 CGRect WXPixelFrameResize(CGRect value)
 {
-    CGRect new = CGRectMake(value.origin.x * WXScreenResizeRadio(),
+    CGRect newFrame = CGRectMake(value.origin.x * WXScreenResizeRadio(),
                             value.origin.y * WXScreenResizeRadio(),
                             value.size.width * WXScreenResizeRadio(),
                             value.size.height * WXScreenResizeRadio());
-    return new;
+    return newFrame;
 }
 
 CGPoint WXPixelPointResize(CGPoint value)
 {
-    CGPoint new = CGPointMake(value.x * WXScreenResizeRadio(),
+    CGPoint newFrame = CGPointMake(value.x * WXScreenResizeRadio(),
                               value.y * WXScreenResizeRadio());
-    return new;
+    return newFrame;
 }
 
 

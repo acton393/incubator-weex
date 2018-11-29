@@ -1352,6 +1352,8 @@
 		DCA446291EFA688B00D0CFA8 /* WeexSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = DCA446261EFA5DAF00D0CFA8 /* WeexSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCAB35FE1D658EB700C0EA70 /* WXRuleManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DCAB35FC1D658EB700C0EA70 /* WXRuleManager.h */; };
 		DCAB35FF1D658EB700C0EA70 /* WXRuleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAB35FD1D658EB700C0EA70 /* WXRuleManager.m */; };
+		DCB7EECE21B026250040B385 /* WXDomModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E659D91C07F594008B8775 /* WXDomModule.m */; };
+		DCB7EECF21B027DA0040B385 /* WXDomModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 77E659D81C07F594008B8775 /* WXDomModule.h */; };
 		DCC77C131D770AE300CE7288 /* WXSliderNeighborComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = DCC77C111D770AE300CE7288 /* WXSliderNeighborComponent.mm */; };
 		DCC77C141D770AE300CE7288 /* WXSliderNeighborComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC77C121D770AE300CE7288 /* WXSliderNeighborComponent.h */; };
 		DCD3AAB2219AEE0300203727 /* WXFooterComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD3AAAC219AEE0200203727 /* WXFooterComponent.m */; };
@@ -3364,6 +3366,7 @@
 				DC1CCADA2171A1F2000FF1F7 /* WXConfigCenterProtocol.h in Headers */,
 				DC1CCACA2171A1A1000FF1F7 /* WXResourceResponse.h in Headers */,
 				DC1CCAD62171A1DF000FF1F7 /* WXNetworkProtocol.h in Headers */,
+				DCB7EECF21B027DA0040B385 /* WXDomModule.h in Headers */,
 				DC1CCACF2171A1BF000FF1F7 /* WXJSExceptionProtocol.h in Headers */,
 				DC1CCAAC2171A092000FF1F7 /* WXCoreBridge.h in Headers */,
 				DC1CCAF221724F0F000FF1F7 /* WXComponent.h in Headers */,
@@ -4403,6 +4406,7 @@
 				DC1CC94721719FDB000FF1F7 /* thread_impl_posix.cc in Sources */,
 				DC1CC94921719FDB000FF1F7 /* thread_impl_darwin.cc in Sources */,
 				DC1CC94D21719FDB000FF1F7 /* message_loop.cc in Sources */,
+				DCB7EECE21B026250040B385 /* WXDomModule.m in Sources */,
 				DC1CC95021719FDB000FF1F7 /* message_pump_posix.cc in Sources */,
 				DC1CC95221719FDB000FF1F7 /* message_pump_darwin.cc in Sources */,
 				DC1CC95421719FDB000FF1F7 /* ast_builder.cc in Sources */,
@@ -5046,6 +5050,7 @@
 					"$(inherited)",
 					"DEBUG=1",
 					"OS_IOS=1",
+					"WEEX_DESKTOP=1",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../weex_core/Source",
@@ -5082,7 +5087,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = OS_IOS;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OS_IOS,
+					"WEEX_DESKTOP=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../weex_core/Source",
 					"$(PROJECT_DIR)/../../weex_core/Source/core/layout",

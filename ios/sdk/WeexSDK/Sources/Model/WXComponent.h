@@ -34,6 +34,9 @@ typedef enum : NSUInteger {
     WXDisplayTypeBlock
 } WXDisplayType;
 
+// The default screen width which helps us to calculate the real size or scale in different devices.
+FOUNDATION_EXTERN const CGFloat WXDefaultScreenWidth;
+
 /**
  * @abstract the component callback , result can be string or dictionary.
  * @discussion callback data to js, the id of callback function will be removed to save memory.
